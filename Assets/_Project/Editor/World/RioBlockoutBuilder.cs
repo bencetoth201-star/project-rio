@@ -76,6 +76,11 @@ namespace Rio.WorldGen
                 mr.sharedMaterial = mat;
                 GameObjectUtility.SetStaticEditorFlags(go, StaticEditorFlags.BatchingStatic);
 
+                // Wasser und Palmwedel bleiben ohne Kollision: ins Meer soll man
+                // laufen koennen, und Blaetter sollen nicht im Weg stehen.
+                if (bucket.Name != "Sea" && bucket.Name != "PalmLeaf")
+                    go.AddComponent<MeshCollider>().sharedMesh = mesh;
+
                 tris += bucket.TriangleCount;
                 objects++;
             }
