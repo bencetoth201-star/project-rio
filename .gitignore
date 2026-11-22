@@ -54,3 +54,10 @@ desktop.ini
 
 # Screenshots aus der CLI (nur lokal)
 /Screenshots/
+
+# ---- Generierte Meshes ----
+# Welt und Figur entstehen prozedural aus den Generatoren in
+# Assets/_Project/Editor. Fester Seed, also immer dasselbe Ergebnis.
+# 47 MB Mesh-Assets gehoeren nicht in die Versionsverwaltung.
+# Nach einem frischen Clone: Tools > Rio > Welt bauen, dann Block-Figur bauen.
+/Assets/_Project/Generated/
