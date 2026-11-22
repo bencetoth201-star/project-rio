@@ -1,0 +1,56 @@
+# ---- Unity generierte Ordner (reiner Cache, gehoert nicht ins Repo) ----
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Meta-Dateien zu nicht ignorierten Assets muessen drin bleiben
+!/[Aa]ssets/**/*.meta
+
+# ---- IDE / Build-Tooling ----
+.vs/
+.gradle/
+.idea/
+/[Aa]ssets/Plugins/Editor/JetBrains*
+ExportedObj/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.tmp
+
+# ---- Build-Artefakte ----
+*.apk
+*.aab
+*.aar
+*.app
+*.unitypackage
+crashlytics-build.properties
+sysinfo.txt
+
+# ---- Addressables ----
+/[Ss]erver[Dd]ata/
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# ---- Betriebssystem ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Screenshots aus der CLI (nur lokal)
+/Screenshots/
