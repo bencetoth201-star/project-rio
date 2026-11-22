@@ -35,16 +35,33 @@ namespace Rio.WorldGen
         const float GroundY = 1.4f;     // Strassenniveau
         const float HillPeak = 34f;
 
+        // Durchgehende Grundflaeche unter der ganzen Stadt. Liegt knapp unter
+        // der Strasse, damit Strasse und Gehwege sichtbar darueber aufliegen.
+        // Ohne die hatten Blockinnenflaechen und Gassen gar keinen Boden.
+        const float GroundPlaneY = GroundY - 0.20f;
+        const float SeaFloorFrom = -150f;
+        const float SeaFloorDepth = -9f;
+
         // ------------------------------------------------------------------
 
         [MenuItem("Tools/Rio/Blockout bauen", priority = 0)]
         public static void Build()
         {
+            // Im Play Mode gebaute Objekte verschwinden beim Stoppen wieder.
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogError("[Rio] Blockout bauen geht nur ausserhalb vom Play Mode - " +
+                               "sonst ist alles beim Stoppen wieder weg.");
+                return;
+            }
+
             var buckets = new Buckets();
             var rng = new System.Random(20261122);
 
             BuildSea(buckets);
+            BuildSeaFloor(buckets);
             BuildBeach(buckets);
+            BuildGroundPlane(buckets);
             BuildPromenade(buckets);
             BuildRoad(buckets);
             BuildCityBlocks(buckets, rng);
@@ -85,6 +102,8 @@ namespace Rio.WorldGen
                 objects++;
             }
 
+            BuildWorldBounds(root);
+
             AssetDatabase.SaveAssets();
             EditorSceneManager.MarkSceneDirty(root.scene);
             Selection.activeGameObject = root;
@@ -105,6 +124,34 @@ namespace Rio.WorldGen
                 new Vector3(HalfWidth + 60f, 0f, BeachTo - 6f),
                 new Vector3(HalfWidth + 60f, 0f, SeaFrom),
                 new Vector3(-HalfWidth - 60f, 0f, SeaFrom));
+        }
+
+        /// <summary>
+        /// Sandgrund unter dem Wasser. Setzt den Strand nach aussen fort,
+        /// damit man ins Meer waten kann statt ins Nichts zu fallen.
+        /// </summary>
+        static void BuildSeaFloor(Buckets b)
+        {
+            b.Sand.AddHeightGrid(
+                new Vector3(-HalfWidth, 0f, SeaFloorFrom),
+                HalfWidth * 2f, BeachFrom - SeaFloorFrom,
+                22, 8,
+                (x, z) =>
+                {
+                    float t = Mathf.InverseLerp(SeaFloorFrom, BeachFrom, z);
+                    float ripples = (Mathf.PerlinNoise(x * 0.02f + 7f, z * 0.02f) - 0.5f) * 1.2f;
+                    return Mathf.Lerp(SeaFloorDepth, -1.1f, Mathf.SmoothStep(0f, 1f, t)) + ripples * (1f - t);
+                });
+        }
+
+        /// <summary>
+        /// Eine durchgehende Flaeche unter der gesamten Stadt. Strasse,
+        /// Gehwege und Haeuser liegen darauf. Vorher gab es nur einzelne
+        /// Streifen, zwischen denen man durchgefallen ist.
+        /// </summary>
+        static void BuildGroundPlane(Buckets b)
+        {
+            Flat(b.Ground, -HalfWidth, HalfWidth, BeachTo, BlocksTo + 10f, GroundPlaneY);
         }
 
         static float BeachHeight(float x, float z)
@@ -325,6 +372,42 @@ namespace Rio.WorldGen
         // Hilfsmittel
         // ------------------------------------------------------------------
 
+        /// <summary>
+        /// Unsichtbare Wand rund um den Ausschnitt. Das Stueck Rio ist ein
+        /// Ausschnitt, kein Kontinent - ohne diese Grenze laeuft man an den
+        /// Raendern aus der Welt heraus.
+        /// </summary>
+        static void BuildWorldBounds(GameObject root)
+        {
+            var bounds = new GameObject("WorldBounds");
+            bounds.transform.SetParent(root.transform, false);
+
+            const float height = 80f;
+            const float thickness = 2f;
+            float centerZ = (SeaFloorFrom + HillTo) * 0.5f;
+            float depth = HillTo - SeaFloorFrom;
+            float centerY = SeaFloorDepth + height * 0.5f;
+
+            Wall(bounds, "West", new Vector3(-HalfWidth - thickness * 0.5f, centerY, centerZ),
+                 new Vector3(thickness, height, depth));
+            Wall(bounds, "Ost", new Vector3(HalfWidth + thickness * 0.5f, centerY, centerZ),
+                 new Vector3(thickness, height, depth));
+            Wall(bounds, "Sued", new Vector3(0f, centerY, SeaFloorFrom - thickness * 0.5f),
+                 new Vector3(HalfWidth * 2f + thickness * 2f, height, thickness));
+            Wall(bounds, "Nord", new Vector3(0f, centerY, HillTo + thickness * 0.5f),
+                 new Vector3(HalfWidth * 2f + thickness * 2f, height, thickness));
+        }
+
+        static void Wall(GameObject parent, string name, Vector3 center, Vector3 size)
+        {
+            var go = new GameObject("Bound_" + name);
+            go.transform.SetParent(parent.transform, false);
+            go.transform.position = center;
+            var box = go.AddComponent<BoxCollider>();
+            box.size = size;
+            GameObjectUtility.SetStaticEditorFlags(go, StaticEditorFlags.BatchingStatic);
+        }
+
         static void Flat(MeshBucket bucket, float x0, float x1, float z0, float z1, float y)
         {
             bucket.AddQuad(
@@ -396,6 +479,7 @@ namespace Rio.WorldGen
             public readonly MeshBucket Asphalt = new MeshBucket("Asphalt", Hex("#3B3B3E"));
             public readonly MeshBucket RoadLine = new MeshBucket("RoadLine", Hex("#D8D2BE"));
             public readonly MeshBucket Sidewalk = new MeshBucket("Sidewalk", Hex("#C7C1B2"));
+            public readonly MeshBucket Ground = new MeshBucket("Ground", Hex("#A79F8E"));
             public readonly MeshBucket Wall = new MeshBucket("SeaWall", Hex("#B3AC9B"));
             public readonly MeshBucket Hill = new MeshBucket("Hill", Hex("#4E6B3A"));
             public readonly MeshBucket Roof = new MeshBucket("Roof", Hex("#6B6259"));
@@ -427,6 +511,7 @@ namespace Rio.WorldGen
                     yield return Asphalt;
                     yield return RoadLine;
                     yield return Sidewalk;
+                    yield return Ground;
                     yield return Wall;
                     yield return Hill;
                     yield return Roof;

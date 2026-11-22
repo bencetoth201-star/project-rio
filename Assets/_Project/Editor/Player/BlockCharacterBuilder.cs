@@ -31,6 +31,14 @@ namespace Rio.PlayerGen
         [MenuItem("Tools/Rio/Block-Figur bauen", priority = 1)]
         public static void Build()
         {
+            // Im Play Mode gebaute Objekte verschwinden beim Stoppen wieder.
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                Debug.LogError("[Rio] Block-Figur bauen geht nur ausserhalb vom Play Mode - " +
+                               "sonst ist sie beim Stoppen wieder weg.");
+                return;
+            }
+
             EnsureDir(MaterialDir);
             EnsureDir(MeshDir);
 
