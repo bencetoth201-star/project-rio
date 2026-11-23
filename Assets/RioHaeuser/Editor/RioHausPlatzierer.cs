@@ -52,7 +52,8 @@ public class RioHausPlatzierer : EditorWindow
             "Kategorie über den Namen des Platzhalters festlegen (optional):\n" +
             "…_sehrarm, …_arm, …_einfach, …_mittel, …_gehoben, …_reich, …_luxus\n" +
             "oder ein bestimmtes Haus: …_boteco, …_villa_zona_sul usw.\n" +
-            "Spezial-Gebäude nur mit Namen: …_tankstelle, …_bank\n" +
+            "Nur per Name: …_tankstelle, …_bank, …_kirche, …_lagerhalle, …_praca, …_park,\n" +
+            "…_centro/…_hochhaus (Türme), …_ecke (Eckgebäude: zweite Straße an +X)\n" +
             "Ohne Angabe wird das größte passende Haus gewählt.",
             MessageType.Info);
 
@@ -119,8 +120,13 @@ public class RioHausPlatzierer : EditorWindow
     static readonly (string schluessel, string klasse)[] Klassen =
     {
         ("sehrarm", "Sehr arm"), ("sehr_arm", "Sehr arm"), ("sehr arm", "Sehr arm"),
-        ("luxus", "Luxus"), ("gehoben", "Gehoben"), ("reich", "Reich"), ("mittel", "Mittel"), ("einfach", "Einfach"), ("arm", "Arm"),
+        ("luxus", "Luxus"), ("gehoben", "Gehoben"), ("reich", "Reich"),
+        ("centro", "Centro"), ("hochhaus", "Centro"), ("gewerbe", "Gewerbe"), ("lager", "Gewerbe"),
+        ("ecke", "Ecke"), ("frei", "Freifläche"), ("mittel", "Mittel"), ("einfach", "Einfach"), ("arm", "Arm"),
     };
+
+    // Diese Klassen werden nie zufällig gesetzt, nur per Name/Kategorie im Platzhalter-Namen
+    static readonly HashSet<string> NurPerName = new HashSet<string> { "Spezial", "Centro", "Gewerbe", "Ecke", "Freifläche" };
 
     static List<Kandidat> Filtern(string name, List<Kandidat> alle)
     {
@@ -130,18 +136,18 @@ public class RioHausPlatzierer : EditorWindow
         {
             string ohneNummer = k.haus.slug.Substring(k.haus.slug.IndexOf('_') + 1);
             string erstesWort = ohneNummer.Split('_')[0];
-            bool alias = k.haus.klasse == "Spezial" &&
-                         (n.Contains(erstesWort) || (erstesWort == "banco" && n.Contains("bank")));
+            bool alias = NurPerName.Contains(k.haus.klasse) && k.haus.klasse != "Ecke" && k.haus.klasse != "Centro" &&
+                         (n.Contains(erstesWort) || (erstesWort == "banco" && n.Contains("bank")) ||
+                          (erstesWort == "igreja" && n.Contains("kirche")) || (erstesWort == "parque" && n.Contains("park")));
             if (n.Contains(ohneNummer) || alias)
                 return new List<Kandidat> { k };
         }
-        // Spezial-Gebäude (z. B. Tankstelle) nie zufällig setzen
-        var normale = alle.Where(k => k.haus.klasse != "Spezial").ToList();
-        // 2) Kategorie im Namen?
+        // 2) Kategorie im Namen? (auch Centro, Gewerbe, Ecke, Freifläche)
         foreach (var (schluessel, klasse) in Klassen)
             if (n.Contains(schluessel))
-                return normale.Where(k => k.haus.klasse == klasse).ToList();
-        return normale;
+                return alle.Where(k => k.haus.klasse == klasse && k.haus.klasse != "Spezial").ToList();
+        // 3) ohne Angabe: nur normale Wohnhäuser
+        return alle.Where(k => !NurPerName.Contains(k.haus.klasse)).ToList();
     }
 
     void Ersetzen()
@@ -168,7 +174,7 @@ public class RioHausPlatzierer : EditorWindow
         {
             Fussabdruck(ph, out Vector3 pos, out float b, out float t);
             var auswahl = Filtern(ph.name, modelle);
-            if (auswahl.Count == 0) auswahl = modelle.Where(k => k.haus.klasse != "Spezial").ToList();
+            if (auswahl.Count == 0) auswahl = modelle.Where(k => !NurPerName.Contains(k.haus.klasse)).ToList();
 
             // passende Häuser (Grundstück passt in den Platzhalter), auf Wunsch auch um 90° gedreht
             var passend = new List<(Kandidat k, bool gedreht, float flaeche)>();

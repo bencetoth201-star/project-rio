@@ -547,6 +547,14 @@ namespace Rio.WorldGen
             streamer.world = houseWorld;
             streamer.farLodRoot = root.transform.Find("FarLod");
 
+            // Beim Bauen auf die aktuellen Werte setzen, sonst bleibt in der
+            // Szene stehen, was beim ersten Mal serialisiert wurde.
+            streamer.nearRadius = 600f;
+            streamer.hysteresis = 180f;
+            streamer.spawnsPerFrame = 60;
+            streamer.cacheChunks = 40;
+            streamer.combineChunks = true;
+
             var player = GameObject.Find("Player");
             streamer.player = player != null ? player.transform : null;
         }

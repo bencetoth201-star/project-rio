@@ -26,10 +26,6 @@
   "mats": 10,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    12.0,
    7.1,
@@ -48,7 +44,11 @@
     6.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "02_rua_kurve",
@@ -58,10 +58,6 @@
   "mats": 7,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    12.0,
    7.1,
@@ -80,7 +76,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "03_rua_t",
@@ -90,10 +90,6 @@
   "mats": 7,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    12.0,
    7.1,
@@ -118,7 +114,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "04_rua_kreuzung",
@@ -128,10 +128,6 @@
   "mats": 9,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    12.0,
    4.3,
@@ -162,7 +158,11 @@
     0.0,
     -90
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "05_rua_sackgasse",
@@ -172,10 +172,6 @@
   "mats": 9,
   "slots": [],
   "combos": 1,
-  "lot": [
-   18,
-   20
-  ],
   "size": [
    16.9,
    7.1,
@@ -188,7 +184,11 @@
     10.0,
     0
    ]
-  }
+  },
+  "lot": [
+   18,
+   20
+  ]
  },
  {
   "slug": "06_rua_steigung",
@@ -198,10 +198,6 @@
   "mats": 8,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   24
-  ],
   "size": [
    12.0,
    9.6,
@@ -220,7 +216,11 @@
     12.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   24
+  ]
  },
  {
   "slug": "07_rua_bushaltestelle",
@@ -230,10 +230,6 @@
   "mats": 13,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   24
-  ],
   "size": [
    12.4,
    7.3,
@@ -258,7 +254,11 @@
     12.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   24
+  ]
  },
  {
   "slug": "08_rua_kopfstein",
@@ -268,10 +268,6 @@
   "mats": 8,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    12.0,
    4.8,
@@ -296,7 +292,11 @@
     6.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "09_avenida_gerade",
@@ -306,10 +306,6 @@
   "mats": 10,
   "slots": [],
   "combos": 1,
-  "lot": [
-   24,
-   24
-  ],
   "size": [
    24.0,
    8.6,
@@ -328,7 +324,11 @@
     12.0,
     0
    ]
-  }
+  },
+  "lot": [
+   24,
+   24
+  ]
  },
  {
   "slug": "10_avenida_kreuzung",
@@ -338,10 +338,6 @@
   "mats": 9,
   "slots": [],
   "combos": 1,
-  "lot": [
-   24,
-   24
-  ],
   "size": [
    24.0,
    4.3,
@@ -372,7 +368,11 @@
     0.0,
     -90
    ]
-  }
+  },
+  "lot": [
+   24,
+   24
+  ]
  },
  {
   "slug": "11_avenida_einmuendung",
@@ -382,10 +382,6 @@
   "mats": 13,
   "slots": [],
   "combos": 1,
-  "lot": [
-   24,
-   24
-  ],
   "size": [
    24.0,
    8.6,
@@ -410,7 +406,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   24,
+   24
+  ]
  },
  {
   "slug": "12_avenida_kurve",
@@ -420,10 +420,6 @@
   "mats": 9,
   "slots": [],
   "combos": 1,
-  "lot": [
-   36,
-   36
-  ],
   "size": [
    30.0,
    8.6,
@@ -442,7 +438,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   36,
+   36
+  ]
  },
  {
   "slug": "13_kreisverkehr",
@@ -452,10 +452,6 @@
   "mats": 11,
   "slots": [],
   "combos": 1,
-  "lot": [
-   36,
-   36
-  ],
   "size": [
    36.0,
    7.6,
@@ -486,7 +482,11 @@
     0.0,
     -90
    ]
-  }
+  },
+  "lot": [
+   36,
+   36
+  ]
  },
  {
   "slug": "14_copacabana",
@@ -496,10 +496,6 @@
   "mats": 20,
   "slots": [],
   "combos": 1,
-  "lot": [
-   36,
-   24
-  ],
   "size": [
    36.0,
    9.1,
@@ -524,7 +520,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   36,
+   24
+  ]
  },
  {
   "slug": "15_beco",
@@ -534,10 +534,6 @@
   "mats": 3,
   "slots": [],
   "combos": 1,
-  "lot": [
-   4,
-   12
-  ],
   "size": [
    3.0,
    0.2,
@@ -556,7 +552,11 @@
     6.0,
     0
    ]
-  }
+  },
+  "lot": [
+   4,
+   12
+  ]
  },
  {
   "slug": "16_escadaria",
@@ -566,10 +566,6 @@
   "mats": 9,
   "slots": [],
   "combos": 1,
-  "lot": [
-   4,
-   12
-  ],
   "size": [
    3.0,
    5.0,
@@ -588,7 +584,11 @@
     -6.0,
     180
    ]
-  }
+  },
+  "lot": [
+   4,
+   12
+  ]
  },
  {
   "slug": "17_beco_gabelung",
@@ -598,10 +598,6 @@
   "mats": 3,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   12
-  ],
   "size": [
    7.5,
    0.2,
@@ -626,7 +622,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   12,
+   12
+  ]
  },
  {
   "slug": "18_hangstrasse",
@@ -636,10 +636,6 @@
   "mats": 12,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   24
-  ],
   "size": [
    12.0,
    8.9,
@@ -658,7 +654,11 @@
     12.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   24
+  ]
  },
  {
   "slug": "19_viadukt",
@@ -668,10 +668,6 @@
   "mats": 8,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   24
-  ],
   "size": [
    12.0,
    12.0,
@@ -696,7 +692,11 @@
     0.0,
     90
    ]
-  }
+  },
+  "lot": [
+   12,
+   24
+  ]
  },
  {
   "slug": "20_tunnel",
@@ -706,10 +706,6 @@
   "mats": 11,
   "slots": [],
   "combos": 1,
-  "lot": [
-   12,
-   24
-  ],
   "size": [
    12.0,
    14.0,
@@ -734,6 +730,451 @@
     12.0,
     0
    ]
-  }
+  },
+  "lot": [
+   12,
+   24
+  ]
+ },
+ {
+  "slug": "21_rua_bogen_15",
+  "name": "Rua – Bogen 15°",
+  "cls": "Rua",
+  "tris": 624,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   13.2,
+   7.1,
+   11.9
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_Ende": [
+    -1.363,
+    0.0,
+    -10.353,
+    195.0
+   ]
+  },
+  "lot": [
+   13.2,
+   11.9
+  ],
+  "offset": [
+   0.58,
+   5.95
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "22_rua_bogen_30",
+  "name": "Rua – Bogen 30°",
+  "cls": "Rua",
+  "tris": 1104,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   16.6,
+   7.1,
+   23.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_Ende": [
+    -5.359,
+    0.0,
+    -20.0,
+    210.0
+   ]
+  },
+  "lot": [
+   16.6,
+   23.0
+  ],
+  "offset": [
+   2.28,
+   11.5
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "23_avenida_bogen_15",
+  "name": "Avenida – Bogen 15°",
+  "cls": "Avenida",
+  "tris": 1292,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   25.6,
+   7.6,
+   18.6
+  ],
+  "anchors": {
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Avenida_Ende": [
+    -2.044,
+    0.0,
+    -15.529,
+    195.0
+   ]
+  },
+  "lot": [
+   25.6,
+   18.6
+  ],
+  "offset": [
+   0.82,
+   9.32
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "24_avenida_bogen_30",
+  "name": "Avenida – Bogen 30°",
+  "cls": "Avenida",
+  "tris": 2372,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   30.4,
+   7.6,
+   36.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Avenida_Ende": [
+    -8.038,
+    0.0,
+    -30.0,
+    210.0
+   ]
+  },
+  "lot": [
+   30.4,
+   36.0
+  ],
+  "offset": [
+   3.22,
+   18.0
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "25_copacabana_bogen_15",
+  "name": "Copacabana – Bogen 15°",
+  "cls": "Avenida",
+  "tris": 3172,
+  "mats": 17,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   39.3,
+   8.6,
+   34.2
+  ],
+  "anchors": {
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Avenida_Ende": [
+    4.089,
+    0.0,
+    -31.058,
+    165.0
+   ],
+   "Strand": [
+    23.83,
+    -0.45,
+    -12.661,
+    90
+   ]
+  },
+  "lot": [
+   39.3,
+   34.2
+  ],
+  "offset": [
+   -7.64,
+   17.08
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "26_avenida_t",
+  "name": "Avenida – T-Kreuzung",
+  "cls": "Avenida",
+  "tris": 1436,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.0,
+   4.3,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Anschluss_Avenida_E": [
+    12.0,
+    0.0,
+    0.0,
+    90
+   ]
+  },
+  "lot": [
+   24,
+   24
+  ]
+ },
+ {
+  "slug": "27_uebergang_avenida_rua",
+  "name": "Übergang Avenida → Rua",
+  "cls": "Avenida",
+  "tris": 304,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.0,
+   7.6,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ]
+  },
+  "lot": [
+   24,
+   24
+  ]
+ },
+ {
+  "slug": "28_stuetzmauer_4m",
+  "name": "Stützmauer 4 m",
+  "cls": "Gelände",
+  "tris": 424,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   5.1,
+   4.0
+  ],
+  "anchors": {
+   "Oben": [
+    0.0,
+    4.0,
+    0.0,
+    180
+   ],
+   "Unten": [
+    0.0,
+    0.0,
+    2.5,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "29_stuetzmauer_8m",
+  "name": "Stützmauer 8 m (Naturstein)",
+  "cls": "Gelände",
+  "tris": 2368,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   9.1,
+   4.0
+  ],
+  "anchors": {
+   "Oben": [
+    0.0,
+    8.0,
+    0.0,
+    180
+   ],
+   "Unten": [
+    0.0,
+    0.0,
+    2.5,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "30_mauer_ecke_aussen",
+  "name": "Stützmauer – Ecke außen",
+  "cls": "Gelände",
+  "tris": 276,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.1,
+   5.1,
+   4.1
+  ],
+  "anchors": {
+   "Ecke": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   4,
+   4
+  ]
+ },
+ {
+  "slug": "31_mauer_ecke_innen",
+  "name": "Stützmauer – Ecke innen",
+  "cls": "Gelände",
+  "tris": 56,
+  "mats": 4,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.2,
+   4.9,
+   4.2
+  ],
+  "anchors": {
+   "Ecke": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   4,
+   4
+  ]
+ },
+ {
+  "slug": "32_boeschung",
+  "name": "Böschung 4 m",
+  "cls": "Gelände",
+  "tris": 396,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   8.3,
+   10.5
+  ],
+  "anchors": {
+   "Oben": [
+    0.0,
+    4.0,
+    -4.0,
+    180
+   ],
+   "Unten": [
+    0.0,
+    0.0,
+    5.6,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   10
+  ]
+ },
+ {
+  "slug": "33_mauer_treppe",
+  "name": "Stützmauer mit Treppe",
+  "cls": "Gelände",
+  "tris": 840,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   5.1,
+   8.2
+  ],
+  "anchors": {
+   "Anschluss_Beco_Unten": [
+    0.0,
+    0.0,
+    4.6,
+    0
+   ],
+   "Anschluss_Beco_Oben": [
+    0.0,
+    4.0,
+    -4.0,
+    180
+   ]
+  },
+  "lot": [
+   12,
+   8
+  ]
  }
 ]

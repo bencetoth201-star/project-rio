@@ -26,20 +26,36 @@ namespace Rio.World
 
         [Header("Sichtweite")]
         [Tooltip("Ab hier stehen echte Haeuser.")]
-        public float nearRadius = 420f;
+        public float nearRadius = 800f;
         [Tooltip("Zusatzabstand fuers Entladen, gegen Flackern an der Grenze.")]
-        public float hysteresis = 80f;
+        public float hysteresis = 180f;
 
         [Header("Budget")]
         [Tooltip("Hoechstens so viele Haeuser pro Frame erzeugen.")]
-        public int spawnsPerFrame = 25;
+        public int spawnsPerFrame = 60;
+        [Tooltip("So viele verlassene Bereiche bleiben abgeschaltet im Speicher. "
+               + "Zurueckgehen ist dann sofort da, statt alles neu zu bauen.")]
+        public int cacheChunks = 40;
         [Tooltip("Sekunden zwischen zwei Pruefungen, welche Chunks dran sind.")]
         public float updateInterval = 0.25f;
 
         [Header("Kollision")]
         public bool addColliders = true;
 
+        [Header("Zusammenfassen")]
+        [Tooltip("Faltet die Haeuser eines Bereichs nach dem Bauen zu wenigen "
+               + "Meshes zusammen. Jedes Modell hat rund 16 Materialslots - ohne "
+               + "das werden aus 13.000 Haeusern ueber 200.000 Renderer, und daran "
+               + "erstickt die Grafikkarte, nicht an den Dreiecken.")]
+        public bool combineChunks = true;
+
         readonly Dictionary<int, GameObject> _loaded = new Dictionary<int, GameObject>();
+
+        // Verlassene Bereiche werden nicht geloescht, sondern nur abgeschaltet
+        // und hier geparkt. Wer hin und her laeuft, soll nicht jedes Mal
+        // zusehen, wie sich das Viertel neu aufbaut.
+        readonly Dictionary<int, GameObject> _cache = new Dictionary<int, GameObject>();
+        readonly Queue<int> _cacheOrder = new Queue<int>();
         readonly Dictionary<int, Transform> _farLod = new Dictionary<int, Transform>();
         readonly Queue<int> _toLoad = new Queue<int>();
         readonly HashSet<int> _queued = new HashSet<int>();
@@ -49,6 +65,7 @@ namespace Rio.World
 
         public int LoadedChunks => _loaded.Count;
         public int QueuedChunks => _toLoad.Count;
+        public int CachedChunks => _cache.Count;
 
         void Awake()
         {
@@ -163,6 +180,16 @@ namespace Rio.World
             int count = world.chunkCount[idx];
             if (count == 0) return 0;
 
+            // Schon mal gebaut? Dann nur wieder anschalten.
+            if (_cache.TryGetValue(idx, out var parked) && parked != null)
+            {
+                _cache.Remove(idx);
+                parked.SetActive(true);
+                _loaded[idx] = parked;
+                SetFarLod(idx, false);
+                return 0;
+            }
+
             var holder = new GameObject($"Chunk_{idx}");
             holder.transform.SetParent(_root, false);
 
@@ -194,6 +221,14 @@ namespace Rio.World
                 }
             }
 
+            if (combineChunks)
+            {
+                // Erst faerben lassen, dann zusammenfassen: RioHausFarben
+                // erzeugt beim Aktivieren geteilte Materialvarianten, und nur
+                // nach gleichem Material laesst sich etwas zusammenlegen.
+                StaticBatchingUtility.Combine(holder);
+            }
+
             _loaded[idx] = holder;
             SetFarLod(idx, false);
             return count;
@@ -201,9 +236,29 @@ namespace Rio.World
 
         void Unload(int idx)
         {
-            if (_loaded.TryGetValue(idx, out var go) && go != null) Destroy(go);
+            if (_loaded.TryGetValue(idx, out var go) && go != null)
+            {
+                go.SetActive(false);
+                _cache[idx] = go;
+                _cacheOrder.Enqueue(idx);
+                Trim();
+            }
             _loaded.Remove(idx);
             SetFarLod(idx, true);
+        }
+
+        /// <summary>Haelt den Parkplatz auf cacheChunks begrenzt, aelteste zuerst.</summary>
+        void Trim()
+        {
+            while (_cacheOrder.Count > 0 && _cache.Count > cacheChunks)
+            {
+                int old = _cacheOrder.Dequeue();
+                if (_cache.TryGetValue(old, out var go))
+                {
+                    _cache.Remove(old);
+                    if (go != null) Destroy(go);
+                }
+            }
         }
 
         void SetFarLod(int idx, bool visible)

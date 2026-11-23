@@ -21,19 +21,14 @@ namespace Rio.WorldGen
     /// </summary>
     public class RioHousePlanner
     {
-        // Hoehen in Metern, aus haeuser.json (size[1]).
-        static readonly float[] ModelHeight =
-        {
-            3.3f, 5.0f, 9.2f, 9.6f, 9.1f, 7.2f, 10.0f, 9.1f, 8.8f, 22.5f,
-            8.1f, 7.2f, 9.6f, 31.5f, 8.6f, 6.1f, 10.6f, 13.7f, 16.0f
-        };
-
+        // Gebaeude und Masse kommen aus RioModelCatalog, erzeugt aus den
+        // JSON-Dateien der Pakete. Hier stehen nur noch die Rollen.
         public const int FirstResidential = 0;
-        public const int LastResidential = 14;
-        public const int ModelTankstelle = 15;
-        public const int VillaLeblon = 16;
-        public const int VillaJoatinga = 17;
-        public const int ModelBank = 18;
+        public const int LastResidential = 14;   // 01..15, die Wohnhaus-Leiter
+        public const int ModelTankstelle = RioModelCatalog.Tankstelle;
+        public const int VillaLeblon = RioModelCatalog.VillaLeblon;
+        public const int VillaJoatinga = RioModelCatalog.VillaJoatinga;
+        public const int ModelBank = RioModelCatalog.Bank;
 
         // Strassenraster: 12-m-Kacheln, Block = 5 x 3 Kacheln = 60 x 36 m.
         public const float Cell = 12f;
@@ -472,10 +467,9 @@ namespace Rio.WorldGen
             _reservedRadius.Add(radius);
         }
 
-        public static Vector2 Lot(int model) =>
-            new Vector2(RioHausDaten.Haeuser[model].lotBreite, RioHausDaten.Haeuser[model].lotTiefe);
+        public static Vector2 Lot(int model) => RioModelCatalog.Get(model).lot;
 
-        public static float Height(int model) => ModelHeight[model];
+        public static float Height(int model) => RioModelCatalog.Get(model).height;
 
         public void PlaceVillas(System.Random rng)
         {

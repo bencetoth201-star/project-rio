@@ -721,6 +721,320 @@
      0
     ]
    }
+  },
+  {
+   "slug": "20_torre_centro",
+   "name": "Torre Centro (116 m)",
+   "cls": "Centro",
+   "tris": 2448,
+   "mats": 13,
+   "slots": [
+    "slot_glass_1",
+    "slot_nwall_1"
+   ],
+   "combos": 40,
+   "size": [
+    32.0,
+    139.2,
+    34.0
+   ],
+   "lot": [
+    32.0,
+    34.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.0,
+     0.0,
+     15.5,
+     0
+    ],
+    "Helipad": [
+     0.0,
+     126.85,
+     -1.0,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "21_edificio_70er",
+   "name": "Edifício Anos 70 (104 m)",
+   "cls": "Centro",
+   "tris": 1548,
+   "mats": 7,
+   "slots": [
+    "slot_nwall_1"
+   ],
+   "combos": 8,
+   "size": [
+    40.0,
+    118.2,
+    22.0
+   ],
+   "lot": [
+    40.0,
+    22.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.0,
+     0.0,
+     10.0,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "22_igreja",
+   "name": "Igreja (Kirche)",
+   "cls": "Spezial",
+   "tris": 2920,
+   "mats": 13,
+   "slots": [
+    "slot_door_1",
+    "slot_nwall_1",
+    "slot_roof_1",
+    "slot_trim_1"
+   ],
+   "combos": 1280,
+   "size": [
+    22.3,
+    22.1,
+    35.4
+   ],
+   "lot": [
+    24.0,
+    36.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -0.155,
+     0.0,
+     18.0,
+     0
+    ],
+    "Glockenturm": [
+     6.645,
+     15.0,
+     8.2,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "23_lagerhalle",
+   "name": "Lagerhalle (Hafen)",
+   "cls": "Gewerbe",
+   "tris": 4052,
+   "mats": 23,
+   "slots": [
+    "slot_accent_1",
+    "slot_nwall_1"
+   ],
+   "combos": 48,
+   "size": [
+    40.1,
+    12.2,
+    32.1
+   ],
+   "lot": [
+    42.0,
+    34.0
+   ],
+   "anchors": {
+    "Eingang": [
+     14.5,
+     0.0,
+     9.77,
+     0
+    ],
+    "Laderampe": [
+     -5.0,
+     1.2,
+     10.97,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "24_eck_padaria",
+   "name": "Eck-Padaria",
+   "cls": "Ecke",
+   "tris": 1176,
+   "mats": 17,
+   "slots": [
+    "slot_accent_1",
+    "slot_door_1",
+    "slot_wall_1",
+    "slot_wall_2"
+   ],
+   "combos": 12288,
+   "size": [
+    14.9,
+    8.2,
+    14.9
+   ],
+   "lot": [
+    16.0,
+    16.0
+   ],
+   "anchors": {
+    "Eingang": [
+     6.25,
+     0.15,
+     6.25,
+     45
+    ]
+   }
+  },
+  {
+   "slug": "25_eck_sobrado",
+   "name": "Eck-Sobrado",
+   "cls": "Ecke",
+   "tris": 1912,
+   "mats": 8,
+   "slots": [
+    "slot_door_1",
+    "slot_trim_1",
+    "slot_wall_1"
+   ],
+   "combos": 640,
+   "size": [
+    12.6,
+    8.6,
+    12.6
+   ],
+   "lot": [
+    14.0,
+    14.0
+   ],
+   "anchors": {
+    "Eingang": [
+     6.45,
+     0.15,
+     6.45,
+     45
+    ]
+   }
+  },
+  {
+   "slug": "26_eck_predio",
+   "name": "Eck-Prédio",
+   "cls": "Ecke",
+   "tris": 1104,
+   "mats": 13,
+   "slots": [
+    "slot_accent_1",
+    "slot_nwall_1",
+    "slot_wall_1"
+   ],
+   "combos": 768,
+   "size": [
+    16.5,
+    22.0,
+    16.5
+   ],
+   "lot": [
+    18.0,
+    18.0
+   ],
+   "anchors": {
+    "Eingang": [
+     7.28,
+     0.15,
+     7.28,
+     45
+    ]
+   }
+  },
+  {
+   "slug": "27_praca",
+   "name": "Praça mit Coreto",
+   "cls": "Freifläche",
+   "tris": 3478,
+   "mats": 17,
+   "slots": [],
+   "combos": 1,
+   "size": [
+    36.0,
+    6.5,
+    36.0
+   ],
+   "lot": [
+    36.0,
+    36.0
+   ],
+   "anchors": {
+    "Zugang_N": [
+     0.0,
+     0.17,
+     -18.0,
+     180
+    ],
+    "Zugang_S": [
+     0.0,
+     0.17,
+     18.0,
+     0
+    ],
+    "Zugang_E": [
+     18.0,
+     0.17,
+     0.0,
+     90
+    ],
+    "Zugang_W": [
+     -18.0,
+     0.17,
+     0.0,
+     -90
+    ]
+   }
+  },
+  {
+   "slug": "28_parque",
+   "name": "Park mit Bolzplatz",
+   "cls": "Freifläche",
+   "tris": 2988,
+   "mats": 20,
+   "slots": [],
+   "combos": 1,
+   "size": [
+    36.0,
+    7.6,
+    36.0
+   ],
+   "lot": [
+    36.0,
+    36.0
+   ],
+   "anchors": {
+    "Zugang_N": [
+     0.0,
+     0.16,
+     -18.0,
+     180
+    ],
+    "Zugang_S": [
+     0.0,
+     0.16,
+     18.0,
+     0
+    ],
+    "Zugang_E": [
+     18.0,
+     0.16,
+     0.0,
+     90
+    ],
+    "Zugang_W": [
+     -18.0,
+     0.16,
+     0.0,
+     -90
+    ]
+   }
   }
  ],
  "palettes": {
@@ -811,6 +1125,40 @@
    "#C9A878",
    "#5B4029",
    "#9C6B42"
+  ],
+  "paint": [
+   "#4A4C4F",
+   "#1C1D1F",
+   "#F2F2EE",
+   "#B8BCC0",
+   "#C8202A",
+   "#1E4FA8",
+   "#E8B923",
+   "#1E9A48",
+   "#E8692A",
+   "#6B2C91",
+   "#0E7C86",
+   "#7A1E28",
+   "#2B3A55",
+   "#8C6A3C",
+   "#D94F8A",
+   "#9FD13B"
+  ],
+  "rim": [
+   "#1A1A1A",
+   "#B8BCC0",
+   "#C9A24A",
+   "#6E7378",
+   "#F2F2EE",
+   "#C8202A"
+  ],
+  "caliper": [
+   "#C8202A",
+   "#E8B923",
+   "#1E4FA8",
+   "#1A1A1A",
+   "#E8692A",
+   "#1E9A48"
   ],
   "glass": [
    "#6F98AE",

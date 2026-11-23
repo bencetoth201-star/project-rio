@@ -36,7 +36,16 @@ public static class RioHausDaten
         new Haus("16_tankstelle_257", "Tankstelle 257", "Spezial", 30f, 22f, 6560),
         new Haus("17_mansao_leblon", "Mansão Leblon · R$ 20 Mio.", "Luxus", 36f, 30f, 5044),
         new Haus("18_mansao_joatinga", "Mansão Joatinga · R$ 50 Mio.", "Luxus", 52f, 44f, 7600),
-        new Haus("19_banco_brasilia", "Banco de Brasilia", "Spezial", 28f, 24f, 14926)
+        new Haus("19_banco_brasilia", "Banco de Brasilia", "Spezial", 28f, 24f, 14926),
+        new Haus("20_torre_centro", "Torre Centro (116 m)", "Centro", 32f, 34f, 2448),
+        new Haus("21_edificio_70er", "Edifício Anos 70 (104 m)", "Centro", 40f, 22f, 1548),
+        new Haus("22_igreja", "Igreja (Kirche)", "Spezial", 24f, 36f, 2920),
+        new Haus("23_lagerhalle", "Lagerhalle (Hafen)", "Gewerbe", 42f, 34f, 4052),
+        new Haus("24_eck_padaria", "Eck-Padaria", "Ecke", 16f, 16f, 1176),
+        new Haus("25_eck_sobrado", "Eck-Sobrado", "Ecke", 14f, 14f, 1912),
+        new Haus("26_eck_predio", "Eck-Prédio", "Ecke", 18f, 18f, 1104),
+        new Haus("27_praca", "Praça mit Coreto", "Freifläche", 36f, 36f, 3478),
+        new Haus("28_parque", "Park mit Bolzplatz", "Freifläche", 36f, 36f, 2988)
     };
 
     public static readonly Dictionary<string, string[]> Paletten = new Dictionary<string, string[]>
@@ -50,6 +59,9 @@ public static class RioHausDaten
         { "trim", new[] { "#E9E5D8", "#F4F2EC", "#D8C7A2", "#C9C9C4", "#EBC03F" } },
         { "accent", new[] { "#C8372D", "#2E5FA8", "#3E7D4F", "#EBC03F", "#E8893A", "#A98BC9" } },
         { "wood", new[] { "#A86B3C", "#7A4E2D", "#C9A878", "#5B4029", "#9C6B42" } },
+        { "paint", new[] { "#4A4C4F", "#1C1D1F", "#F2F2EE", "#B8BCC0", "#C8202A", "#1E4FA8", "#E8B923", "#1E9A48", "#E8692A", "#6B2C91", "#0E7C86", "#7A1E28", "#2B3A55", "#8C6A3C", "#D94F8A", "#9FD13B" } },
+        { "rim", new[] { "#1A1A1A", "#B8BCC0", "#C9A24A", "#6E7378", "#F2F2EE", "#C8202A" } },
+        { "caliper", new[] { "#C8202A", "#E8B923", "#1E4FA8", "#1A1A1A", "#E8692A", "#1E9A48" } },
         { "glass", new[] { "#6F98AE", "#4F7F95", "#7FA79A", "#8A9AA8", "#5E6E7A" } }
     };
 
