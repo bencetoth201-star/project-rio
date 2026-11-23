@@ -37,11 +37,35 @@ namespace Rio.WorldGen
 
         // Strassenraster: 12-m-Kacheln, Block = 5 x 3 Kacheln = 60 x 36 m.
         public const float Cell = 12f;
-        // Block = 4 x 2 Kacheln = 48 x 24 m. Flach gehalten, damit die
-        // Haeuser von beiden Seiten fast bis zur Mitte reichen - sonst bleibt
-        // in jedem Block eine Wiese uebrig und es sieht aus wie ein Park.
-        const int BlockW = 5;   // alle 5 Zellen eine Strasse in X
-        const int BlockD = 3;   // alle 3 Zellen eine Strasse in Z
+        /// <summary>
+        /// Superblock: 12 x 12 Kacheln = 144 x 144 m. Seine Raender sind
+        /// immer Strasse - das sind die Hauptachsen der Stadt.
+        ///
+        /// Innen bekommt jeder Superblock sein eigenes Raster, je nach
+        /// Viertelstyp. Weil alle Periodenlaengen Teiler von 12 sind, treffen
+        /// die inneren Strassen immer auf den Rand. Deshalb koennen zwei
+        /// Nachbarviertel voellig verschieden geschnitten sein, ohne dass eine
+        /// Strasse im Nichts endet.
+        /// </summary>
+        const int Super = 12;
+
+        public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie }
+
+        /// <summary>Periodenlaenge in X und Z je Viertel. Block = (p-1) Kacheln.</summary>
+        static readonly int[,] Raster =
+        {
+            { 3, 3 },   // Centro:    24 x 24 m, eng und hoch
+            { 6, 3 },   // Orla:      60 x 24 m, lange Zeilen zum Wasser
+            { 4, 3 },   // Bairro:    36 x 24 m, der Normalfall
+            { 6, 4 },   // Nobre:     60 x 36 m, grosszuegig
+            { 6, 6 },   // Industrie: 60 x 60 m, wenige grosse Kisten
+        };
+
+        /// <summary>Luecke zwischen den Haeusern je Viertel.</summary>
+        static readonly float[] Luecke = { 0.1f, 0.8f, 0.5f, 3.2f, 2.5f };
+
+        /// <summary>Verschiebung des Rangs je Viertel, auf den Wohlstand obendrauf.</summary>
+        static readonly int[] RangBonus = { 2, 2, 0, 3, -2 };
 
         readonly RioWorldTerrain _t;
         readonly List<RioHouseWorld.Placement> _placements = new List<RioHouseWorld.Placement>();
@@ -50,7 +74,9 @@ namespace Rio.WorldGen
         readonly List<Vector2> _villaSpots = new List<Vector2>();
 
         bool[] _city;
-        int _gx0, _gz0, _gw, _gh;
+        Viertel[] _kind;          // je Superblock
+        int _sw, _sh;             // Superblocks in X und Z
+        int _gw, _gh;
 
         public IReadOnlyList<RioHouseWorld.Placement> Placements => _placements;
         public int Count => _placements.Count;
@@ -61,6 +87,9 @@ namespace Rio.WorldGen
 
         /// <summary>Innenflaechen der Blocks (x0, z0, x1, z1) fuer die Hoefe.</summary>
         public readonly List<Vector4> BlockRects = new List<Vector4>();
+
+        /// <summary>Wie viele Blocks je Viertelstyp entstanden sind.</summary>
+        public readonly int[] KindCount = new int[5];
 
         public RioHousePlanner(RioWorldTerrain terrain) { _t = terrain; }
 
@@ -153,7 +182,46 @@ namespace Rio.WorldGen
         bool IsCity(int gx, int gz) =>
             gx >= 0 && gz >= 0 && gx < _gw && gz < _gh && _city[gz * _gw + gx];
 
-        static bool IsStreetCell(int gx, int gz) => gx % BlockW == 0 || gz % BlockD == 0;
+        /// <summary>
+        /// Welcher Viertelstyp herrscht hier? Lage schlaegt Wohlstand:
+        /// am Hafen ist Industrie, egal wie teuer die Gegend sonst waere.
+        /// </summary>
+        Viertel KindAt(Vector2 p)
+        {
+            if (Industry(p) > 0.4f) return Viertel.Industrie;
+            if (Downtown(p) > 0.52f) return Viertel.Centro;
+            if (_t.DistanceToCoast(p) < 420f) return Viertel.Orla;
+            return Wealth(p) > 0.5f ? Viertel.Nobre : Viertel.Bairro;
+        }
+
+        public void BuildDistrictMap()
+        {
+            _sw = _gw / Super + 1;
+            _sh = _gh / Super + 1;
+            _kind = new Viertel[_sw * _sh];
+
+            for (int sx = 0; sx < _sw; sx++)
+            for (int sz = 0; sz < _sh; sz++)
+            {
+                var c = new Vector2(_t.MinX + (sx * Super + Super * 0.5f) * Cell,
+                                    _t.MinZ + (sz * Super + Super * 0.5f) * Cell);
+                _kind[sz * _sw + sx] = KindAt(c);
+            }
+        }
+
+        public Viertel KindOfCell(int gx, int gz)
+        {
+            int sx = Mathf.Clamp(gx / Super, 0, _sw - 1);
+            int sz = Mathf.Clamp(gz / Super, 0, _sh - 1);
+            return _kind[sz * _sw + sx];
+        }
+
+        bool IsStreetCell(int gx, int gz)
+        {
+            if (gx % Super == 0 || gz % Super == 0) return true;   // Hauptachse
+            var k = KindOfCell(gx, gz);
+            return gx % Raster[(int)k, 0] == 0 || gz % Raster[(int)k, 1] == 0;
+        }
 
         bool IsRoadCell(int gx, int gz) => IsCity(gx, gz) && IsStreetCell(gx, gz);
 
@@ -216,43 +284,47 @@ namespace Rio.WorldGen
 
         public void PlaceBlocks()
         {
-            int blocksX = _gw / BlockW;
-            int blocksZ = _gh / BlockD;
-
-            for (int bx = 0; bx < blocksX; bx++)
-            for (int bz = 0; bz < blocksZ; bz++)
+            for (int sx = 0; sx < _sw; sx++)
+            for (int sz = 0; sz < _sh; sz++)
             {
-                int cx0 = bx * BlockW + 1, cz0 = bz * BlockD + 1;
-                int cw = BlockW - 1, cd = BlockD - 1;
+                var kind = _kind[sz * _sw + sx];
+                int px = Raster[(int)kind, 0], pz = Raster[(int)kind, 1];
+                int cw = px - 1, cd = pz - 1;
 
-                // Der Block muss vollstaendig in der Stadt liegen
-                bool ok = true;
-                for (int i = 0; i < cw && ok; i++)
-                for (int j = 0; j < cd && ok; j++)
-                    if (!IsCity(cx0 + i, cz0 + j)) ok = false;
-                if (!ok) continue;
+                for (int ix = 0; ix < Super / px; ix++)
+                for (int iz = 0; iz < Super / pz; iz++)
+                {
+                    int cx0 = sx * Super + ix * px + 1;
+                    int cz0 = sz * Super + iz * pz + 1;
 
-                float x0 = _t.MinX + cx0 * Cell;
-                float z0 = _t.MinZ + cz0 * Cell;
-                float x1 = x0 + cw * Cell;
-                float z1 = z0 + cd * Cell;
-                var center = new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f);
+                    bool ok = true;
+                    for (int i = 0; i < cw && ok; i++)
+                    for (int j = 0; j < cd && ok; j++)
+                        if (!IsCity(cx0 + i, cz0 + j)) ok = false;
+                    if (!ok) continue;
 
-                Blocks++;
-                BlockRects.Add(new Vector4(x0, z0, x1, z1));
-                var rng = new System.Random(Hash(cx0, cz0));
+                    float x0 = _t.MinX + cx0 * Cell;
+                    float z0 = _t.MinZ + cz0 * Cell;
+                    float x1 = x0 + cw * Cell;
+                    float z1 = z0 + cd * Cell;
+                    var center = new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f);
 
-                // Charakter des Blocks: ein Rang und zwei Nachbarraenge.
-                float w = Wealth(center);
-                int baseRank = Mathf.Clamp(Mathf.RoundToInt(w * LastResidential), 0, LastResidential);
-                // Reiche Gegenden lassen Luft zwischen den Haeusern, arme nicht.
-                float gap = Mathf.Lerp(0.1f, 2.6f, w);
+                    Blocks++;
+                    BlockRects.Add(new Vector4(x0, z0, x1, z1));
+                    KindCount[(int)kind]++;
+                    var rng = new System.Random(Hash(cx0, cz0));
 
-                // Vier Seiten, Vorderseite jeweils nach aussen
-                Frontage(new Vector2(x0, z0), new Vector2(1f, 0f), x1 - x0, new Vector2(0f, -1f), baseRank, gap, rng);
-                Frontage(new Vector2(x1, z1), new Vector2(-1f, 0f), x1 - x0, new Vector2(0f, 1f), baseRank, gap, rng);
-                Frontage(new Vector2(x0, z1), new Vector2(0f, -1f), z1 - z0, new Vector2(-1f, 0f), baseRank, gap, rng);
-                Frontage(new Vector2(x1, z0), new Vector2(0f, 1f), z1 - z0, new Vector2(1f, 0f), baseRank, gap, rng);
+                    // Charakter des Blocks: Wohlstand plus Zuschlag des Viertels.
+                    float w = Wealth(center);
+                    int baseRank = Mathf.Clamp(Mathf.RoundToInt(w * LastResidential) + RangBonus[(int)kind],
+                                               0, LastResidential);
+                    float gap = Luecke[(int)kind];
+
+                    Frontage(new Vector2(x0, z0), new Vector2(1f, 0f), x1 - x0, new Vector2(0f, -1f), kind, baseRank, gap, rng);
+                    Frontage(new Vector2(x1, z1), new Vector2(-1f, 0f), x1 - x0, new Vector2(0f, 1f), kind, baseRank, gap, rng);
+                    Frontage(new Vector2(x0, z1), new Vector2(0f, -1f), z1 - z0, new Vector2(-1f, 0f), kind, baseRank, gap, rng);
+                    Frontage(new Vector2(x1, z0), new Vector2(0f, 1f), z1 - z0, new Vector2(1f, 0f), kind, baseRank, gap, rng);
+                }
             }
         }
 
@@ -261,7 +333,7 @@ namespace Rio.WorldGen
         /// along die Laufrichtung, outward die Blickrichtung der Haeuser.
         /// </summary>
         void Frontage(Vector2 start, Vector2 along, float length, Vector2 outward,
-                      int baseRank, float gap, System.Random rng)
+                      Viertel kind, int baseRank, float gap, System.Random rng)
         {
             float yaw = Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg;
             float cursor = 2.5f;                 // Ecken frei lassen
@@ -269,7 +341,7 @@ namespace Rio.WorldGen
 
             while (cursor < usable)
             {
-                int model = PickFromBlock(baseRank, rng);
+                int model = PickFromBlock(kind, baseRank, rng);
                 var lot = Lot(model);
 
                 // Passt das Haus noch in den Rest der Front?
@@ -300,10 +372,17 @@ namespace Rio.WorldGen
             }
         }
 
-        /// <summary>Zieht aus den drei Raengen um den Blockcharakter herum.</summary>
-        int PickFromBlock(int baseRank, System.Random rng)
+        /// <summary>
+        /// Zieht aus den drei Raengen um den Blockcharakter herum.
+        /// Im Centro wird oft zum Hochhaus gegriffen - ein Zentrum lebt von
+        /// der Silhouette, nicht von zweistoeckigen Haeusern.
+        /// </summary>
+        int PickFromBlock(Viertel kind, int baseRank, System.Random rng)
         {
-            int offset = rng.Next(3) - 1;             // -1, 0 oder +1
+            if (kind == Viertel.Centro && rng.NextDouble() < 0.45)
+                return rng.NextDouble() < 0.7 ? 9 : 13;     // Predio oder Cobertura
+
+            int offset = rng.Next(3) - 1;
             if (rng.NextDouble() < 0.07) offset = rng.Next(5) - 2;   // seltener Ausreisser
             return Mathf.Clamp(baseRank + offset, FirstResidential, LastResidential);
         }

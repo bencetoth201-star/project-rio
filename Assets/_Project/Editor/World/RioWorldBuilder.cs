@@ -62,6 +62,7 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.55f);
             var planner = new RioHousePlanner(terrain);
             planner.BuildCityMask();
+            planner.BuildDistrictMap();
 
             EditorUtility.DisplayProgressBar("Rio", "Strassennetz...", 0.62f);
             planner.PlaceVillas(rng);       // zuerst, damit die Plaetze frei sind
@@ -76,10 +77,18 @@ namespace Rio.WorldGen
 
             // Blockinnenflaechen pflastern. Ohne das liegt zwischen den
             // Haeuserzeilen Wiese und jeder Block sieht aus wie ein Park.
-            // Vector4 haelt (x0, z0, x1, z1)
+            // Vector4 haelt (x0, z0, x1, z1).
+            // Hoehe aus der hoechsten Ecke, nicht aus der Mitte: sonst
+            // versinkt die Platte im Gelaende und es blitzt Gras durch.
             foreach (var r in planner.BlockRects)
-                Flat(b.Courtyard, r.x + 0.5f, r.z - 0.5f, r.y + 0.5f, r.w - 0.5f,
-                     terrain.SampleHeight(new Vector2((r.x + r.z) * 0.5f, (r.y + r.w) * 0.5f)) + 0.08f);
+            {
+                float h = Mathf.Max(
+                    Mathf.Max(terrain.SampleHeight(new Vector2(r.x, r.y)),
+                              terrain.SampleHeight(new Vector2(r.z, r.y))),
+                    Mathf.Max(terrain.SampleHeight(new Vector2(r.x, r.w)),
+                              terrain.SampleHeight(new Vector2(r.z, r.w))));
+                Flat(b.Courtyard, r.x + 0.5f, r.z - 0.5f, r.y + 0.5f, r.w - 0.5f, h + 0.12f);
+            }
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
@@ -107,6 +116,9 @@ namespace Rio.WorldGen
                       $"Gelaende {tris:N0} Dreiecke. " +
                       $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Blocks:N0} Blocks mit " +
                       $"{planner.Houses:N0} Haeusern, {planner.Shacks:N0} Favela-Huetten. " +
+                      $"Viertel: Centro {planner.KindCount[0]}, Orla {planner.KindCount[1]}, " +
+                      $"Bairro {planner.KindCount[2]}, Nobre {planner.KindCount[3]}, " +
+                      $"Industrie {planner.KindCount[4]} Blocks. " +
                       $"Gesamt {planner.Count:N0} Objekte in {lodObjects} Chunks. " +
                       $"Landflaeche rund {landKm2:F1} km2.");
         }
