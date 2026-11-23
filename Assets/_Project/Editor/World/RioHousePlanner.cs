@@ -282,6 +282,15 @@ namespace Rio.WorldGen
             }
         }
 
+        // Zugriffe fuer den Planexport
+        public int GridW => _gw;
+        public int GridH => _gh;
+        public int SuperW => _sw;
+        public int SuperH => _sh;
+        public bool CityAt(int gx, int gz) => IsCity(gx, gz);
+        public Viertel KindOfSuper(int sx, int sz) =>
+            _kind[Mathf.Clamp(sz, 0, _sh - 1) * _sw + Mathf.Clamp(sx, 0, _sw - 1)];
+
         bool IsCity(int gx, int gz) =>
             gx >= 0 && gz >= 0 && gx < _gw && gz < _gh && _city[gz * _gw + gx];
 
