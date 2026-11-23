@@ -1,0 +1,823 @@
+{
+ "houses": [
+  {
+   "slug": "01_barraco",
+   "name": "Barraco",
+   "cls": "Sehr arm",
+   "tris": 1532,
+   "mats": 20,
+   "slots": [
+    "slot_accent_1",
+    "slot_accent_2",
+    "slot_door_1",
+    "slot_wall_1"
+   ],
+   "combos": 4608,
+   "size": [
+    5.5,
+    3.3,
+    5.6
+   ],
+   "lot": [
+    6.0,
+    6.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.61,
+     0.35,
+     2.84,
+     0
+    ],
+    "Strom_Anschluss": [
+     -2.24,
+     3.28,
+     2.45,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "02_palafita",
+   "name": "Palafita",
+   "cls": "Sehr arm",
+   "tris": 2100,
+   "mats": 17,
+   "slots": [
+    "slot_door_1",
+    "slot_wall_1",
+    "slot_wall_2"
+   ],
+   "combos": 2048,
+   "size": [
+    8.9,
+    5.0,
+    6.7
+   ],
+   "lot": [
+    10.0,
+    8.0
+   ],
+   "anchors": {
+    "Eingang": [
+     3.57,
+     0.0,
+     4.164,
+     0.0
+    ],
+    "Strom_Anschluss": [
+     -0.4,
+     4.18,
+     -1.136,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "03_puxadinho",
+   "name": "Puxadinho",
+   "cls": "Arm",
+   "tris": 1880,
+   "mats": 22,
+   "slots": [
+    "slot_base_1",
+    "slot_base_2",
+    "slot_door_1"
+   ],
+   "combos": 1152,
+   "size": [
+    5.2,
+    9.2,
+    6.5
+   ],
+   "lot": [
+    6.0,
+    8.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.725,
+     0.0,
+     4.05,
+     0
+    ],
+    "Strom_Anschluss": [
+     -2.175,
+     6.94,
+     3.71,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "04_favela_reihe",
+   "name": "Favela-Reihe",
+   "cls": "Arm",
+   "tris": 2340,
+   "mats": 24,
+   "slots": [
+    "slot_door_1",
+    "slot_door_2",
+    "slot_door_3",
+    "slot_wall_1",
+    "slot_wall_2",
+    "slot_wall_3"
+   ],
+   "combos": 2097152,
+   "size": [
+    9.9,
+    9.6,
+    6.9
+   ],
+   "lot": [
+    10.0,
+    8.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -4.195,
+     0.0,
+     3.8,
+     0
+    ],
+    "Strom_Anschluss": [
+     -4.795,
+     6.46,
+     3.38,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "05_cortico",
+   "name": "Cortiço",
+   "cls": "Arm",
+   "tris": 3636,
+   "mats": 21,
+   "slots": [
+    "slot_door_1",
+    "slot_roof_1",
+    "slot_shutter_1",
+    "slot_wall_1"
+   ],
+   "combos": 3072,
+   "size": [
+    9.7,
+    9.1,
+    8.7
+   ],
+   "lot": [
+    10.0,
+    10.0
+   ],
+   "anchors": {
+    "Strom_Anschluss": [
+     -4.265,
+     6.7,
+     4.69,
+     0.0
+    ],
+    "Eingang": [
+     0.085,
+     0.0,
+     5.14,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "06_casa_rio",
+   "name": "Casa Rio",
+   "cls": "Einfach",
+   "tris": 2088,
+   "mats": 22,
+   "slots": [
+    "slot_base_1",
+    "slot_door_1",
+    "slot_door_2",
+    "slot_wall_1",
+    "slot_wall_2"
+   ],
+   "combos": 196608,
+   "size": [
+    7.2,
+    7.2,
+    8.0
+   ],
+   "lot": [
+    8.0,
+    8.0
+   ],
+   "anchors": {
+    "Eingang": [
+     1.715,
+     0.0,
+     3.709,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "07_boteco",
+   "name": "Casa do Boteco",
+   "cls": "Mittel",
+   "tris": 2608,
+   "mats": 33,
+   "slots": [
+    "slot_accent_1",
+    "slot_door_1",
+    "slot_shutter_1",
+    "slot_wall_1",
+    "slot_wall_2",
+    "slot_wall_3"
+   ],
+   "combos": 1179648,
+   "size": [
+    7.6,
+    10.0,
+    9.3
+   ],
+   "lot": [
+    8.0,
+    10.0
+   ],
+   "anchors": {
+    "Eingang": [
+     2.719,
+     0.0,
+     3.365,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "08_sobrado",
+   "name": "Sobrado",
+   "cls": "Mittel",
+   "tris": 2070,
+   "mats": 13,
+   "slots": [
+    "slot_door_1",
+    "slot_roof_1",
+    "slot_trim_1",
+    "slot_wall_1"
+   ],
+   "combos": 2560,
+   "size": [
+    6.1,
+    9.1,
+    9.7
+   ],
+   "lot": [
+    8.0,
+    10.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -0.04,
+     0.0,
+     5.1,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "09_mercadinho",
+   "name": "Mercadinho",
+   "cls": "Mittel",
+   "tris": 2156,
+   "mats": 27,
+   "slots": [
+    "slot_accent_1",
+    "slot_accent_2",
+    "slot_door_1",
+    "slot_wall_1",
+    "slot_wall_2"
+   ],
+   "combos": 73728,
+   "size": [
+    9.5,
+    8.8,
+    9.4
+   ],
+   "lot": [
+    10.0,
+    10.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -3.654,
+     0.0,
+     4.392,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "10_predio",
+   "name": "Prédio Copacabana",
+   "cls": "Mittel",
+   "tris": 2284,
+   "mats": 20,
+   "slots": [
+    "slot_door_1",
+    "slot_nwall_1",
+    "slot_wall_1"
+   ],
+   "combos": 1024,
+   "size": [
+    10.6,
+    22.5,
+    11.3
+   ],
+   "lot": [
+    12.0,
+    12.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -1.5,
+     0.0,
+     3.4,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "11_zona_oeste",
+   "name": "Casa Zona Oeste",
+   "cls": "Gehoben",
+   "tris": 3584,
+   "mats": 21,
+   "slots": [
+    "slot_door_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_roof_1",
+    "slot_shutter_1"
+   ],
+   "combos": 12288,
+   "size": [
+    14.4,
+    8.1,
+    13.5
+   ],
+   "lot": [
+    16.0,
+    14.0
+   ],
+   "anchors": {
+    "Eingang": [
+     1.707,
+     0.0,
+     6.922,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "12_villa_zona_sul",
+   "name": "Villa Zona Sul",
+   "cls": "Reich",
+   "tris": 2364,
+   "mats": 22,
+   "slots": [
+    "slot_accent_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_wood_1"
+   ],
+   "combos": 1920,
+   "size": [
+    19.5,
+    7.2,
+    17.0
+   ],
+   "lot": [
+    20.0,
+    18.0
+   ],
+   "anchors": {
+    "Eingang": [
+     1.454,
+     0.0,
+     9.3,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "13_casa_barra",
+   "name": "Casa Barra",
+   "cls": "Reich",
+   "tris": 4644,
+   "mats": 21,
+   "slots": [
+    "slot_door_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_roof_1"
+   ],
+   "combos": 2048,
+   "size": [
+    23.9,
+    9.6,
+    19.7
+   ],
+   "lot": [
+    24.0,
+    20.0
+   ],
+   "anchors": {
+    "Eingang": [
+     5.799,
+     0.0,
+     9.611,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "14_cobertura_leblon",
+   "name": "Cobertura Leblon",
+   "cls": "Reich",
+   "tris": 2748,
+   "mats": 15,
+   "slots": [
+    "slot_glass_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_wood_1"
+   ],
+   "combos": 1600,
+   "size": [
+    17.8,
+    31.5,
+    16.7
+   ],
+   "lot": [
+    18.0,
+    18.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.498,
+     0.0,
+     5.811,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "15_casa_joa",
+   "name": "Casa Modernista Joá",
+   "cls": "Reich",
+   "tris": 2044,
+   "mats": 19,
+   "slots": [
+    "slot_glass_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_wood_1"
+   ],
+   "combos": 1600,
+   "size": [
+    30.8,
+    8.6,
+    20.0
+   ],
+   "lot": [
+    32.0,
+    20.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -0.094,
+     0.0,
+     2.7,
+     0.0
+    ]
+   }
+  },
+  {
+   "slug": "16_tankstelle_257",
+   "name": "Tankstelle 257",
+   "cls": "Spezial",
+   "tris": 6560,
+   "mats": 39,
+   "slots": [],
+   "combos": 1,
+   "size": [
+    30.0,
+    6.1,
+    22.0
+   ],
+   "lot": [
+    30.0,
+    22.0
+   ],
+   "anchors": {
+    "Hintertuer": [
+     -6.5,
+     0.0,
+     -8.7,
+     180
+    ],
+    "Safe_Tuer": [
+     -1.4,
+     0.14,
+     1.1,
+     -90
+    ],
+    "Lager_Tuer": [
+     -1.4,
+     0.14,
+     -4.1,
+     -90
+    ],
+    "Safe": [
+     0.35,
+     0.14,
+     0.2,
+     -90
+    ],
+    "Kasse": [
+     -8.4,
+     0.14,
+     0.75,
+     90
+    ],
+    "Eingang": [
+     -6.5,
+     0.0,
+     4.3,
+     0
+    ],
+    "Zapfsaeule_1": [
+     6.4,
+     0.22,
+     2.4,
+     0
+    ],
+    "Zapfsaeule_2": [
+     11.1,
+     0.22,
+     2.4,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "17_mansao_leblon",
+   "name": "Mansão Leblon · R$ 20 Mio.",
+   "cls": "Luxus",
+   "tris": 5044,
+   "mats": 25,
+   "slots": [
+    "slot_accent_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_wood_1"
+   ],
+   "combos": 1920,
+   "size": [
+    36.0,
+    10.6,
+    30.0
+   ],
+   "lot": [
+    36.0,
+    30.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -8.0,
+     0.0,
+     15.4,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "18_mansao_joatinga",
+   "name": "Mansão Joatinga · R$ 50 Mio.",
+   "cls": "Luxus",
+   "tris": 7600,
+   "mats": 31,
+   "slots": [
+    "slot_accent_1",
+    "slot_glass_1",
+    "slot_nwall_1",
+    "slot_nwall_2",
+    "slot_wood_1"
+   ],
+   "combos": 9600,
+   "size": [
+    52.0,
+    13.7,
+    44.0
+   ],
+   "lot": [
+    52.0,
+    44.0
+   ],
+   "anchors": {
+    "Eingang": [
+     -8.0,
+     0.0,
+     22.5,
+     0
+    ],
+    "Helipad": [
+     12.0,
+     8.9,
+     -10.2,
+     0
+    ],
+    "Gaestehaus": [
+     21.75,
+     0.0,
+     -10.0,
+     0
+    ]
+   }
+  },
+  {
+   "slug": "19_banco_brasilia",
+   "name": "Banco de Brasilia",
+   "cls": "Spezial",
+   "tris": 14926,
+   "mats": 37,
+   "slots": [],
+   "combos": 1,
+   "size": [
+    27.9,
+    16.0,
+    24.0
+   ],
+   "lot": [
+    28.0,
+    24.0
+   ],
+   "anchors": {
+    "Eingang": [
+     0.051,
+     0.0,
+     8.1,
+     0
+    ],
+    "Treppe_UG": [
+     8.751,
+     -4.0,
+     -4.36,
+     180
+    ],
+    "Gitter_Tuer": [
+     5.951,
+     -4.0,
+     -4.76,
+     -90
+    ],
+    "Tresor_Tuer": [
+     -0.349,
+     -4.0,
+     -4.0,
+     90
+    ],
+    "Tresor": [
+     -6.949,
+     -4.0,
+     -1.0,
+     0
+    ],
+    "ATM_Aussen": [
+     8.751,
+     0.0,
+     5.2,
+     0
+    ],
+    "ATM_Innen": [
+     -6.349,
+     0.5,
+     -0.8,
+     90
+    ],
+    "Schalter": [
+     0.051,
+     0.5,
+     -3.0,
+     0
+    ],
+    "Gitter_EG": [
+     5.351,
+     0.5,
+     3.1,
+     -90
+    ],
+    "Buero_Direktor": [
+     7.051,
+     4.9,
+     -6.2,
+     0
+    ]
+   }
+  }
+ ],
+ "palettes": {
+  "wall": [
+   "#3FA39A",
+   "#EBC03F",
+   "#E07A8C",
+   "#6FB3D9",
+   "#8FD0B0",
+   "#E8893A",
+   "#A98BC9",
+   "#B7C94A",
+   "#E5664E",
+   "#EFE1C0",
+   "#EDEBE4",
+   "#4F9FD6",
+   "#F0A07A",
+   "#5BA35B",
+   "#D9A441",
+   "#C8473A"
+  ],
+  "nwall": [
+   "#F2F0EA",
+   "#E9E4D8",
+   "#D9C9A8",
+   "#C9C9C4",
+   "#A8A196",
+   "#D7A27E",
+   "#BFD3DD",
+   "#B5C2A5"
+  ],
+  "base": [
+   "#B5582F",
+   "#C4683A",
+   "#9C9B93",
+   "#3FA39A",
+   "#EBC03F",
+   "#E07A8C",
+   "#6FB3D9",
+   "#8FD0B0",
+   "#E8893A",
+   "#EFE1C0",
+   "#EDEBE4",
+   "#F0A07A"
+  ],
+  "door": [
+   "#2E5FA8",
+   "#3E7D4F",
+   "#7A4E2D",
+   "#A33A2C",
+   "#ECEAE4",
+   "#5E6B66",
+   "#D9A441",
+   "#26282A"
+  ],
+  "shutter": [
+   "#3E7D4F",
+   "#2F6EA5",
+   "#ECEAE4",
+   "#7A3B2A",
+   "#2F8C86",
+   "#C9A24A"
+  ],
+  "roof": [
+   "#B2552F",
+   "#8E3B25",
+   "#6E4B36",
+   "#7C7B74"
+  ],
+  "trim": [
+   "#E9E5D8",
+   "#F4F2EC",
+   "#D8C7A2",
+   "#C9C9C4",
+   "#EBC03F"
+  ],
+  "accent": [
+   "#C8372D",
+   "#2E5FA8",
+   "#3E7D4F",
+   "#EBC03F",
+   "#E8893A",
+   "#A98BC9"
+  ],
+  "wood": [
+   "#A86B3C",
+   "#7A4E2D",
+   "#C9A878",
+   "#5B4029",
+   "#9C6B42"
+  ],
+  "glass": [
+   "#6F98AE",
+   "#4F7F95",
+   "#7FA79A",
+   "#8A9AA8",
+   "#5E6E7A"
+  ]
+ }
+}

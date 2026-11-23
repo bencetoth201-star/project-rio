@@ -29,11 +29,29 @@ Objekte verschwinden beim Stoppen wieder.
 
 | Pfad | Inhalt |
 |---|---|
-| `Assets/_Project/Editor/World/` | Weltgenerator: Kartendaten, Gelände, Städte, Wahrzeichen |
+| `Assets/_Project/Editor/World/` | Weltgenerator: Kartendaten, Gelände, Hausverteilung, Wahrzeichen |
 | `Assets/_Project/Editor/Player/` | Generator für die Block-Figur |
 | `Assets/_Project/Scripts/Player/` | Steuerung, Kamera, Lauf-Rig (Laufzeitcode) |
+| `Assets/_Project/Scripts/World/` | Hausdaten und Streaming (Laufzeitcode) |
+| `Assets/RioHaeuser/` | Die 19 Gebäudemodelle samt Farbsystem |
 | `Assets/_Project/Materials/` | Flache Farbmaterialien |
-| `Assets/_Project/Generated/` | Erzeugte Meshes — nicht im Repo |
+| `Assets/_Project/Generated/` | Erzeugte Meshes und Hausdaten — nicht im Repo |
+
+## Häuser: nah echt, fern Klötze
+
+32.000 Gebäude passen nicht gleichzeitig in den Speicher — alle auf einmal
+wären 75 Millionen Dreiecke. Deshalb zwei Darstellungen aus derselben
+Platzierungsliste:
+
+- **Fern:** grobe Klötze, nach Chunks von 300 m gruppiert. Stehen immer.
+- **Nah:** die echten Modelle, vom `RioHouseStreamer` im Umkreis von 420 m
+  erzeugt und darüber hinaus wieder gelöscht. Der zugehörige Fern-Chunk wird
+  dabei ausgeblendet, sonst stünde alles doppelt.
+
+Entladen passiert erst 80 m weiter draußen als das Laden, sonst würde ein
+Chunk an der Grenze bei jedem Schritt flackern. Pro Frame entstehen höchstens
+25 Häuser, damit das Betreten eines Chunks keinen Ruckler gibt. Beide Werte
+stehen am `RioHouseStreamer` auf der Weltwurzel.
 
 `RioWorldLayout.cs` ist die Karte als Daten. Alle Koordinaten stehen dort in
 Pixeln der Whiteboard-Skizze; wer etwas verschieben will, vergleicht mit der

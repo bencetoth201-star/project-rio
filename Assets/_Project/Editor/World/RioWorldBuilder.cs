@@ -1,3 +1,4 @@
+using Rio.World;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -57,27 +58,40 @@ namespace Rio.WorldGen
             BuildRoads(terrain, b);
             BuildBridge(terrain, b);
 
-            EditorUtility.DisplayProgressBar("Rio", "Stadtteile...", 0.6f);
-            int houses = BuildDistricts(terrain, b, rng);
-
-            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.75f);
-            int shacks = BuildFavelas(terrain, b, rng);
+            EditorUtility.DisplayProgressBar("Rio", "Haeuser verteilen...", 0.6f);
+            var planner = new RioHousePlanner(terrain);
+            planner.PlaceVillas(rng);       // zuerst, damit die Plaetze frei sind
+            planner.PlaceSpecials(rng);
+            planner.PlaceDistricts(DistrictCell, 14f);
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
 
-            EditorUtility.DisplayProgressBar("Rio", "Assets schreiben...", 0.95f);
+            EditorUtility.DisplayProgressBar("Rio", "Gelaende schreiben...", 0.92f);
             int tris = Emit(b, terrain);
+
+            EditorUtility.DisplayProgressBar("Rio", "Haeuser backen...", 0.96f);
+            var root = GameObject.Find(RootName);
+            var wallMats = new Material[b.Walls.Length];
+            for (int i = 0; i < wallMats.Length; i++) wallMats[i] = GetOrCreateMaterial(b.Walls[i]);
+            Material roofMat = GetOrCreateMaterial(b.Roof);
+
+            var houseWorld = RioHouseBaker.Bake(planner, root, MinX, MaxX, MinZ, MaxZ,
+                                                wallMats, roofMat, out int lodObjects);
+            SetupStreamer(root, houseWorld);
             PlacePlayer(terrain);
 
             EditorUtility.ClearProgressBar();
             sw.Stop();
 
             float landKm2 = EstimateLandArea(terrain) / 1_000_000f;
+            var counts = planner.CountPerModel();
             Debug.Log($"[Rio] Welt gebaut in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
-                      $"{tris:N0} Dreiecke, {houses:N0} Haeuser, {shacks:N0} Huetten, " +
-                      $"{RioWorldLayout.Places.Count} Orte. Landflaeche rund {landKm2:F1} km2, " +
-                      $"Welt {(MaxX - MinX) / 1000f:F1} x {(MaxZ - MinZ) / 1000f:F1} km.");
+                      $"Gelaende {tris:N0} Dreiecke, {planner.Count:N0} Gebaeude in {lodObjects} Chunks " +
+                      $"({planner.TotalTriangles():N0} Dreiecke wenn alle auf einmal sichtbar waeren), " +
+                      $"davon {counts[RioHousePlanner.VillaLeblon] + counts[RioHousePlanner.VillaJoatinga]} Mansions, " +
+                      $"{counts[RioHousePlanner.ModelBank]} Banken, {counts[RioHousePlanner.ModelTankstelle]} Tankstellen. " +
+                      $"Landflaeche rund {landKm2:F1} km2, Welt {(MaxX - MinX) / 1000f:F1} x {(MaxZ - MinZ) / 1000f:F1} km.");
         }
 
         // ------------------------------------------------------------------
@@ -228,110 +242,6 @@ namespace Rio.WorldGen
                                                  new Vector2(9f, 9f), new Vector2(5f, 5f), h);
                 }
             }
-        }
-
-        // ------------------------------------------------------------------
-        // Stadtteile
-        // ------------------------------------------------------------------
-
-        static bool Buildable(RioWorldTerrain t, Vector2 p, float minSlope, float maxSlope,
-                              float minH, float maxH)
-        {
-            if (!t.IsLand(p)) return false;
-            if (t.DistanceToCoast(p) < 30f) return false;
-            if (t.IsInLake(p)) return false;
-            if (t.RoadWeight(p) > 0.02f) return false;
-            float h = t.SampleHeight(p);
-            if (h < minH || h > maxH) return false;
-            float s = t.SlopeAt(p);
-            return s >= minSlope && s <= maxSlope;
-        }
-
-        static bool NearPlace(Vector2 p, float radius)
-        {
-            foreach (var place in RioWorldLayout.Places)
-                if (Vector2.Distance(p, place.Position) < radius) return true;
-            return false;
-        }
-
-        /// <summary>Naehe zu den grossen Banken bestimmt, wie hoch gebaut wird.</summary>
-        static float Downtown(Vector2 p)
-        {
-            float best = float.MaxValue;
-            foreach (var place in RioWorldLayout.Places)
-                if (place.Kind == RioWorldLayout.Poi.BankGross)
-                    best = Mathf.Min(best, Vector2.Distance(p, place.Position));
-            return 1f - Mathf.Clamp01(best / 1400f);
-        }
-
-        static int BuildDistricts(RioWorldTerrain t, Buckets b, System.Random rng)
-        {
-            int count = 0;
-
-            for (float x = MinX; x < MaxX; x += DistrictCell)
-            for (float z = MinZ; z < MaxZ; z += DistrictCell)
-            {
-                var center = new Vector2(x + DistrictCell * 0.5f, z + DistrictCell * 0.5f);
-                if (!Buildable(t, center, 0f, 0.20f, 3.2f, 95f)) continue;
-                if (NearPlace(center, 150f)) continue;
-
-                float down = Downtown(center);
-                int cols = 2, rows = 2;
-                float lot = (DistrictCell - 26f) / cols;
-
-                for (int cx = 0; cx < cols; cx++)
-                for (int cz = 0; cz < rows; cz++)
-                {
-                    var p = new Vector2(x + 13f + lot * (cx + 0.5f), z + 13f + lot * (cz + 0.5f));
-                    if (!Buildable(t, p, 0f, 0.26f, 3f, 100f)) continue;
-
-                    float w = lot * Mathf.Lerp(0.55f, 0.82f, (float)rng.NextDouble());
-                    float d = lot * Mathf.Lerp(0.55f, 0.82f, (float)rng.NextDouble());
-                    float h = Mathf.Lerp(9f, 16f, (float)rng.NextDouble()) +
-                              down * Mathf.Lerp(6f, 62f, Mathf.Pow((float)rng.NextDouble(), 1.6f));
-
-                    float ground = t.SampleHeight(p) - 1.5f;
-                    var wall = b.Walls[rng.Next(b.Walls.Length)];
-                    wall.AddTaperedBox(new Vector3(p.x, ground, p.y), new Vector2(w, d), new Vector2(w, d), h);
-                    b.Roof.AddBox(new Vector3(p.x, ground + h + 0.4f, p.y), new Vector3(w + 0.8f, 0.8f, d + 0.8f));
-                    count++;
-                }
-            }
-            return count;
-        }
-
-        static int BuildFavelas(RioWorldTerrain t, Buckets b, System.Random rng)
-        {
-            int count = 0;
-
-            for (float x = MinX; x < MaxX; x += FavelaCell)
-            for (float z = MinZ; z < MaxZ; z += FavelaCell)
-            {
-                var center = new Vector2(x + FavelaCell * 0.5f, z + FavelaCell * 0.5f);
-                if (!Buildable(t, center, 0.20f, 0.85f, 10f, 190f)) continue;
-                if (NearPlace(center, 110f)) continue;
-
-                int n = 3 + rng.Next(4);
-                for (int i = 0; i < n; i++)
-                {
-                    var p = center + new Vector2(
-                        ((float)rng.NextDouble() - 0.5f) * FavelaCell * 0.85f,
-                        ((float)rng.NextDouble() - 0.5f) * FavelaCell * 0.85f);
-                    if (!t.IsLand(p)) continue;
-
-                    float w = Mathf.Lerp(5f, 8.5f, (float)rng.NextDouble());
-                    float d = Mathf.Lerp(5f, 8f, (float)rng.NextDouble());
-                    float h = Mathf.Lerp(3.2f, 6f, (float)rng.NextDouble());
-                    float yaw = (float)rng.NextDouble() * 50f - 25f;
-                    float ground = t.SampleHeight(p) - 2.2f;
-
-                    var shack = b.Shacks[rng.Next(b.Shacks.Length)];
-                    shack.AddTaperedBox(new Vector3(p.x, ground, p.y), new Vector2(w, d), new Vector2(w, d), h, yaw);
-                    b.Roof.AddBox(new Vector3(p.x, ground + h + 0.2f, p.y), new Vector3(w + 1f, 0.35f, d + 1f), yaw);
-                    count++;
-                }
-            }
-            return count;
         }
 
         // ------------------------------------------------------------------
@@ -594,6 +504,22 @@ namespace Rio.WorldGen
             go.transform.SetParent(parent.transform, false);
             go.transform.position = center;
             go.AddComponent<BoxCollider>().size = size;
+        }
+
+        /// <summary>
+        /// Haengt den Streamer an die Weltwurzel und verdrahtet ihn mit den
+        /// Daten und den Fern-Kloetzen.
+        /// </summary>
+        static void SetupStreamer(GameObject root, RioHouseWorld houseWorld)
+        {
+            var streamer = root.GetComponent<RioHouseStreamer>();
+            if (streamer == null) streamer = root.AddComponent<RioHouseStreamer>();
+
+            streamer.world = houseWorld;
+            streamer.farLodRoot = root.transform.Find("FarLod");
+
+            var player = GameObject.Find("Player");
+            streamer.player = player != null ? player.transform : null;
         }
 
         /// <summary>
