@@ -63,32 +63,22 @@ namespace Rio.WorldGen
             var planner = new RioHousePlanner(terrain);
             planner.BuildCityMask();
             planner.BuildDistrictMap();
+            planner.InitOccupancy();
 
+            // Reihenfolge ist wichtig: Die Strassen sperren ihre Flaeche
+            // zuerst, danach kann kein Haus mehr auf der Fahrbahn landen.
             EditorUtility.DisplayProgressBar("Rio", "Strassennetz...", 0.62f);
-            planner.PlaceVillas(rng);       // zuerst, damit die Plaetze frei sind
-            planner.PlaceSpecials(rng);
             planner.PlaceRoads();
 
-            EditorUtility.DisplayProgressBar("Rio", "Haeuser an die Strassen...", 0.72f);
-            planner.PlaceBlocks();
+            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.68f);
+            planner.PlaceVillas(rng);
+            planner.PlaceSpecials(rng);
 
-            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.8f);
+            EditorUtility.DisplayProgressBar("Rio", "Haeuser an die Strassen...", 0.74f);
+            planner.PlaceBlocks(rng);
+
+            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.82f);
             planner.PlaceFavelas(rng);
-
-            // Blockinnenflaechen pflastern. Ohne das liegt zwischen den
-            // Haeuserzeilen Wiese und jeder Block sieht aus wie ein Park.
-            // Vector4 haelt (x0, z0, x1, z1).
-            // Hoehe aus der hoechsten Ecke, nicht aus der Mitte: sonst
-            // versinkt die Platte im Gelaende und es blitzt Gras durch.
-            foreach (var r in planner.BlockRects)
-            {
-                float h = Mathf.Max(
-                    Mathf.Max(terrain.SampleHeight(new Vector2(r.x, r.y)),
-                              terrain.SampleHeight(new Vector2(r.z, r.y))),
-                    Mathf.Max(terrain.SampleHeight(new Vector2(r.x, r.w)),
-                              terrain.SampleHeight(new Vector2(r.z, r.w))));
-                Flat(b.Courtyard, r.x + 0.5f, r.z - 0.5f, r.y + 0.5f, r.w - 0.5f, h + 0.12f);
-            }
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
@@ -115,7 +105,8 @@ namespace Rio.WorldGen
             Debug.Log($"[Rio] Welt gebaut in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
                       $"Gelaende {tris:N0} Dreiecke. " +
                       $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Blocks:N0} Blocks mit " +
-                      $"{planner.Houses:N0} Haeusern, {planner.Shacks:N0} Favela-Huetten. " +
+                      $"{planner.Houses:N0} Haeusern, {planner.Freiflaechen:N0} Plaetzen/Parks, " +
+                      $"{planner.Shacks:N0} Favela-Huetten. " +
                       $"Viertel: Centro {planner.KindCount[0]}, Orla {planner.KindCount[1]}, " +
                       $"Bairro {planner.KindCount[2]}, Nobre {planner.KindCount[3]}, " +
                       $"Industrie {planner.KindCount[4]} Blocks. " +

@@ -46,21 +46,128 @@ namespace Rio.WorldGen
 
         public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie }
 
-        /// <summary>Periodenlaenge in X und Z je Viertel. Block = (p-1) Kacheln.</summary>
+        /// <summary>
+        /// Periodenlaenge in X und Z je Viertel. Block = (p-1) Kacheln.
+        /// Die Werte muessen Teiler von 12 sein, sonst enden Strassen an der
+        /// Viertelgrenze im Nichts.
+        /// </summary>
         static readonly int[,] Raster =
         {
-            { 3, 3 },   // Centro:    24 x 24 m, eng und hoch
-            { 6, 3 },   // Orla:      60 x 24 m, lange Zeilen zum Wasser
-            { 4, 3 },   // Bairro:    36 x 24 m, der Normalfall
-            { 6, 4 },   // Nobre:     60 x 36 m, grosszuegig
-            { 6, 6 },   // Industrie: 60 x 60 m, wenige grosse Kisten
+            { 6, 6 },    // Centro:    60 x 60 m, Platz fuer die Tuerme
+            { 12, 6 },   // Orla:     132 x 60 m, lange Zeilen
+            { 4, 3 },    // Bairro:    36 x 24 m, der Normalfall
+            { 6, 4 },    // Nobre:     60 x 36 m, grosszuegig
+            { 12, 6 },   // Industrie:132 x 60 m, grosse Hallen
         };
 
         /// <summary>Luecke zwischen den Haeusern je Viertel.</summary>
-        static readonly float[] Luecke = { 0.1f, 0.8f, 0.5f, 3.2f, 2.5f };
+        static readonly float[] Luecke = { 0.4f, 0.6f, 0.5f, 3.5f, 4f };
 
-        /// <summary>Verschiebung des Rangs je Viertel, auf den Wohlstand obendrauf.</summary>
-        static readonly int[] RangBonus = { 2, 2, 0, 3, -2 };
+        // Modellindizes, der Lesbarkeit halber benannt
+        const int Barraco = 0, Palafita = 1, Puxadinho = 2, FavelaReihe = 3, Cortico = 4;
+        const int CasaRio = 5, Boteco = 6, Sobrado = 7, Mercadinho = 8, Predio = 9;
+        const int ZonaOeste = 10, VillaZonaSul = 11, CasaBarra = 12, Cobertura = 13, CasaJoa = 14;
+
+        /// <summary>
+        /// Was in welchem Viertel gebaut werden darf. Frueher lief alles ueber
+        /// eine gemeinsame Rangleiter - dadurch stand eine Favela-Huette auch
+        /// mal neben einer Villa. Jetzt hat jedes Viertel seine eigene Liste,
+        /// und Huetten gibt es nur noch am Hang.
+        /// </summary>
+        static readonly int[][] Palette =
+        {
+            new[] { RioModelCatalog.TorreCentro, RioModelCatalog.Edificio70, Predio, Cobertura },
+            new[] { Predio, Cobertura, RioModelCatalog.Edificio70, ZonaOeste, Predio },
+            new[] { CasaRio, Boteco, Sobrado, Mercadinho, Predio, CasaRio, Sobrado },
+            new[] { VillaZonaSul, CasaBarra, CasaJoa, Cobertura, ZonaOeste },
+            new[] { RioModelCatalog.Lagerhalle, Mercadinho, Cortico, Predio },
+        };
+
+        /// <summary>Eckgebaeude je Viertel, -1 wenn keines passt.</summary>
+        static readonly int[] EckModell =
+        {
+            RioModelCatalog.EckPredio, RioModelCatalog.EckPredio,
+            RioModelCatalog.EckSobrado, -1, -1
+        };
+
+        static readonly int[] FavelaPalette = { Barraco, Palafita, Puxadinho, FavelaReihe, Cortico };
+
+        // ------------------------------------------------------------------
+        // Belegungsraster
+        //
+        // Jede gesetzte Kachel, jedes Haus und jedes Wahrzeichen markiert hier
+        // seine Grundflaeche. Vorher gab es nur eine Liste mit Kreisradien, und
+        // die Haeuser an den Blockraendern haben sich ueberhaupt nicht
+        // eingetragen - deshalb standen Haeuser ineinander und auf der Strasse.
+        // ------------------------------------------------------------------
+
+        const float OccCell = 2f;
+        bool[] _occ;
+        int _ow, _oh;
+
+        public void InitOccupancy()
+        {
+            _ow = Mathf.CeilToInt((_t.MaxX - _t.MinX) / OccCell) + 2;
+            _oh = Mathf.CeilToInt((_t.MaxZ - _t.MinZ) / OccCell) + 2;
+            _occ = new bool[_ow * _oh];
+        }
+
+        /// <summary>Achsparallele Huelle des gedrehten Rechtecks, in Rasterzellen.</summary>
+        void FootprintCells(Vector2 center, Vector2 size, float yaw,
+                            out int x0, out int z0, out int x1, out int z1)
+        {
+            float rad = yaw * Mathf.Deg2Rad;
+            float c = Mathf.Abs(Mathf.Cos(rad)), si = Mathf.Abs(Mathf.Sin(rad));
+            float ex = (size.x * c + size.y * si) * 0.5f;
+            float ez = (size.x * si + size.y * c) * 0.5f;
+
+            // Halboffenes Intervall: die obere Kante gehoert zur naechsten
+            // Zelle. Mit Abrunden auf beiden Seiten sperrte jede Flaeche rundum
+            // eine Zelle zu viel - bei 24 m tiefen Blocks blieb dann fast nichts
+            // mehr uebrig, und es wurden statt 80.000 nur 160 Haeuser gesetzt.
+            x0 = Mathf.FloorToInt((center.x - ex - _t.MinX) / OccCell);
+            x1 = Mathf.CeilToInt((center.x + ex - _t.MinX) / OccCell) - 1;
+            z0 = Mathf.FloorToInt((center.y - ez - _t.MinZ) / OccCell);
+            z1 = Mathf.CeilToInt((center.y + ez - _t.MinZ) / OccCell) - 1;
+            if (x1 < x0) x1 = x0;
+            if (z1 < z0) z1 = z0;
+        }
+
+        public bool Free(Vector2 center, Vector2 size, float yaw)
+        {
+            FootprintCells(center, size, yaw, out int x0, out int z0, out int x1, out int z1);
+            if (x0 < 0 || z0 < 0 || x1 >= _ow || z1 >= _oh) return false;
+            for (int x = x0; x <= x1; x++)
+            for (int z = z0; z <= z1; z++)
+                if (_occ[z * _ow + x]) return false;
+            return true;
+        }
+
+        public void Occupy(Vector2 center, Vector2 size, float yaw)
+        {
+            FootprintCells(center, size, yaw, out int x0, out int z0, out int x1, out int z1);
+            x0 = Mathf.Max(0, x0); z0 = Mathf.Max(0, z0);
+            x1 = Mathf.Min(_ow - 1, x1); z1 = Mathf.Min(_oh - 1, z1);
+            for (int x = x0; x <= x1; x++)
+            for (int z = z0; z <= z1; z++)
+                _occ[z * _ow + x] = true;
+        }
+
+        /// <summary>Setzt ein Modell, wenn der Platz frei ist. Liefert Erfolg.</summary>
+        bool TryPlace(int model, Vector2 pos, float yaw, float groundAt, System.Random rng)
+        {
+            var lot = Lot(model);
+            if (!Free(pos, lot, yaw)) return false;
+            Occupy(pos, lot, yaw);
+            _placements.Add(new RioHouseWorld.Placement
+            {
+                position = new Vector3(pos.x, groundAt, pos.y),
+                yaw = yaw,
+                model = model,
+                colorSeed = rng.Next(1, int.MaxValue)
+            });
+            return true;
+        }
 
         readonly RioWorldTerrain _t;
         readonly List<RioHouseWorld.Placement> _placements = new List<RioHouseWorld.Placement>();
@@ -79,6 +186,7 @@ namespace Rio.WorldGen
         public int Houses { get; private set; }
         public int Shacks { get; private set; }
         public int Blocks { get; private set; }
+        public int Freiflaechen { get; private set; }
 
         /// <summary>Innenflaechen der Blocks (x0, z0, x1, z1) fuer die Hoefe.</summary>
         public readonly List<Vector4> BlockRects = new List<Vector4>();
@@ -262,6 +370,7 @@ namespace Rio.WorldGen
                 if (model == RioModelCatalog.RoadStraight && (seed % 11) == 0)
                     model = RioModelCatalog.RoadCobble;
 
+                var lot = Lot(model);
                 _placements.Add(new RioHouseWorld.Placement
                 {
                     position = new Vector3(p.x, _t.SampleHeight(p) + 0.05f, p.y),
@@ -269,6 +378,9 @@ namespace Rio.WorldGen
                     model = model,
                     colorSeed = seed
                 });
+                // Die Kachel sperrt ihre Flaeche. Danach kann kein Haus mehr
+                // auf der Strasse landen, egal was sonst schiefgeht.
+                Occupy(p, lot, yaw);
                 RoadTiles++;
             }
         }
@@ -277,7 +389,7 @@ namespace Rio.WorldGen
         // Haeuser an den Blockraendern
         // ------------------------------------------------------------------
 
-        public void PlaceBlocks()
+        public void PlaceBlocks(System.Random rng)
         {
             for (int sx = 0; sx < _sw; sx++)
             for (int sz = 0; sz < _sh; sz++)
@@ -305,90 +417,116 @@ namespace Rio.WorldGen
                     var center = new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f);
 
                     Blocks++;
-                    BlockRects.Add(new Vector4(x0, z0, x1, z1));
                     KindCount[(int)kind]++;
-                    var rng = new System.Random(Hash(cx0, cz0));
+                    var brng = new System.Random(Hash(cx0, cz0));
 
-                    // Charakter des Blocks: Wohlstand plus Zuschlag des Viertels.
-                    float w = Wealth(center);
-                    int baseRank = Mathf.Clamp(Mathf.RoundToInt(w * LastResidential) + RangBonus[(int)kind],
-                                               0, LastResidential);
+                    // Jeder zwoelfte Block bleibt offen: Platz oder Park.
+                    if (kind != Viertel.Industrie && brng.NextDouble() < 0.085 &&
+                        (x1 - x0) >= 38f && (z1 - z0) >= 38f)
+                    {
+                        int frei = brng.NextDouble() < 0.5
+                                 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
+                        if (TryPlace(frei, center, 0f, _t.SampleHeight(center) - 0.1f, brng))
+                        {
+                            Freiflaechen++;
+                            continue;
+                        }
+                    }
+
+                    PlaceCorners(kind, x0, z0, x1, z1, brng);
+
                     float gap = Luecke[(int)kind];
-
-                    Frontage(new Vector2(x0, z0), new Vector2(1f, 0f), x1 - x0, new Vector2(0f, -1f), kind, baseRank, gap, rng);
-                    Frontage(new Vector2(x1, z1), new Vector2(-1f, 0f), x1 - x0, new Vector2(0f, 1f), kind, baseRank, gap, rng);
-                    Frontage(new Vector2(x0, z1), new Vector2(0f, -1f), z1 - z0, new Vector2(-1f, 0f), kind, baseRank, gap, rng);
-                    Frontage(new Vector2(x1, z0), new Vector2(0f, 1f), z1 - z0, new Vector2(1f, 0f), kind, baseRank, gap, rng);
+                    Frontage(new Vector2(x0, z0), new Vector2(1f, 0f), x1 - x0, new Vector2(0f, -1f), kind, gap, brng);
+                    Frontage(new Vector2(x1, z1), new Vector2(-1f, 0f), x1 - x0, new Vector2(0f, 1f), kind, gap, brng);
+                    Frontage(new Vector2(x0, z1), new Vector2(0f, -1f), z1 - z0, new Vector2(-1f, 0f), kind, gap, brng);
+                    Frontage(new Vector2(x1, z0), new Vector2(0f, 1f), z1 - z0, new Vector2(1f, 0f), kind, gap, brng);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Eckgrundstuecke zuerst. Eckgebaeude sind dafuer gebaut, nach zwei
+        /// Seiten zu zeigen - stellt man dort ein normales Haus hin, schaut
+        /// immer eine fensterlose Rueckwand auf die Strasse.
+        /// </summary>
+        void PlaceCorners(Viertel kind, float x0, float z0, float x1, float z1, System.Random rng)
+        {
+            int model = EckModell[(int)kind];
+            if (model < 0) return;
+
+            var lot = Lot(model);
+            float hx = lot.x * 0.5f, hz = lot.y * 0.5f;
+
+            var corners = new[]
+            {
+                (new Vector2(x0 + hx, z0 + hz), 180f),
+                (new Vector2(x1 - hx, z0 + hz), 180f),
+                (new Vector2(x0 + hx, z1 - hz),   0f),
+                (new Vector2(x1 - hx, z1 - hz),   0f),
+            };
+
+            foreach (var (pos, yaw) in corners)
+            {
+                if (!_t.IsLand(pos)) continue;
+                if (TryPlace(model, pos, yaw, _t.SampleHeight(pos) - 0.1f, rng)) Houses++;
             }
         }
 
         /// <summary>
         /// Setzt Haeuser an einer Blockkante entlang. start ist die Ecke,
         /// along die Laufrichtung, outward die Blickrichtung der Haeuser.
+        ///
+        /// Wichtig: Der Pivot der Modelle sitzt in der Mitte des Grundstuecks,
+        /// die Vorderseite liegt an der +Z-Kante. Das Haus muss also vom
+        /// Strassenrand aus NACH INNEN gerueckt werden. Vorher stand hier ein
+        /// Plus statt eines Minus - dadurch ragte jedes Haus mit seiner halben
+        /// Tiefe in die Fahrbahn.
         /// </summary>
         void Frontage(Vector2 start, Vector2 along, float length, Vector2 outward,
-                      Viertel kind, int baseRank, float gap, System.Random rng)
+                      Viertel kind, float gap, System.Random rng)
         {
             float yaw = Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg;
-            float cursor = 2.5f;                 // Ecken frei lassen
-            float usable = length - 5f;
+            var pal = Palette[(int)kind];
+            float cursor = 1.5f;
+            float usable = length - 1.5f;
 
-            while (cursor < usable)
+            while (cursor < usable - 5f)
             {
-                int model = PickFromBlock(kind, baseRank, rng);
+                float rest = usable - cursor;
+                int model = Choose(pal, rest, rng);
+                if (model < 0) break;
+
                 var lot = Lot(model);
-
-                // Passt das Haus noch in den Rest der Front?
-                if (cursor + lot.x > usable)
-                {
-                    model = SmallestFitting(usable - cursor);
-                    if (model < 0) break;
-                    lot = Lot(model);
-                }
-
                 Vector2 frontPoint = start + along * (cursor + lot.x * 0.5f);
-                Vector2 pos = frontPoint + outward * (lot.y * 0.5f);
+                Vector2 pos = frontPoint - outward * (lot.y * 0.5f);
 
-                if (_t.IsLand(pos) && !IsReserved(pos, lot.x * 0.4f))
+                bool gesetzt = false;
+                if (_t.IsLand(pos))
+                    gesetzt = TryPlace(model, pos, yaw, _t.SampleHeight(frontPoint) - 0.1f, rng);
+
+                if (gesetzt)
                 {
-                    float ground = _t.SampleHeight(frontPoint);
-                    _placements.Add(new RioHouseWorld.Placement
-                    {
-                        position = new Vector3(pos.x, ground - 0.1f, pos.y),
-                        yaw = yaw,
-                        model = model,
-                        colorSeed = rng.Next(1, int.MaxValue)
-                    });
                     Houses++;
+                    cursor += lot.x + gap * (float)rng.NextDouble();
                 }
-
-                cursor += lot.x + gap * (float)rng.NextDouble();
+                else
+                {
+                    // Platz belegt oder kein Land: ein Stueck weiterruecken
+                    cursor += 4f;
+                }
             }
         }
 
-        /// <summary>
-        /// Zieht aus den drei Raengen um den Blockcharakter herum.
-        /// Im Centro wird oft zum Hochhaus gegriffen - ein Zentrum lebt von
-        /// der Silhouette, nicht von zweistoeckigen Haeusern.
-        /// </summary>
-        int PickFromBlock(Viertel kind, int baseRank, System.Random rng)
+        /// <summary>Zufaelliges Modell der Palette, das noch in die Restbreite passt.</summary>
+        static int Choose(int[] pal, float maxWidth, System.Random rng)
         {
-            if (kind == Viertel.Centro && rng.NextDouble() < 0.45)
-                return rng.NextDouble() < 0.7 ? 9 : 13;     // Predio oder Cobertura
-
-            int offset = rng.Next(3) - 1;
-            if (rng.NextDouble() < 0.07) offset = rng.Next(5) - 2;   // seltener Ausreisser
-            return Mathf.Clamp(baseRank + offset, FirstResidential, LastResidential);
-        }
-
-        static int SmallestFitting(float width)
-        {
-            int best = -1; float bestW = float.MaxValue;
-            for (int m = FirstResidential; m <= LastResidential; m++)
+            int best = -1;
+            int treffer = 0;
+            for (int i = 0; i < pal.Length; i++)
             {
-                float w = RioHausDaten.Haeuser[m].lotBreite;
-                if (w <= width && w < bestW) { best = m; bestW = w; }
+                if (RioModelCatalog.Get(pal[i]).lot.x > maxWidth) continue;
+                treffer++;
+                if (rng.Next(treffer) == 0) best = pal[i];   // gleichverteilt ziehen
             }
             return best;
         }
@@ -403,8 +541,7 @@ namespace Rio.WorldGen
         /// </summary>
         public void PlaceFavelas(System.Random rng)
         {
-            const float cell = 60f;
-            var taken = new List<Vector2>();
+            const float cell = 48f;
 
             for (float x = _t.MinX; x < _t.MaxX; x += cell)
             for (float z = _t.MinZ; z < _t.MaxZ; z += cell)
@@ -413,39 +550,30 @@ namespace Rio.WorldGen
                 if (!_t.IsLand(center) || _t.IsInLake(center)) continue;
 
                 float slope = _t.SlopeAt(center);
-                if (slope < 0.14f || slope > 0.8f) continue;
+                if (slope < 0.16f || slope > 0.85f) continue;      // nur echte Haenge
 
                 float h = _t.SampleHeight(center);
-                if (h < 6f || h > 200f) continue;
-                if (NearPlace(center, 55f)) continue;
+                if (h < 8f || h > 210f) continue;
+                if (NearPlace(center, 70f)) continue;
                 if (_t.DistanceToCoast(center) < 25f) continue;
 
-                taken.Clear();
-                int tries = 46;
-                for (int i = 0; i < tries; i++)
+                // Nicht direkt neben die Villen. In echt grenzen Favelas zwar
+                // an reiche Viertel, aber eine Huette im Vorgarten der Mansion
+                // ist trotzdem Unsinn.
+                if (TooCloseToVilla(center, 260f)) continue;
+
+                // Dicht packen: der Mindestabstand ergibt sich aus den
+                // Grundflaechen im Belegungsraster, nicht aus einem Radius.
+                for (int i = 0; i < 70; i++)
                 {
-                    var p = center + new Vector2(
+                    var p2 = center + new Vector2(
                         ((float)rng.NextDouble() - 0.5f) * cell,
                         ((float)rng.NextDouble() - 0.5f) * cell);
+                    if (!_t.IsLand(p2)) continue;
 
-                    bool clash = false;
-                    foreach (var q in taken)
-                        if (Vector2.Distance(p, q) < 7.5f) { clash = true; break; }
-                    if (clash) continue;
-                    if (!_t.IsLand(p) || IsReserved(p, 5f)) continue;
-
-                    taken.Add(p);
-                    int model = rng.Next(0, 5);         // nur die aermsten fuenf
-                    float ground = _t.SampleHeight(p) - 1.2f;
-
-                    _placements.Add(new RioHouseWorld.Placement
-                    {
-                        position = new Vector3(p.x, ground, p.y),
-                        yaw = (float)rng.NextDouble() * 360f,
-                        model = model,
-                        colorSeed = rng.Next(1, int.MaxValue)
-                    });
-                    Shacks++;
+                    int model = FavelaPalette[rng.Next(FavelaPalette.Length)];
+                    float yaw = (float)rng.NextDouble() * 360f;
+                    if (TryPlace(model, p2, yaw, _t.SampleHeight(p2) - 1.1f, rng)) Shacks++;
                 }
             }
         }
@@ -495,6 +623,7 @@ namespace Rio.WorldGen
                     if (h < 4f || h > 90f) continue;
                     if (NearPlace(p, 150f) || IsReserved(p, radius)) continue;
                     if (TooCloseToVilla(p, minApart)) continue;
+                    if (!Free(p, lot + new Vector2(16f, 16f), 0f)) continue;
 
                     float score = Wealth(p) + (1f - Mathf.Clamp01(_t.DistanceToCoast(p) / 400f)) * 0.3f;
                     if (score > bestScore) { bestScore = score; best = p; }
@@ -502,13 +631,15 @@ namespace Rio.WorldGen
 
                 if (bestScore == float.MinValue) continue;
 
+                float vYaw = YawTowardsWater(best);
                 _placements.Add(new RioHouseWorld.Placement
                 {
                     position = new Vector3(best.x, _t.SampleHeight(best) - 0.2f, best.y),
-                    yaw = YawTowardsWater(best),
+                    yaw = vYaw,
                     model = model,
                     colorSeed = rng.Next(1, int.MaxValue)
                 });
+                Occupy(best, lot + new Vector2(16f, 16f), vYaw);   // Grundstueck mit Garten
                 Reserve(best, radius + 20f);
                 _villaSpots.Add(best);
             }
@@ -545,13 +676,15 @@ namespace Rio.WorldGen
                 if (place.Kind != RioWorldLayout.Poi.BankGross &&
                     place.Kind != RioWorldLayout.Poi.BankKlein) continue;
 
+                float bYaw = (Hash((int)place.Position.x, (int)place.Position.y) & 3) * 90f;
                 _placements.Add(new RioHouseWorld.Placement
                 {
                     position = new Vector3(place.Position.x, _t.SampleHeight(place.Position) - 0.2f, place.Position.y),
-                    yaw = (Hash((int)place.Position.x, (int)place.Position.y) & 3) * 90f,
+                    yaw = bYaw,
                     model = ModelBank,
                     colorSeed = rng.Next(1, int.MaxValue)
                 });
+                Occupy(place.Position, Lot(ModelBank) + new Vector2(12f, 12f), bYaw);
                 Reserve(place.Position, 60f);
             }
 
@@ -574,13 +707,16 @@ namespace Rio.WorldGen
                         if (!_t.IsLand(cand) || _t.SlopeAt(cand) > 0.12f) continue;
                         if (IsReserved(cand, 20f)) continue;
 
+                        float tYaw = Mathf.Atan2(-side.x, -side.y) * Mathf.Rad2Deg;
+                        if (!Free(cand, Lot(ModelTankstelle), tYaw)) continue;
                         _placements.Add(new RioHouseWorld.Placement
                         {
                             position = new Vector3(cand.x, _t.SampleHeight(cand) - 0.2f, cand.y),
-                            yaw = Mathf.Atan2(-side.x, -side.y) * Mathf.Rad2Deg,
+                            yaw = tYaw,
                             model = ModelTankstelle,
                             colorSeed = rng.Next(1, int.MaxValue)
                         });
+                        Occupy(cand, Lot(ModelTankstelle), tYaw);
                         Reserve(cand, 40f);
                         since = 0f;
                         break;
