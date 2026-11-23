@@ -24,7 +24,7 @@ namespace Rio.WorldGen
 
         public static RioHouseWorld Bake(RioHousePlanner planner, GameObject worldRoot,
                                          float minX, float maxX, float minZ, float maxZ,
-                                         Material[] wallMats, Material roofMat,
+                                         Material[] wallMats, Material roofMat, Material asphaltMat,
                                          out int lodObjects)
         {
             int chunksX = Mathf.CeilToInt((maxX - minX) / ChunkSize);
@@ -61,18 +61,20 @@ namespace Rio.WorldGen
             asset.chunkCount = counts;
             asset.placements = flat.ToArray();
 
-            int n = RioHausDaten.Haeuser.Length;
+            int n = RioModelCatalog.Count;
             asset.models = new GameObject[n];
             asset.modelLot = new Vector2[n];
             asset.modelHeight = new float[n];
+            asset.modelIsRoad = new bool[n];
             for (int i = 0; i < n; i++)
             {
-                string path = $"{ModelDir}/{RioHausDaten.Haeuser[i].slug}.glb";
-                asset.models[i] = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                var e = RioModelCatalog.Get(i);
+                asset.models[i] = AssetDatabase.LoadAssetAtPath<GameObject>(e.path);
                 if (asset.models[i] == null)
-                    Debug.LogWarning($"[Rio] Modell fehlt: {path}");
-                asset.modelLot[i] = RioHousePlanner.Lot(i);
-                asset.modelHeight[i] = RioHousePlanner.Height(i);
+                    Debug.LogWarning($"[Rio] Modell fehlt: {e.path}");
+                asset.modelLot[i] = e.lot;
+                asset.modelHeight[i] = e.height;
+                asset.modelIsRoad[i] = e.isRoad;
             }
 
             EnsureDir(Path.GetDirectoryName(WorldAssetPath).Replace('\\', '/'));
@@ -80,7 +82,7 @@ namespace Rio.WorldGen
             AssetDatabase.CreateAsset(asset, WorldAssetPath);
 
             // --- Grobe Kloetze fuer die Ferne, ein Objekt je Chunk ---
-            lodObjects = BuildFarLod(worldRoot, asset, byChunk, chunksX, wallMats, roofMat);
+            lodObjects = BuildFarLod(worldRoot, asset, byChunk, chunksX, wallMats, roofMat, asphaltMat);
 
             AssetDatabase.SaveAssets();
             return asset;
@@ -88,7 +90,7 @@ namespace Rio.WorldGen
 
         static int BuildFarLod(GameObject worldRoot, RioHouseWorld asset,
                                List<RioHouseWorld.Placement>[] byChunk, int chunksX,
-                               Material[] wallMats, Material roofMat)
+                               Material[] wallMats, Material roofMat, Material asphaltMat)
         {
             var lodRoot = new GameObject("FarLod");
             lodRoot.transform.SetParent(worldRoot.transform, false);
@@ -109,29 +111,40 @@ namespace Rio.WorldGen
                 for (int i = 0; i < walls.Length; i++)
                     walls[i] = new MeshBucket($"W{i}", Color.white);
                 var roof = new MeshBucket("R", Color.white);
+                var asphalt = new MeshBucket("A", Color.white);
 
                 foreach (var p in list)
                 {
                     Vector2 lot = asset.modelLot[p.model];
                     float h = asset.modelHeight[p.model];
+
+                    if (asset.modelIsRoad[p.model])
+                    {
+                        // Strassen in der Ferne: nur eine flache Platte. Eine
+                        // Kachel als Klotz waere falsch, Strassen sind flach.
+                        AddFlatTile(asphalt, p.position, lot, p.yaw);
+                        continue;
+                    }
+
                     var center = new Vector3(p.position.x, p.position.y + h * 0.5f, p.position.z);
 
                     // Etwas schmaler als das Grundstueck: so wirkt die Ferne
                     // nicht zugebaut und die Kante stimmt beim Umschalten.
-                    var size = new Vector3(lot.x * 0.86f, h, lot.y * 0.86f);
+                    var size = new Vector3(lot.x * 0.92f, h, lot.y * 0.92f);
 
                     walls[p.model % walls.Length].AddBox(center, size, p.yaw);
                     roof.AddBox(new Vector3(center.x, p.position.y + h + 0.3f, center.z),
-                                new Vector3(size.x + 0.6f, 0.6f, size.z + 0.6f), p.yaw);
+                                new Vector3(size.x + 0.5f, 0.6f, size.z + 0.5f), p.yaw);
                 }
 
                 var chunkGo = new GameObject($"LOD_{cx}_{cz}");
                 chunkGo.transform.SetParent(lodRoot.transform, false);
                 objects++;
 
-                for (int i = 0; i <= walls.Length; i++)
+                for (int i = 0; i < walls.Length + 2; i++)
                 {
-                    var bucket = i < walls.Length ? walls[i] : roof;
+                    var bucket = i < walls.Length ? walls[i]
+                               : i == walls.Length ? roof : asphalt;
                     if (bucket.IsEmpty) continue;
 
                     Mesh mesh = bucket.BuildMesh();
@@ -143,12 +156,22 @@ namespace Rio.WorldGen
                     part.transform.SetParent(chunkGo.transform, false);
                     part.AddComponent<MeshFilter>().sharedMesh = mesh;
                     part.AddComponent<MeshRenderer>().sharedMaterial =
-                        i < walls.Length ? wallMats[i] : roofMat;
+                        i < walls.Length ? wallMats[i]
+                      : i == walls.Length ? roofMat : asphaltMat;
                     GameObjectUtility.SetStaticEditorFlags(part, StaticEditorFlags.BatchingStatic);
                 }
             }
 
             return objects;
+        }
+
+        /// <summary>Flache Platte in Kachelgroesse, gedreht um yaw.</summary>
+        static void AddFlatTile(MeshBucket bucket, Vector3 pos, Vector2 size, float yaw)
+        {
+            var rot = Quaternion.Euler(0f, yaw, 0f);
+            float hx = size.x * 0.5f, hz = size.y * 0.5f;
+            Vector3 P(float x, float z) => pos + rot * new Vector3(x, 0.02f, z);
+            bucket.AddQuad(P(-hx, hz), P(hx, hz), P(hx, -hz), P(-hx, -hz));
         }
 
         static void EnsureDir(string assetPath)

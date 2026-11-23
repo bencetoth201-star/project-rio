@@ -26,6 +26,7 @@ namespace Rio.World
         public GameObject[] models;
         public Vector2[] modelLot;     // Grundstueck B x T je Modell
         public float[] modelHeight;    // Hoehe je Modell, fuer Kollider und Fern-LOD
+        public bool[] modelIsRoad;     // Strassenkacheln bekommen keinen Quader-Kollider
 
         [Header("Chunk-Raster")]
         public float chunkSize = 300f;

@@ -179,10 +179,13 @@ namespace Rio.World
                 if (farben == null) farben = go.AddComponent<RioHausFarben>();
                 farben.seed = pl.colorSeed;
 
-                if (addColliders)
+                bool isRoad = world.modelIsRoad != null && world.modelIsRoad[pl.model];
+
+                if (addColliders && !isRoad)
                 {
                     // Ein Quader statt MeshCollider auf jedem Teil: deutlich
                     // billiger und fuers Anstossen voellig ausreichend.
+                    // Strassen bekommen keinen - man soll ja darauf laufen.
                     var lot = world.modelLot[pl.model];
                     float h = world.modelHeight[pl.model];
                     var box = go.AddComponent<BoxCollider>();

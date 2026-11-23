@@ -45,6 +45,7 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Gelaende rechnen...", 0.1f);
 
             var terrain = new RioWorldTerrain(MinX, MaxX, MinZ, MaxZ, TerrainCell);
+            terrain.SmoothLowland(7);   // Ebene fuer die Stadt, Morros bleiben
             terrain.FlattenRoads();
 
             var b = new Buckets();
@@ -58,11 +59,27 @@ namespace Rio.WorldGen
             BuildRoads(terrain, b);
             BuildBridge(terrain, b);
 
-            EditorUtility.DisplayProgressBar("Rio", "Haeuser verteilen...", 0.6f);
+            EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.55f);
             var planner = new RioHousePlanner(terrain);
+            planner.BuildCityMask();
+
+            EditorUtility.DisplayProgressBar("Rio", "Strassennetz...", 0.62f);
             planner.PlaceVillas(rng);       // zuerst, damit die Plaetze frei sind
             planner.PlaceSpecials(rng);
-            planner.PlaceDistricts(DistrictCell, 14f);
+            planner.PlaceRoads();
+
+            EditorUtility.DisplayProgressBar("Rio", "Haeuser an die Strassen...", 0.72f);
+            planner.PlaceBlocks();
+
+            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.8f);
+            planner.PlaceFavelas(rng);
+
+            // Blockinnenflaechen pflastern. Ohne das liegt zwischen den
+            // Haeuserzeilen Wiese und jeder Block sieht aus wie ein Park.
+            // Vector4 haelt (x0, z0, x1, z1)
+            foreach (var r in planner.BlockRects)
+                Flat(b.Courtyard, r.x + 0.5f, r.z - 0.5f, r.y + 0.5f, r.w - 0.5f,
+                     terrain.SampleHeight(new Vector2((r.x + r.z) * 0.5f, (r.y + r.w) * 0.5f)) + 0.08f);
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
@@ -76,8 +93,9 @@ namespace Rio.WorldGen
             for (int i = 0; i < wallMats.Length; i++) wallMats[i] = GetOrCreateMaterial(b.Walls[i]);
             Material roofMat = GetOrCreateMaterial(b.Roof);
 
+            Material asphaltMat = GetOrCreateMaterial(b.Asphalt);
             var houseWorld = RioHouseBaker.Bake(planner, root, MinX, MaxX, MinZ, MaxZ,
-                                                wallMats, roofMat, out int lodObjects);
+                                                wallMats, roofMat, asphaltMat, out int lodObjects);
             SetupStreamer(root, houseWorld);
             PlacePlayer(terrain);
 
@@ -85,13 +103,12 @@ namespace Rio.WorldGen
             sw.Stop();
 
             float landKm2 = EstimateLandArea(terrain) / 1_000_000f;
-            var counts = planner.CountPerModel();
             Debug.Log($"[Rio] Welt gebaut in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
-                      $"Gelaende {tris:N0} Dreiecke, {planner.Count:N0} Gebaeude in {lodObjects} Chunks " +
-                      $"({planner.TotalTriangles():N0} Dreiecke wenn alle auf einmal sichtbar waeren), " +
-                      $"davon {counts[RioHousePlanner.VillaLeblon] + counts[RioHousePlanner.VillaJoatinga]} Mansions, " +
-                      $"{counts[RioHousePlanner.ModelBank]} Banken, {counts[RioHousePlanner.ModelTankstelle]} Tankstellen. " +
-                      $"Landflaeche rund {landKm2:F1} km2, Welt {(MaxX - MinX) / 1000f:F1} x {(MaxZ - MinZ) / 1000f:F1} km.");
+                      $"Gelaende {tris:N0} Dreiecke. " +
+                      $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Blocks:N0} Blocks mit " +
+                      $"{planner.Houses:N0} Haeusern, {planner.Shacks:N0} Favela-Huetten. " +
+                      $"Gesamt {planner.Count:N0} Objekte in {lodObjects} Chunks. " +
+                      $"Landflaeche rund {landKm2:F1} km2.");
         }
 
         // ------------------------------------------------------------------
@@ -628,6 +645,7 @@ namespace Rio.WorldGen
             public readonly MeshBucket Asphalt = new MeshBucket("Asphalt", Hex("#3B3B3E"));
             public readonly MeshBucket RoadLine = new MeshBucket("RoadLine", Hex("#D8D2BE"));
             public readonly MeshBucket Concrete = new MeshBucket("Concrete", Hex("#A9A294"));
+            public readonly MeshBucket Courtyard = new MeshBucket("Courtyard", Hex("#9E9887"));
             public readonly MeshBucket Stone = new MeshBucket("Stone", Hex("#CFC6B2"));
             public readonly MeshBucket White = new MeshBucket("White", Hex("#F0EFE8"));
             public readonly MeshBucket Metal = new MeshBucket("Metal", Hex("#7E8389"), 0.4f);
@@ -661,6 +679,7 @@ namespace Rio.WorldGen
                     yield return Sea; yield return Lake; yield return SeaFloor;
                     yield return Sand; yield return Grass; yield return Rock;
                     yield return Asphalt; yield return RoadLine; yield return Concrete;
+                    yield return Courtyard;
                     yield return Stone; yield return White; yield return Metal;
                     yield return Gold; yield return Neon; yield return Jewel;
                     yield return Danger; yield return Pitch; yield return Roof;

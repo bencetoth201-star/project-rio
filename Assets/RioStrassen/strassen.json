@@ -1,0 +1,739 @@
+[
+ {
+  "slug": "00_beispiel_viertel",
+  "name": "Beispiel-Viertel",
+  "cls": "Beispiel",
+  "tris": 38558,
+  "mats": 80,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   60,
+   84
+  ],
+  "size": [
+   61.3,
+   10.3,
+   84.7
+  ],
+  "anchors": {}
+ },
+ {
+  "slug": "01_rua_gerade",
+  "name": "Rua – Gerade",
+  "cls": "Rua",
+  "tris": 356,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   12.0,
+   7.1,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -6.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "02_rua_kurve",
+  "name": "Rua – Kurve",
+  "cls": "Rua",
+  "tris": 1776,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   12.0,
+   7.1,
+   12.7
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ],
+   "Anschluss_Rua_E": [
+    6.0,
+    0.0,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "03_rua_t",
+  "name": "Rua – T-Kreuzung",
+  "cls": "Rua",
+  "tris": 484,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   12.0,
+   7.1,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -6.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ],
+   "Anschluss_Rua_E": [
+    6.0,
+    0.0,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "04_rua_kreuzung",
+  "name": "Rua – Kreuzung",
+  "cls": "Rua",
+  "tris": 956,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   12.0,
+   4.3,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -6.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ],
+   "Anschluss_Rua_E": [
+    6.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Anschluss_Rua_W": [
+    -6.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  }
+ },
+ {
+  "slug": "05_rua_sackgasse",
+  "name": "Rua – Wendehammer",
+  "cls": "Rua",
+  "tris": 1156,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   18,
+   20
+  ],
+  "size": [
+   16.9,
+   7.1,
+   20.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    10.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "06_rua_steigung",
+  "name": "Rua – Steigung +3 m",
+  "cls": "Rua",
+  "tris": 260,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   24
+  ],
+  "size": [
+   12.0,
+   9.6,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    3.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "07_rua_bushaltestelle",
+  "name": "Rua – Bushaltestelle",
+  "cls": "Rua",
+  "tris": 1156,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   24
+  ],
+  "size": [
+   12.4,
+   7.3,
+   24.0
+  ],
+  "anchors": {
+   "Bushaltestelle": [
+    4.5,
+    0.15,
+    0.0,
+    -90
+   ],
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "08_rua_kopfstein",
+  "name": "Rua – Kopfstein + Bonde",
+  "cls": "Rua",
+  "tris": 772,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   12.0,
+   4.8,
+   12.0
+  ],
+  "anchors": {
+   "Bonde_Schienen": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -6.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "09_avenida_gerade",
+  "name": "Avenida – Gerade",
+  "cls": "Avenida",
+  "tris": 1020,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   24,
+   24
+  ],
+  "size": [
+   24.0,
+   8.6,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "10_avenida_kreuzung",
+  "name": "Avenida – Kreuzung",
+  "cls": "Avenida",
+  "tris": 1964,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   24,
+   24
+  ],
+  "size": [
+   24.0,
+   4.3,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Anschluss_Avenida_E": [
+    12.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Anschluss_Avenida_W": [
+    -12.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  }
+ },
+ {
+  "slug": "11_avenida_einmuendung",
+  "name": "Avenida – Einmündung Rua",
+  "cls": "Avenida",
+  "tris": 1216,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   24,
+   24
+  ],
+  "size": [
+   24.0,
+   8.6,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Anschluss_Rua_E": [
+    12.0,
+    0.0,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "12_avenida_kurve",
+  "name": "Avenida – Kurve",
+  "cls": "Avenida",
+  "tris": 4420,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   36,
+   36
+  ],
+  "size": [
+   30.0,
+   8.6,
+   30.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_S": [
+    0.0,
+    0.0,
+    18.0,
+    0
+   ],
+   "Anschluss_Avenida_E": [
+    18.0,
+    0.0,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "13_kreisverkehr",
+  "name": "Kreisverkehr",
+  "cls": "Avenida",
+  "tris": 3744,
+  "mats": 11,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   36,
+   36
+  ],
+  "size": [
+   36.0,
+   7.6,
+   36.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -18.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    18.0,
+    0
+   ],
+   "Anschluss_Rua_E": [
+    18.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Anschluss_Rua_W": [
+    -18.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  }
+ },
+ {
+  "slug": "14_copacabana",
+  "name": "Copacabana-Promenade",
+  "cls": "Avenida",
+  "tris": 2626,
+  "mats": 20,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   36,
+   24
+  ],
+  "size": [
+   36.0,
+   9.1,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Avenida_N": [
+    -6.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Avenida_S": [
+    -6.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Strand": [
+    14.5,
+    -0.45,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "15_beco",
+  "name": "Beco – Gasse",
+  "cls": "Favela",
+  "tris": 48,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   4,
+   12
+  ],
+  "size": [
+   3.0,
+   0.2,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Beco_N": [
+    0.0,
+    0.05,
+    -6.0,
+    180
+   ],
+   "Anschluss_Beco_S": [
+    0.0,
+    0.05,
+    6.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "16_escadaria",
+  "name": "Escadaria – Treppe +4 m",
+  "cls": "Favela",
+  "tris": 792,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   4,
+   12
+  ],
+  "size": [
+   3.0,
+   5.0,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Beco_S": [
+    0.0,
+    0.0,
+    6.0,
+    0
+   ],
+   "Anschluss_Beco_N": [
+    0.0,
+    4.0,
+    -6.0,
+    180
+   ]
+  }
+ },
+ {
+  "slug": "17_beco_gabelung",
+  "name": "Beco – Gabelung",
+  "cls": "Favela",
+  "tris": 100,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   12
+  ],
+  "size": [
+   7.5,
+   0.2,
+   12.0
+  ],
+  "anchors": {
+   "Anschluss_Beco_N": [
+    0.0,
+    0.05,
+    -6.0,
+    180
+   ],
+   "Anschluss_Beco_S": [
+    0.0,
+    0.05,
+    6.0,
+    0
+   ],
+   "Anschluss_Beco_E": [
+    6.0,
+    0.05,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "18_hangstrasse",
+  "name": "Favela-Hangstraße +4 m",
+  "cls": "Favela",
+  "tris": 604,
+  "mats": 12,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   24
+  ],
+  "size": [
+   12.0,
+   8.9,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    4.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "19_viadukt",
+  "name": "Viadukt (+6 m)",
+  "cls": "Spezial",
+  "tris": 472,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   24
+  ],
+  "size": [
+   12.0,
+   12.0,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    6.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    6.0,
+    12.0,
+    0
+   ],
+   "Unterfahrt": [
+    0.0,
+    0.0,
+    0.0,
+    90
+   ]
+  }
+ },
+ {
+  "slug": "20_tunnel",
+  "name": "Tunnel-Einfahrt",
+  "cls": "Spezial",
+  "tris": 490,
+  "mats": 11,
+  "slots": [],
+  "combos": 1,
+  "lot": [
+   12,
+   24
+  ],
+  "size": [
+   12.0,
+   14.0,
+   24.0
+  ],
+  "anchors": {
+   "Tunnel_Eingang": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  }
+ }
+]

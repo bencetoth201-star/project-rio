@@ -250,6 +250,43 @@ namespace Rio.WorldGen
             }
         }
 
+        /// <summary>
+        /// Glaettet das flache Land, laesst die Morros stehen.
+        /// Eine Stadt steht auf einer Ebene, nicht auf Wellblech. Ohne das
+        /// saessen die Strassenkacheln als Treppe im Gelaende, weil jede
+        /// Kachel flach ist, der Untergrund aber nicht.
+        /// </summary>
+        public void SmoothLowland(int passes)
+        {
+            var copy = new float[_height.Length];
+
+            for (int pass = 0; pass < passes; pass++)
+            {
+                System.Array.Copy(_height, copy, _height.Length);
+
+                for (int ix = 1; ix < CountX - 1; ix++)
+                for (int iz = 1; iz < CountZ - 1; iz++)
+                {
+                    int i = ix * CountZ + iz;
+                    float h = copy[i];
+                    if (h < 0.2f || h > 80f) continue;      // Wasser und Berge bleiben
+
+                    float sum = copy[i] * 4f
+                              + copy[(ix - 1) * CountZ + iz] + copy[(ix + 1) * CountZ + iz]
+                              + copy[ix * CountZ + iz - 1] + copy[ix * CountZ + iz + 1];
+                    float avg = sum / 8f;
+
+                    // Je flacher, desto staerker glaetten. Am Hangfuss soll
+                    // der Uebergang zum Berg erhalten bleiben.
+                    float steep = Mathf.Abs(copy[(ix + 1) * CountZ + iz] - copy[(ix - 1) * CountZ + iz])
+                                + Mathf.Abs(copy[ix * CountZ + iz + 1] - copy[ix * CountZ + iz - 1]);
+                    float w = 1f - Mathf.Clamp01(steep / (Cell * 0.9f));
+
+                    _height[i] = Mathf.Lerp(copy[i], avg, w);
+                }
+            }
+        }
+
         // ------------------------------------------------------------------
         // Polygongeometrie
         // ------------------------------------------------------------------
