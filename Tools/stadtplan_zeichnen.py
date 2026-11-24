@@ -125,22 +125,15 @@ for iz in range(tnz):
 # ---------------------------------------------------------------- Viertel
 KINDC = [(0xC9,0xB6,0xD6),(0xA8,0xCF,0xE0),(0xDC,0xDC,0xC2),(0xC2,0xE2,0xBE),(0xD6,0xC2,0xA8)]
 KINDN = ["CENTRO","ORLA","BAIRRO","NOBRE","INDUSTRIE"]
-SUPER = 12
-for sz in range(sh):
-    row = kind[sh-1-sz]
-    for sx in range(sw):
-        if sx >= len(row): continue
-        k = int(row[sx])
-        # nur zeichnen, wo auch Stadt ist
-        any_city = False
-        for gx in range(sx*SUPER, min(gw, (sx+1)*SUPER), 3):
-            for gz in range(sz*SUPER, min(gh, (sz+1)*SUPER), 3):
-                if mask[gh-1-gz][gx] == '1': any_city = True; break
-            if any_city: break
-        if not any_city: continue
-        x0 = px(minX + sx*SUPER*cell); x1 = px(minX + (sx+1)*SUPER*cell)
-        y1 = py(minZ + sz*SUPER*cell); y0 = py(minZ + (sz+1)*SUPER*cell)
-        rect(x0, y0, x1, y1, KINDC[k])
+kstep = max(1, int(cell*SCALE)+1)
+for gz in range(gh):
+    row = kind[gh-1-gz]
+    for gx in range(gw):
+        if gx >= len(row): continue
+        ch = row[gx]
+        if ch == '9': continue
+        x0 = px(minX + gx*cell); y0 = py(minZ + (gz+1)*cell)
+        rect(x0, y0, x0+kstep, y0+kstep, KINDC[int(ch)])
 
 # ---------------------------------------------------------------- Bauten
 ROAD = (0x3C,0x3C,0x40)

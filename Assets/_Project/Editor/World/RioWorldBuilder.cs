@@ -62,20 +62,17 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.55f);
             var planner = new RioHousePlanner(terrain);
             planner.BuildCityMask();
-            planner.BuildDistrictMap();
             planner.InitOccupancy();
 
-            // Reihenfolge ist wichtig: Die Strassen sperren ihre Flaeche
-            // zuerst, danach kann kein Haus mehr auf der Fahrbahn landen.
-            EditorUtility.DisplayProgressBar("Rio", "Strassennetz...", 0.62f);
-            planner.PlaceRoads();
-
-            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.68f);
+            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.62f);
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
 
-            EditorUtility.DisplayProgressBar("Rio", "Haeuser an die Strassen...", 0.74f);
-            planner.PlaceBlocks(rng);
+            // Ein Viertel nach dem anderen: erst seine Strassen, dann seine
+            // Blocks. Jedes hat ein eigenes gedrehtes Raster.
+            EditorUtility.DisplayProgressBar("Rio", "Viertel bauen...", 0.7f);
+            planner.PlaceAvenidas(rng);
+            planner.PlaceCity(rng);
 
             EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.82f);
             planner.PlaceFavelas(rng);

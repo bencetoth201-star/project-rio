@@ -112,46 +112,56 @@ namespace Rio.WorldGen
             _occ = new bool[_ow * _oh];
         }
 
-        /// <summary>Achsparallele Huelle des gedrehten Rechtecks, in Rasterzellen.</summary>
-        void FootprintCells(Vector2 center, Vector2 size, float yaw,
-                            out int x0, out int z0, out int x1, out int z1)
+        /// <summary>
+        /// Laeuft ueber genau die Zellen, deren Mittelpunkt im gedrehten
+        /// Rechteck liegt.
+        ///
+        /// Vorher wurde die achsparallele Huelle genommen. Bei einem um 26 Grad
+        /// gedrehten Viertel ist die Huelle einer 12-m-Kachel aber 16 m breit -
+        /// jede Strasse sperrte damit 2 m in die Nachbarblocks hinein, und es
+        /// passten kaum noch Haeuser hinein.
+        /// </summary>
+        bool ForEachCell(Vector2 center, Vector2 size, float yaw, bool markieren)
         {
-            float rad = yaw * Mathf.Deg2Rad;
-            float c = Mathf.Abs(Mathf.Cos(rad)), si = Mathf.Abs(Mathf.Sin(rad));
-            float ex = (size.x * c + size.y * si) * 0.5f;
-            float ez = (size.x * si + size.y * c) * 0.5f;
+            float rad = -yaw * Mathf.Deg2Rad;
+            float cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
+            float hx = size.x * 0.5f, hz = size.y * 0.5f;
 
-            // Halboffenes Intervall: die obere Kante gehoert zur naechsten
-            // Zelle. Mit Abrunden auf beiden Seiten sperrte jede Flaeche rundum
-            // eine Zelle zu viel - bei 24 m tiefen Blocks blieb dann fast nichts
-            // mehr uebrig, und es wurden statt 80.000 nur 160 Haeuser gesetzt.
-            x0 = Mathf.FloorToInt((center.x - ex - _t.MinX) / OccCell);
-            x1 = Mathf.CeilToInt((center.x + ex - _t.MinX) / OccCell) - 1;
-            z0 = Mathf.FloorToInt((center.y - ez - _t.MinZ) / OccCell);
-            z1 = Mathf.CeilToInt((center.y + ez - _t.MinZ) / OccCell) - 1;
-            if (x1 < x0) x1 = x0;
-            if (z1 < z0) z1 = z0;
-        }
+            // achsparallele Huelle, nur um den Suchbereich einzugrenzen
+            float ex = Mathf.Abs(size.x * cs) * 0.5f + Mathf.Abs(size.y * sn) * 0.5f;
+            float ez = Mathf.Abs(size.x * sn) * 0.5f + Mathf.Abs(size.y * cs) * 0.5f;
 
-        public bool Free(Vector2 center, Vector2 size, float yaw)
-        {
-            FootprintCells(center, size, yaw, out int x0, out int z0, out int x1, out int z1);
-            if (x0 < 0 || z0 < 0 || x1 >= _ow || z1 >= _oh) return false;
+            int x0 = Mathf.FloorToInt((center.x - ex - _t.MinX) / OccCell);
+            int x1 = Mathf.CeilToInt((center.x + ex - _t.MinX) / OccCell) - 1;
+            int z0 = Mathf.FloorToInt((center.y - ez - _t.MinZ) / OccCell);
+            int z1 = Mathf.CeilToInt((center.y + ez - _t.MinZ) / OccCell) - 1;
+
+            if (!markieren && (x0 < 0 || z0 < 0 || x1 >= _ow || z1 >= _oh)) return false;
+            x0 = Mathf.Max(0, x0); z0 = Mathf.Max(0, z0);
+            x1 = Mathf.Min(_ow - 1, x1); z1 = Mathf.Min(_oh - 1, z1);
+
             for (int x = x0; x <= x1; x++)
             for (int z = z0; z <= z1; z++)
-                if (_occ[z * _ow + x]) return false;
+            {
+                // Zellmittelpunkt in das System des Rechtecks drehen
+                float wx = _t.MinX + (x + 0.5f) * OccCell - center.x;
+                float wz = _t.MinZ + (z + 0.5f) * OccCell - center.y;
+                float lx = wx * cs - wz * sn;
+                float lz = wx * sn + wz * cs;
+                if (Mathf.Abs(lx) > hx || Mathf.Abs(lz) > hz) continue;
+
+                int i = z * _ow + x;
+                if (markieren) _occ[i] = true;
+                else if (_occ[i]) return false;
+            }
             return true;
         }
 
-        public void Occupy(Vector2 center, Vector2 size, float yaw)
-        {
-            FootprintCells(center, size, yaw, out int x0, out int z0, out int x1, out int z1);
-            x0 = Mathf.Max(0, x0); z0 = Mathf.Max(0, z0);
-            x1 = Mathf.Min(_ow - 1, x1); z1 = Mathf.Min(_oh - 1, z1);
-            for (int x = x0; x <= x1; x++)
-            for (int z = z0; z <= z1; z++)
-                _occ[z * _ow + x] = true;
-        }
+        public bool Free(Vector2 center, Vector2 size, float yaw) =>
+            ForEachCell(center, size, yaw, false);
+
+        public void Occupy(Vector2 center, Vector2 size, float yaw) =>
+            ForEachCell(center, size, yaw, true);
 
         /// <summary>Setzt ein Modell, wenn der Platz frei ist. Liefert Erfolg.</summary>
         bool TryPlace(int model, Vector2 pos, float yaw, float groundAt, System.Random rng)
@@ -186,6 +196,7 @@ namespace Rio.WorldGen
         public int Houses { get; private set; }
         public int Shacks { get; private set; }
         public int Blocks { get; private set; }
+        public int Avenidas { get; private set; }
         public int Freiflaechen { get; private set; }
 
         /// <summary>Innenflaechen der Blocks (x0, z0, x1, z1) fuer die Hoefe.</summary>
@@ -345,197 +356,260 @@ namespace Rio.WorldGen
         }
 
         // ------------------------------------------------------------------
-        // Strassennetz
+        // Stadt: ein Viertel nach dem anderen
+        //
+        // Jedes Viertel hat sein eigenes, gedrehtes Raster. Innerhalb eines
+        // Viertels passen alle Kacheln zusammen, weil alles im selben
+        // gedrehten System liegt. Zwischen zwei Vierteln bleibt Land frei -
+        // vorher lag ueber beide Inseln eine einzige luckenlose Decke.
         // ------------------------------------------------------------------
 
-        public void PlaceRoads()
+        /// <summary>Taugt das Gelaende an dieser Stelle fuer Stadt?</summary>
+        bool TerrainOk(Vector2 w)
         {
-            for (int gx = 0; gx < _gw; gx++)
-            for (int gz = 0; gz < _gh; gz++)
+            int gx = Mathf.FloorToInt((w.x - _t.MinX) / Cell);
+            int gz = Mathf.FloorToInt((w.y - _t.MinZ) / Cell);
+            return IsCity(gx, gz);
+        }
+
+        /// <summary>
+        /// Verbindet die Viertel mit Avenidas.
+        ///
+        /// Gelaufen wird gierig: in jedem Schritt die Richtung zum Ziel, und
+        /// wenn dort Wasser oder Steilhang liegt, bis zu 60 Grad ausweichen.
+        /// Das reicht, um Kuestenlinien zu umgehen, ohne einen vollen
+        /// Wegfinder zu brauchen.
+        /// </summary>
+        public void PlaceAvenidas(System.Random rng)
+        {
+            int n = RioDistricts.Verbindungen.GetLength(0);
+            for (int e = 0; e < n; e++)
             {
-                if (!IsRoadCell(gx, gz)) continue;
+                var a = RioDistricts.All[RioDistricts.Verbindungen[e, 0]];
+                var b = RioDistricts.All[RioDistricts.Verbindungen[e, 1]];
+                Route(a.Center, b.Center);
+            }
+        }
 
-                int mask = 0;
-                if (IsRoadCell(gx, gz + 1)) mask |= RioModelCatalog.N;
-                if (IsRoadCell(gx + 1, gz)) mask |= RioModelCatalog.E;
-                if (IsRoadCell(gx, gz - 1)) mask |= RioModelCatalog.S;
-                if (IsRoadCell(gx - 1, gz)) mask |= RioModelCatalog.W;
+        void Route(Vector2 from, Vector2 to)
+        {
+            const float step = 24f;      // Kantenlaenge der Avenida-Kachel
+            Vector2 p = from;
+            int guard = 0;
 
-                // Einzelne Zellen ohne Anschluss bringen nichts
-                if (mask == 0) continue;
+            while (Vector2.Distance(p, to) > step * 1.5f && guard++ < 900)
+            {
+                Vector2 soll = (to - p).normalized;
+                Vector2 gewaehlt = Vector2.zero;
+                bool gefunden = false;
 
-                // Eine Sackgasse als Gerade setzen, die gibt es auf dem
-                // Raster oft am Stadtrand.
-                if (mask == RioModelCatalog.N || mask == RioModelCatalog.S) mask = RioModelCatalog.N | RioModelCatalog.S;
-                if (mask == RioModelCatalog.E || mask == RioModelCatalog.W) mask = RioModelCatalog.E | RioModelCatalog.W;
+                // Direkt, dann in wachsenden Winkeln ausweichen
+                foreach (float abw in new[] { 0f, 20f, -20f, 40f, -40f, 60f, -60f })
+                {
+                    float rad = abw * Mathf.Deg2Rad;
+                    var dir = new Vector2(
+                        soll.x * Mathf.Cos(rad) - soll.y * Mathf.Sin(rad),
+                        soll.x * Mathf.Sin(rad) + soll.y * Mathf.Cos(rad));
 
-                if (!RioModelCatalog.FindTile(mask, out int model, out float yaw)) continue;
+                    Vector2 next = p + dir * step;
+                    if (!_t.IsLand(next)) continue;
+                    if (_t.DistanceToCoast(next) < 18f) continue;
+                    if (_t.SlopeAt(next) > 0.26f) continue;
 
-                var p = CellCenter(gx, gz);
-                int seed = Hash(gx, gz);
+                    gewaehlt = dir; gefunden = true; break;
+                }
 
-                // Ab und zu Kopfsteinpflaster statt Asphalt, das bricht die
-                // Gleichfoermigkeit ohne das Netz zu stoeren.
-                if (model == RioModelCatalog.RoadStraight && (seed % 11) == 0)
-                    model = RioModelCatalog.RoadCobble;
+                if (!gefunden) break;      // Sackgasse, Rest der Strecke entfaellt
 
+                p += gewaehlt * step;
+                float yaw = Mathf.Atan2(gewaehlt.x, gewaehlt.y) * Mathf.Rad2Deg;
+
+                int model = RioModelCatalog.AvenidaStraight;
                 var lot = Lot(model);
+                if (!Free(p, lot, yaw)) continue;     // kreuzt eine Stadtstrasse: dort nichts setzen
+                Occupy(p, lot, yaw);
+
                 _placements.Add(new RioHouseWorld.Placement
                 {
                     position = new Vector3(p.x, _t.SampleHeight(p) + 0.05f, p.y),
                     yaw = yaw,
                     model = model,
+                    colorSeed = Hash((int)p.x, (int)p.y)
+                });
+                Avenidas++;
+            }
+        }
+
+        public void PlaceCity(System.Random rng)
+        {
+            for (int di = 0; di < RioDistricts.All.Length; di++)
+                BuildDistrict(di, rng);
+        }
+
+        void BuildDistrict(int di, System.Random outerRng)
+        {
+            var d = RioDistricts.All[di];
+            RioDistricts.Raster(d.Type, out int px, out int pz);
+
+            int nx = Mathf.CeilToInt(d.A / Cell) + 2;
+            int nz = Mathf.CeilToInt(d.B / Cell) + 2;
+            int w = nx * 2 + 1, h = nz * 2 + 1;
+
+            // 1. Wo ist ueberhaupt Platz?
+            var valid = new bool[w * h];
+            for (int ix = 0; ix < w; ix++)
+            for (int iz = 0; iz < h; iz++)
+            {
+                var local = new Vector2((ix - nx) * Cell, (iz - nz) * Cell);
+                var world = RioDistricts.ToWorld(d, local);
+                if (RioDistricts.Norm(d, world) > 1f) continue;
+                if (!TerrainOk(world)) continue;
+                if (RioDistricts.IndexAt(world) != di) continue;
+                valid[iz * w + ix] = true;
+            }
+
+            // 2. Strassenzellen: periodisch, plus Ring am Rand
+            var street = new bool[w * h];
+            for (int ix = 0; ix < w; ix++)
+            for (int iz = 0; iz < h; iz++)
+            {
+                if (!valid[iz * w + ix]) continue;
+
+                bool periodic = (ix - nx) % px == 0 || (iz - nz) % pz == 0;
+
+                // Randzelle: hat einen ungueltigen Nachbarn. Daraus wird die
+                // Ringstrasse - ohne sie endet jede Querstrasse im Feld.
+                bool rand = !Get(valid, w, h, ix + 1, iz) || !Get(valid, w, h, ix - 1, iz)
+                         || !Get(valid, w, h, ix, iz + 1) || !Get(valid, w, h, ix, iz - 1);
+
+                street[iz * w + ix] = periodic || rand;
+            }
+
+            // 3. Kacheln setzen
+            for (int ix = 0; ix < w; ix++)
+            for (int iz = 0; iz < h; iz++)
+            {
+                if (!street[iz * w + ix]) continue;
+
+                int mask = 0;
+                if (Get(street, w, h, ix, iz + 1)) mask |= RioModelCatalog.N;
+                if (Get(street, w, h, ix + 1, iz)) mask |= RioModelCatalog.E;
+                if (Get(street, w, h, ix, iz - 1)) mask |= RioModelCatalog.S;
+                if (Get(street, w, h, ix - 1, iz)) mask |= RioModelCatalog.W;
+                if (mask == 0) continue;
+
+                if (mask == RioModelCatalog.N || mask == RioModelCatalog.S)
+                    mask = RioModelCatalog.N | RioModelCatalog.S;
+                if (mask == RioModelCatalog.E || mask == RioModelCatalog.W)
+                    mask = RioModelCatalog.E | RioModelCatalog.W;
+
+                if (!RioModelCatalog.FindTile(mask, out int model, out float q)) continue;
+
+                var local = new Vector2((ix - nx) * Cell, (iz - nz) * Cell);
+                var world = RioDistricts.ToWorld(d, local);
+                int seed = Hash(ix + di * 977, iz);
+
+                if (model == RioModelCatalog.RoadStraight && (seed % 13) == 0)
+                    model = RioModelCatalog.RoadCobble;
+
+                float yaw = q + d.Rotation;
+                if (!Free(world, Lot(model), yaw)) continue;
+                Occupy(world, Lot(model), yaw);
+
+                _placements.Add(new RioHouseWorld.Placement
+                {
+                    position = new Vector3(world.x, _t.SampleHeight(world) + 0.05f, world.y),
+                    yaw = yaw,
+                    model = model,
                     colorSeed = seed
                 });
-                // Die Kachel sperrt ihre Flaeche. Danach kann kein Haus mehr
-                // auf der Strasse landen, egal was sonst schiefgeht.
-                Occupy(p, lot, yaw);
                 RoadTiles++;
             }
-        }
 
-        // ------------------------------------------------------------------
-        // Haeuser an den Blockraendern
-        // ------------------------------------------------------------------
-
-        public void PlaceBlocks(System.Random rng)
-        {
-            for (int sx = 0; sx < _sw; sx++)
-            for (int sz = 0; sz < _sh; sz++)
+            // 4. Blocks zwischen den Strassen bebauen
+            var kind = (Viertel)(int)d.Type;
+            for (int bx = -nx / px - 1; bx <= nx / px + 1; bx++)
+            for (int bz = -nz / pz - 1; bz <= nz / pz + 1; bz++)
             {
-                var kind = _kind[sz * _sw + sx];
-                int px = Raster[(int)kind, 0], pz = Raster[(int)kind, 1];
+                int ix0 = nx + bx * px + 1, iz0 = nz + bz * pz + 1;
                 int cw = px - 1, cd = pz - 1;
 
-                for (int ix = 0; ix < Super / px; ix++)
-                for (int iz = 0; iz < Super / pz; iz++)
+                bool ok = true;
+                for (int i = 0; i < cw && ok; i++)
+                for (int j = 0; j < cd && ok; j++)
+                    if (Get(street, w, h, ix0 + i, iz0 + j) || !Get(valid, w, h, ix0 + i, iz0 + j))
+                        ok = false;
+                if (!ok) continue;
+
+                float lx0 = (ix0 - nx - 0.5f) * Cell, lz0 = (iz0 - nz - 0.5f) * Cell;
+                float lx1 = lx0 + cw * Cell, lz1 = lz0 + cd * Cell;
+
+                Blocks++;
+                KindCount[(int)kind]++;
+                var brng = new System.Random(Hash(ix0 + di * 613, iz0));
+
+                var centerW = RioDistricts.ToWorld(d, new Vector2((lx0 + lx1) * 0.5f, (lz0 + lz1) * 0.5f));
+
+                if (kind != Viertel.Industrie && brng.NextDouble() < 0.09 &&
+                    (lx1 - lx0) >= 38f && (lz1 - lz0) >= 38f)
                 {
-                    int cx0 = sx * Super + ix * px + 1;
-                    int cz0 = sz * Super + iz * pz + 1;
-
-                    bool ok = true;
-                    for (int i = 0; i < cw && ok; i++)
-                    for (int j = 0; j < cd && ok; j++)
-                        if (!IsCity(cx0 + i, cz0 + j)) ok = false;
-                    if (!ok) continue;
-
-                    float x0 = _t.MinX + cx0 * Cell;
-                    float z0 = _t.MinZ + cz0 * Cell;
-                    float x1 = x0 + cw * Cell;
-                    float z1 = z0 + cd * Cell;
-                    var center = new Vector2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f);
-
-                    Blocks++;
-                    KindCount[(int)kind]++;
-                    var brng = new System.Random(Hash(cx0, cz0));
-
-                    // Jeder zwoelfte Block bleibt offen: Platz oder Park.
-                    if (kind != Viertel.Industrie && brng.NextDouble() < 0.085 &&
-                        (x1 - x0) >= 38f && (z1 - z0) >= 38f)
-                    {
-                        int frei = brng.NextDouble() < 0.5
-                                 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
-                        if (TryPlace(frei, center, 0f, _t.SampleHeight(center) - 0.1f, brng))
-                        {
-                            Freiflaechen++;
-                            continue;
-                        }
-                    }
-
-                    PlaceCorners(kind, x0, z0, x1, z1, brng);
-
-                    float gap = Luecke[(int)kind];
-                    Frontage(new Vector2(x0, z0), new Vector2(1f, 0f), x1 - x0, new Vector2(0f, -1f), kind, gap, brng);
-                    Frontage(new Vector2(x1, z1), new Vector2(-1f, 0f), x1 - x0, new Vector2(0f, 1f), kind, gap, brng);
-                    Frontage(new Vector2(x0, z1), new Vector2(0f, -1f), z1 - z0, new Vector2(-1f, 0f), kind, gap, brng);
-                    Frontage(new Vector2(x1, z0), new Vector2(0f, 1f), z1 - z0, new Vector2(1f, 0f), kind, gap, brng);
+                    int frei = brng.NextDouble() < 0.5 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
+                    if (TryPlace(frei, centerW, d.Rotation, _t.SampleHeight(centerW) - 0.1f, brng))
+                    { Freiflaechen++; continue; }
                 }
+
+                FrontageLocal(d, kind, new Vector2(lx0, lz0), new Vector2(1, 0), lx1 - lx0, new Vector2(0, -1), brng);
+                FrontageLocal(d, kind, new Vector2(lx1, lz1), new Vector2(-1, 0), lx1 - lx0, new Vector2(0, 1), brng);
+                FrontageLocal(d, kind, new Vector2(lx0, lz1), new Vector2(0, -1), lz1 - lz0, new Vector2(-1, 0), brng);
+                FrontageLocal(d, kind, new Vector2(lx1, lz0), new Vector2(0, 1), lz1 - lz0, new Vector2(1, 0), brng);
             }
         }
 
-        /// <summary>
-        /// Eckgrundstuecke zuerst. Eckgebaeude sind dafuer gebaut, nach zwei
-        /// Seiten zu zeigen - stellt man dort ein normales Haus hin, schaut
-        /// immer eine fensterlose Rueckwand auf die Strasse.
-        /// </summary>
-        void PlaceCorners(Viertel kind, float x0, float z0, float x1, float z1, System.Random rng)
-        {
-            int model = EckModell[(int)kind];
-            if (model < 0) return;
-
-            var lot = Lot(model);
-            float hx = lot.x * 0.5f, hz = lot.y * 0.5f;
-
-            var corners = new[]
-            {
-                (new Vector2(x0 + hx, z0 + hz), 180f),
-                (new Vector2(x1 - hx, z0 + hz), 180f),
-                (new Vector2(x0 + hx, z1 - hz),   0f),
-                (new Vector2(x1 - hx, z1 - hz),   0f),
-            };
-
-            foreach (var (pos, yaw) in corners)
-            {
-                if (!_t.IsLand(pos)) continue;
-                if (TryPlace(model, pos, yaw, _t.SampleHeight(pos) - 0.1f, rng)) Houses++;
-            }
-        }
+        static bool Get(bool[] a, int w, int h, int x, int z) =>
+            x >= 0 && z >= 0 && x < w && z < h && a[z * w + x];
 
         /// <summary>
-        /// Setzt Haeuser an einer Blockkante entlang. start ist die Ecke,
-        /// along die Laufrichtung, outward die Blickrichtung der Haeuser.
-        ///
-        /// Wichtig: Der Pivot der Modelle sitzt in der Mitte des Grundstuecks,
-        /// die Vorderseite liegt an der +Z-Kante. Das Haus muss also vom
-        /// Strassenrand aus NACH INNEN gerueckt werden. Vorher stand hier ein
-        /// Plus statt eines Minus - dadurch ragte jedes Haus mit seiner halben
-        /// Tiefe in die Fahrbahn.
+        /// Wie Frontage, aber im gedrehten System des Viertels. start, along
+        /// und outward sind lokal; erst die fertige Position wird gedreht.
         /// </summary>
-        void Frontage(Vector2 start, Vector2 along, float length, Vector2 outward,
-                      Viertel kind, float gap, System.Random rng)
+        void FrontageLocal(in RioDistricts.District d, Viertel kind,
+                           Vector2 start, Vector2 along, float length, Vector2 outward,
+                           System.Random rng)
         {
-            float yaw = Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg;
+            float yaw = Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg + d.Rotation;
             var pal = Palette[(int)kind];
-            float cursor = 1.5f;
-            float usable = length - 1.5f;
+            float gap = Luecke[(int)kind];
+            float cursor = 1.5f, usable = length - 1.5f;
 
             while (cursor < usable - 5f)
             {
-                float rest = usable - cursor;
-                int model = Choose(pal, rest, rng);
+                int model = Choose(pal, usable - cursor, rng);
                 if (model < 0) break;
 
                 var lot = Lot(model);
-                Vector2 frontPoint = start + along * (cursor + lot.x * 0.5f);
-                Vector2 pos = frontPoint - outward * (lot.y * 0.5f);
+                Vector2 frontLocal = start + along * (cursor + lot.x * 0.5f);
+                Vector2 posLocal = frontLocal - outward * (lot.y * 0.5f);
 
-                bool gesetzt = false;
-                if (_t.IsLand(pos))
-                    gesetzt = TryPlace(model, pos, yaw, _t.SampleHeight(frontPoint) - 0.1f, rng);
+                Vector2 pos = RioDistricts.ToWorld(d, posLocal);
+                Vector2 front = RioDistricts.ToWorld(d, frontLocal);
 
-                if (gesetzt)
-                {
-                    Houses++;
-                    cursor += lot.x + gap * (float)rng.NextDouble();
-                }
-                else
-                {
-                    // Platz belegt oder kein Land: ein Stueck weiterruecken
-                    cursor += 4f;
-                }
+                bool gesetzt = _t.IsLand(pos) &&
+                               TryPlace(model, pos, yaw, _t.SampleHeight(front) - 0.1f, rng);
+
+                if (gesetzt) { Houses++; cursor += lot.x + gap * (float)rng.NextDouble(); }
+                else cursor += 4f;
             }
         }
 
         /// <summary>Zufaelliges Modell der Palette, das noch in die Restbreite passt.</summary>
         static int Choose(int[] pal, float maxWidth, System.Random rng)
         {
-            int best = -1;
-            int treffer = 0;
+            int best = -1, treffer = 0;
             for (int i = 0; i < pal.Length; i++)
             {
                 if (RioModelCatalog.Get(pal[i]).lot.x > maxWidth) continue;
                 treffer++;
-                if (rng.Next(treffer) == 0) best = pal[i];   // gleichverteilt ziehen
+                if (rng.Next(treffer) == 0) best = pal[i];
             }
             return best;
         }

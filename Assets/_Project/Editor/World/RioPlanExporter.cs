@@ -40,12 +40,11 @@ namespace Rio.WorldGen
             var planner = new RioHousePlanner(terrain);
             var rng = new System.Random(20261122);
             planner.BuildCityMask();
-            planner.BuildDistrictMap();
             planner.InitOccupancy();
-            planner.PlaceRoads();
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
-            planner.PlaceBlocks(rng);
+            planner.PlaceAvenidas(rng);
+            planner.PlaceCity(rng);
             planner.PlaceFavelas(rng);
 
             EditorUtility.DisplayProgressBar("Rio", "Plan schreiben...", 0.85f);
@@ -57,7 +56,7 @@ namespace Rio.WorldGen
               .Append(terrain.MinZ.ToString(inv)).Append(' ')
               .Append(RioHousePlanner.Cell.ToString(inv)).Append(' ')
               .Append(planner.GridW).Append(' ').Append(planner.GridH).Append(' ')
-              .Append(planner.SuperW).Append(' ').Append(planner.SuperH).Append('\n');
+              .Append(planner.GridW).Append(' ').Append(planner.GridH).Append('\n');
 
             // Wo ueberhaupt Stadt sein darf
             sb.Append("MASK\n");
@@ -68,12 +67,17 @@ namespace Rio.WorldGen
                 sb.Append('\n');
             }
 
-            // Viertelstyp je Superblock
+            // Viertelstyp je Rasterzelle, 9 steht fuer "kein Viertel"
             sb.Append("KIND\n");
-            for (int sz = planner.SuperH - 1; sz >= 0; sz--)
+            for (int gz = planner.GridH - 1; gz >= 0; gz--)
             {
-                for (int sx = 0; sx < planner.SuperW; sx++)
-                    sb.Append((int)planner.KindOfSuper(sx, sz));
+                for (int gx = 0; gx < planner.GridW; gx++)
+                {
+                    var c = new Vector2(terrain.MinX + (gx + 0.5f) * RioHousePlanner.Cell,
+                                        terrain.MinZ + (gz + 0.5f) * RioHousePlanner.Cell);
+                    int di = RioDistricts.IndexAt(c);
+                    sb.Append(di < 0 ? 9 : (int)RioDistricts.All[di].Type);
+                }
                 sb.Append('\n');
             }
 
@@ -108,7 +112,7 @@ namespace Rio.WorldGen
             sw.Stop();
 
             Debug.Log($"[Rio] Plan exportiert in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
-                      $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Houses:N0} Haeuser, " +
+                      $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Avenidas:N0} Avenidas, {planner.Houses:N0} Haeuser, " +
                       $"{planner.Shacks:N0} Huetten, {planner.Blocks:N0} Blocks -> {OutPath} " +
                       $"({sb.Length / 1024 / 1024} MB)");
         }
