@@ -11,8 +11,8 @@ auf dem Desktop im Ordner `GTA6 MOBILE`.
 ## In einem Satz
 
 Die Welt entsteht komplett prozedural aus Daten; nichts davon liegt im Repo.
-Der aktuelle Arbeitsschwerpunkt ist der **2D-Stadtplan** — erst wenn der im
-Grundriss stimmt, wird wieder in 3D gebaut.
+Das Straßennetz wird **erst als Graph geplant** und danach in Kacheln
+übersetzt — nicht umgekehrt. Das ist der Kern von allem, was hier steht.
 
 ## Wie man anfängt
 
@@ -23,10 +23,10 @@ cd "C:\dev\PROJECT RIO"
 Unity öffnen, dann im Menü:
 
 1. **Tools → Rio → Plan exportieren (2D)** — rechnet Gelände und Stadtplan,
-   schreibt `Screenshots/rio_plan.txt`. Dauert 7 Sekunden, baut nichts in 3D.
+   schreibt `Screenshots/rio_plan.txt`. Dauert ~20 s, baut nichts in 3D.
 2. `python -I Tools/stadtplan_zeichnen.py` — macht daraus
    `Screenshots/RIO_STADTPLAN.png`.
-3. **Tools → Rio → Welt bauen (20 km2)** — baut die 3D-Welt. Dauert ~15 s.
+3. **Tools → Rio → Welt bauen (20 km2)** — baut die 3D-Welt. Dauert ~30 s.
 4. **Tools → Rio → Block-Figur bauen** — setzt die Spielfigur.
 
 Beide Generatoren brechen ab, wenn der Play Mode läuft.
@@ -39,8 +39,7 @@ Neukompilieren braucht es
 unity command script eval --code 'UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate); return "ok";'
 ```
 
-sonst läuft stillschweigend der alte Stand weiter. Das hat schon einmal eine
-halbe Stunde gekostet.
+sonst läuft stillschweigend der alte Stand weiter.
 
 ---
 
@@ -48,81 +47,123 @@ halbe Stunde gekostet.
 
 | Datei | Rolle |
 |---|---|
-| `RioWorldLayout.cs` | Die Karte als Daten — Küstenlinien, Berge, See, Strand, Orte. Alle Koordinaten in **Pixeln der Whiteboard-Skizze**, `MetersPerPixel = 8`. Wer etwas verschiebt, vergleicht mit der Skizze. |
-| `RioDistricts.cs` | 17 benannte Viertel als Ellipsen mit eigener Ausrichtung, plus die Liste, welche Viertel verbunden sind. |
-| `RioWorldTerrain.cs` | Höhenfeld, 25-m-Raster. Küstenrampe, Berge, Seebecken, Strandbogen, Glättung des Flachlands. |
-| `RioModelCatalog.cs` | **Automatisch erzeugt** aus `haeuser.json` und `strassen.json`. 28 Gebäude + 33 Straßenkacheln mit Lot, Höhe und Anschlussmaske. |
-| `RioHousePlanner.cs` | Der eigentliche Stadtplaner: Belegungsraster, Avenidas, Viertel, Blöcke, Favelas. |
+| `RioWorldLayout.cs` | Die Karte als Daten — Küstenlinien, Berge, See, Strand, Orte. Alle Koordinaten in **Pixeln der Whiteboard-Skizze**, `MetersPerPixel = 8`. |
+| `RioDistricts.cs` | 17 benannte Viertel als Ellipsen mit eigener Ausrichtung, plus die Liste, welche verbunden sind. |
+| `RioWorldTerrain.cs` | Höhenfeld, **12-m-Raster**. Dazu die Stempel-Schnittstelle, über die die Stadt ihre Höhen anmeldet. |
+| `RioModelCatalog.cs` | **Automatisch erzeugt** von `Tools/katalog_erzeugen.py` aus `strassen.json`. 28 Gebäude + 55 Straßen-, Brücken- und Geländeteile mit Lot, Höhe, Anschlussmaske und **allen Ankern in Unity-Koordinaten**. |
+| `RioStrassenplan.cs` | Der Netzplaner: Viertelraster als Graph, Avenidas, Schnellstraßen, Brücke, Höhenausgleich, Kachelauswahl. |
+| `RioStrassennetz.cs` | Die **Messung**: baut aus den Ankern den Graphen der wirklich zusammenhängenden Kacheln und zählt offene Enden und Teilnetze. |
+| `RioHousePlanner.cs` | Belegungsraster und Häuser. Setzt keine Straßen mehr. |
 | `RioHouseBaker.cs` | Macht aus den Platzierungen die Streamer-Daten und die Fern-Klötze. |
-| `RioWorldBuilder.cs` | Baut Gelände, Wasser, Brücke, Wahrzeichen und ruft den Planer. |
-| `RioPlanExporter.cs` | Schreibt den Plan als Text, ohne 3D. |
+| `RioWorldBuilder.cs` | Ruft alles in der richtigen Reihenfolge auf und baut Gelände, Wasser und Wahrzeichen. |
 | `RioHouseStreamer.cs` | Lädt echte Modelle um den Spieler, Klötze in der Ferne. |
 
-### Zwei Dinge, die man wissen muss
+### Vier Dinge, die man wissen muss
+
+**Die Reihenfolge ist der Kern.** Erst plant die Stadt, dann legt sie ihre
+Höhen fest, dann meldet sie die Flächen beim Gelände an, und **erst dann**
+wird das Geländenetz gebaut. Vorher stand das Gelände fest, bevor die erste
+Kachel gesetzt war — daher die schwebenden Objekte.
 
 **glTFast spiegelt beim Import die X-Achse.** Ein Anschluss, der in der
-glTF-Datei nach Osten zeigt, liegt in Unity im Westen. Die Masken im Katalog
-stehen bereits in Unity-Richtungen — nicht nochmal umrechnen.
+glTF-Datei nach Osten zeigt, liegt in Unity im Westen. Der erzeugte Katalog
+steht bereits in Unity-Koordinaten — nicht nochmal umrechnen.
 
-**Das Belegungsraster prüft gedrehte Rechtecke exakt.** Es läuft über die
-2-m-Zellen, deren Mittelpunkt wirklich im Rechteck liegt. Die achsparallele
-Hülle zu nehmen war ein Fehler: bei 26 Grad Drehung ist die Hülle einer
-12-m-Kachel 16 m breit, dadurch gingen zwei Drittel aller Häuser verloren.
+**Unity dreht im Uhrzeigersinn.** `RioDistricts.ToWorld` benutzte die übliche
+mathematische 2D-Drehung, die andersherum dreht. Kachelraster und
+Kacheldrehung liefen dadurch gegeneinander; in einem um 26 Grad gedrehten
+Viertel lagen benachbarte Anschlüsse bis zu 10 m auseinander. Wer die
+Funktion anfasst, muss sie und `ToLocal` gegenseitig invers halten.
+
+**Das Belegungsraster prüft gedrehte Rechtecke exakt** und zieht sich beim
+Prüfen um `Einzug` nach innen zurück, damit zwei aneinanderstoßende Kacheln
+sich nicht gegenseitig für belegt halten.
 
 ---
 
-## Stand des Plans
+## Wie man Qualität misst
 
-15.012 Straßenkacheln, 922 Avenida-Abschnitte, 18.094 Bauten, 1.089 Blöcke,
-7.641 Favela-Hütten. Landfläche rund 22 km² auf 8,2 × 5,6 km.
+Nicht nach Augenmaß. Jeder Lauf schreibt zwei Zeilen ins Log:
 
-Jedes Viertel hat ein eigenes **gedrehtes** Raster, eine Ringstraße außen,
-und eine eigene Modellpalette. Die Avenidas verbinden die Viertel und haben
-Vorrang vor dem Stadtraster.
+```
+[Rio] Strassenplan: ... 0 Stufen ohne Kachel ...
+[Rio] Strassennetz: ... offene Enden ... Teilnetze ...
+```
+
+* **Offene Enden** — Anschlüsse ohne Partner. Jeder davon ist eine Straße,
+  die im Nichts aufhört.
+* **Teilnetze** — Zusammenhangskomponenten. Zwischen zwei Teilnetzen kann man
+  nicht fahren.
+* **Stufen ohne Kachel** — Höhenwechsel ohne Steigungskachel. Jeder davon ist
+  ein Bruch in der Fahrbahn.
+* **Größter Überstand über Gelände** — wie weit die Fahrbahn über dem Boden
+  schwebt oder darin versinkt.
+
+Zum Vergleich der Stand, bevor daran gearbeitet wurde: 15.012 Kacheln in
+**12.924 Teilnetzen** mit **31.031 offenen Enden**. Das Netz war Staub,
+obwohl es auf der Karte wie ein Netz aussah.
+
+---
+
+## Stand
+
+Rund 15.000 Straßenkacheln, 9.400 Häuser, 9.700 Favela-Hütten, 1.080 Blocks
+auf 22 km². Gelände 642.000 Dreiecke.
+
+| Maß | Wert |
+|---|---|
+| Offene Enden | **unter 50** |
+| Teilnetze | **rund 20** |
+| Stufen ohne Steigungskachel | **0** |
+| Größter Überstand über Gelände | **0,94 m** |
+| Größter Knick an einer Fuge | **1,1 Grad** |
+| Brücke nach Niterói | durchgehend, 132 Teile auf echten Pfeilern |
 
 ### Was als Nächstes dran ist, in dieser Reihenfolge
 
-1. **Gelände unter der Stadt terrassieren.** Die Straßenkacheln sind flache
-   Platten, gesetzt auf die Geländehöhe in ihrer Mitte. Auf jeder Steigung
-   schwebt eine Kachel auf der einen Seite und versinkt auf der anderen —
-   das ist die Ursache für schwebende Objekte und durchstoßendes Gras.
-   Richtig wäre: je Block eine konstante Höhe, das Gelände wird darauf
-   gezwungen, Übergänge über Stützmauern und Böschungen (Modelle 28–33).
-2. **Noch zu viel leeres Land** zwischen den Vierteln. Entweder Viertel
-   weiter vergrößern oder bewusst Grünflächen und Nebenstraßen setzen.
-3. **Zwei Orla-Viertel liegen über Strand** und bekommen keine Straßen.
-4. **Avenidas durch die Viertel führen**, nicht nur bis zum Mittelpunkt.
-5. **Favela-Wege**: Becos, Escadarias und Hangstraßen gibt es als Modelle,
-   werden aber noch nicht benutzt. Hütten stehen ohne Erschließung da.
-6. **Darstellung**: 13.000 Häuser ergeben über 200.000 Renderer, weil jedes
-   Modell ~16 Materialslots hat. Daran erstickt die Bildrate, nicht an den
-   Dreiecken. Der Fix ist GPU-Instancing statt einzelner Objekte. Platzierung
-   und Darstellung sind dafür schon getrennt.
+1. **Schnellstraßenring.** Der einzige Teil, der nicht läuft. Von 7
+   Abschnitten schließt 1. Der Ring wird deshalb komplett verworfen —
+   `SchnellVerworfen` im Log — damit keine breite Fahrbahn im Feld endet.
+   Die Mechanik steht (`Ring`, `RampenKandidaten`, `Abschnitt`), es fehlt der
+   Suche die Trefferquote über 1–2 km. Ansätze: mehr Startrampen probieren
+   statt nur der besten, Zwischenziele auf halber Strecke setzen, oder den
+   Ring in kürzere Abschnitte mit mehr Auffahrten zerlegen.
+2. **Die 9 nicht geschlossenen Avenida-Strecken** (von 23). Gleiche Ursache,
+   gleiche Hebel.
+3. **Stützmauern an den Terrassenkanten.** Die Höhen stehen auf einem
+   1,5-m-Raster; wo zwei Terrassen aneinanderstoßen, gehört eine Mauer hin
+   (Modelle 51, 28, 29) oder eine Böschung (32). Im Moment läuft das Gelände
+   dort weich durch, was die 0,94 m Überstand erklärt.
+4. **Favela-Wege**: Becos, Escadarias und Hangstraßen gibt es als Modelle,
+   werden aber nicht benutzt. Die Hütten stehen ohne Erschließung da.
+5. **Tunnel durch die Morros.** `20_tunnel` und `34_tunnel_mitte` liegen
+   bereit, werden aber nicht gesetzt.
+6. **Zu viel leeres Land** zwischen den Vierteln.
+7. **Darstellung**: 33.000 Objekte mit je ~16 Materialslots ergeben über
+   200.000 Renderer. Daran erstickt die Bildrate, nicht an den Dreiecken.
+   Der Fix ist GPU-Instancing. Platzierung und Darstellung sind dafür schon
+   getrennt. Dazu kommen 642.000 Dreiecke Gelände — für Mobile zu viel, das
+   Raster müsste außerhalb der Stadt gröber werden.
 
 ---
 
-## Was noch fehlt an Modellen
+## Modelle
 
-Nicht blockierend, aber es würde helfen:
+**28 Gebäude**: Barraco bis Mansão Joatinga, dazu Torre Centro (139 m),
+Edifício 70er (118 m), Igreja, Lagerhalle, drei Eckgebäude, Praça, Parque.
+Bank und Tankstelle haben Ankerpunkte (Tresor, Kasse, Zapfsäule), die zur
+Heist-Leiter aus dem Konzept passen.
 
-- **Schnellstraße mit Leitplanke** plus Auf- und Abfahrt. Die Verbindungen
-  zwischen den Vierteln sind in Rio Expressways, keine Alleen.
-- **Brückensegment** — die Brücke nach Niterói ist noch prozedural gebaut
-  und passt stilistisch nicht zu den Kacheln.
-- **Kaikante** für den Hafen.
-- **Beco-Kurve und -Kreuzung** für die Favela-Erschließung.
+**55 Straßen-, Brücken- und Geländeteile**: Rua und Avenida in allen
+Varianten, Bögen mit 15 und 30 Grad, Kreisverkehr, Copacabana-Promenade,
+Beco, Escadaria, Hangstraße, Viadukt, Tunnel mit Mittelstück, Serpentinen,
+sanfte Steigung, komplette Brücke mit stapelbaren Pfeilern, Schnellstraße mit
+Bögen, Auf- und Abfahrt und Viadukt, Stützmauern in 2/4/8 m mit Abschlüssen
+und Böschung. Die Beschreibung aller Teile liegt in
+`Assets/RioStrassen/ANLEITUNG_STRASSEN.md`.
 
-## Was da ist
-
-- 28 Gebäude: Barraco bis Mansão Joatinga, dazu Torre Centro (139 m),
-  Edifício 70er (118 m), Igreja, Lagerhalle, drei Eckgebäude, Praça, Parque.
-  Bank und Tankstelle haben Ankerpunkte (Tresor, Kasse, Zapfsäule), die zur
-  Heist-Leiter aus dem Konzept passen.
-- 33 Straßenkacheln: Rua und Avenida in allen Varianten, Bögen mit 15 und 30
-  Grad, Kreisverkehr, Copacabana-Promenade, Beco, Escadaria, Hangstraße,
-  Viadukt, Tunnel, Stützmauern und Böschung.
-- Farbsystem: Materialien `slot_*` werden pro Haus nach einem Seed umgefärbt.
-  Die Favela-Reihe allein hat 2,1 Millionen Kombinationen.
+**Farbsystem**: Materialien `slot_*` werden pro Haus nach einem Seed
+umgefärbt. Die Favela-Reihe allein hat 2,1 Millionen Kombinationen.
 
 ## Nicht im Repo
 

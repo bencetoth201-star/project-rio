@@ -76,6 +76,8 @@ namespace Rio.WorldGen
             plan.Viertel();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
+            plan.Schnellstrassen(planner.PlacementList);
+            plan.Bruecke(planner.PlacementList);
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
@@ -102,7 +104,6 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Gelaende vernetzen...", 0.78f);
             BuildTerrainMesh(terrain, b);
             BuildWaterPlanes(b);
-            BuildBridge(terrain, b);
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
@@ -120,7 +121,7 @@ namespace Rio.WorldGen
             var houseWorld = RioHouseBaker.Bake(planner, root, MinX, MaxX, MinZ, MaxZ,
                                                 wallMats, roofMat, asphaltMat, out int lodObjects);
             SetupStreamer(root, houseWorld);
-            PlacePlayer(terrain);
+            PlacePlayer(terrain, plan);
 
             EditorUtility.ClearProgressBar();
             sw.Stop();
@@ -578,10 +579,20 @@ namespace Rio.WorldGen
         /// Setzt die Figur auf festen Boden in der Naehe des Strandbogens und
         /// stellt die Kamera dahinter. Ohne das stuende sie im offenen Meer.
         /// </summary>
-        static void PlacePlayer(RioWorldTerrain t)
+        static void PlacePlayer(RioWorldTerrain t, RioStrassenplan plan)
         {
             var player = GameObject.Find("Player");
             if (player == null) return;
+
+            // Mitten in Centro, auf einer Strasse. Vorher stand die
+            // Figur am Strand - kilometerweit von allem weg, was gebaut
+            // wurde, und man sah beim Start nur Sand.
+            if (plan != null && plan.Startpunkt(out Vector3 inDerStadt))
+            {
+                Setzen(player, inDerStadt);
+                Debug.Log($"[Rio] Figur gesetzt in Centro auf {inDerStadt}");
+                return;
+            }
 
             Vector2 start = RioWorldLayout.BeachCenter;
             Vector2 spot = start;
@@ -600,23 +611,25 @@ namespace Rio.WorldGen
             }
 
             float ground = t.SampleHeight(spot);
-            var cc = player.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
-            player.transform.position = new Vector3(spot.x, ground + 2f, spot.y);
-            if (cc != null) cc.enabled = true;
-
-            var cam = Camera.main;
-            if (cam != null)
-            {
-                cam.farClipPlane = Mathf.Max(cam.farClipPlane, 3000f);
-                Quaternion look = Quaternion.Euler(16f, 0f, 0f);
-                cam.transform.SetPositionAndRotation(
-                    player.transform.position + new Vector3(0f, 1.45f, 0f) + look * Vector3.back * 7f,
-                    look);
-            }
+            Setzen(player, new Vector3(spot.x, ground + 2f, spot.y));
 
             Debug.Log($"[Rio] Figur gesetzt auf {spot} (Hoehe {ground:F1} m)" +
                       (found ? "" : " - kein flacher Platz gefunden, Notfallposition"));
+        }
+
+        static void Setzen(GameObject player, Vector3 pos)
+        {
+            var cc = player.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            player.transform.position = pos;
+            if (cc != null) cc.enabled = true;
+
+            var cam = Camera.main;
+            if (cam == null) return;
+            cam.farClipPlane = Mathf.Max(cam.farClipPlane, 3000f);
+            Quaternion look = Quaternion.Euler(16f, 0f, 0f);
+            cam.transform.SetPositionAndRotation(
+                pos + new Vector3(0f, 1.45f, 0f) + look * Vector3.back * 7f, look);
         }
 
         static float EstimateLandArea(RioWorldTerrain t)

@@ -49,6 +49,8 @@ namespace Rio.WorldGen
             plan.Viertel();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
+            plan.Schnellstrassen(planner.PlacementList);
+            plan.Bruecke(planner.PlacementList);
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht

@@ -189,6 +189,86 @@ namespace Rio.WorldGen
         };
 
         /// <summary>
+        /// Wo die Kachel wirklich liegt, relativ zu ihrem Pivot.
+        ///
+        /// Bei Rechteckkacheln ist der Pivot die Kachelmitte, der Versatz
+        /// also null. Bei Boegen liegt der Pivot auf dem Startanschluss -
+        /// die Kachel liegt dann ganz auf einer Seite. Wer das nicht
+        /// beruecksichtigt, zeichnet den Bogen und seine Grundflaeche an
+        /// der falschen Stelle; in der Fernansicht sah eine Avenida
+        /// dadurch gestrichelt aus.
+        /// </summary>
+        static readonly Vector3[] RoadMitte =
+        {
+            new Vector3(0f, 0f, 0f),   // 01_rua_gerade
+            new Vector3(0f, 0f, 0f),   // 02_rua_kurve
+            new Vector3(0f, 0f, 0f),   // 03_rua_t
+            new Vector3(0f, 0f, 0f),   // 04_rua_kreuzung
+            new Vector3(0f, 0f, 0f),   // 05_rua_sackgasse
+            new Vector3(0f, 0f, 0f),   // 06_rua_steigung
+            new Vector3(0f, 0f, 0f),   // 07_rua_bushaltestelle
+            new Vector3(0f, 0f, 0f),   // 08_rua_kopfstein
+            new Vector3(0f, 0f, 0f),   // 09_avenida_gerade
+            new Vector3(0f, 0f, 0f),   // 10_avenida_kreuzung
+            new Vector3(0f, 0f, 0f),   // 11_avenida_einmuendung
+            new Vector3(0f, 0f, 0f),   // 12_avenida_kurve
+            new Vector3(0f, 0f, 0f),   // 13_kreisverkehr
+            new Vector3(0f, 0f, 0f),   // 14_copacabana
+            new Vector3(0f, 0f, 0f),   // 15_beco
+            new Vector3(0f, 0f, 0f),   // 16_escadaria
+            new Vector3(0f, 0f, 0f),   // 17_beco_gabelung
+            new Vector3(0f, 0f, 0f),   // 18_hangstrasse
+            new Vector3(0f, 0f, 0f),   // 19_viadukt
+            new Vector3(0f, 0f, 0f),   // 20_tunnel
+            new Vector3(0.6815f, 0f, -5.1765f),   // 21_rua_bogen_15
+            new Vector3(2.6795f, 0f, -10f),   // 22_rua_bogen_30
+            new Vector3(1.022f, 0f, -7.7645f),   // 23_avenida_bogen_15
+            new Vector3(4.019f, 0f, -15f),   // 24_avenida_bogen_30
+            new Vector3(-2.0445f, 0f, -15.529f),   // 25_copacabana_bogen_15
+            new Vector3(0f, 0f, 0f),   // 26_avenida_t
+            new Vector3(0f, 0f, 0f),   // 27_uebergang_avenida_rua
+            new Vector3(0f, 0f, 0f),   // 28_stuetzmauer_4m
+            new Vector3(0f, 0f, 0f),   // 29_stuetzmauer_8m
+            new Vector3(0f, 0f, 0f),   // 30_mauer_ecke_aussen
+            new Vector3(0f, 0f, 0f),   // 31_mauer_ecke_innen
+            new Vector3(0f, 0f, 0f),   // 32_boeschung
+            new Vector3(0f, 0f, 0f),   // 33_mauer_treppe
+            new Vector3(0f, 0f, 0f),   // 34_tunnel_mitte
+            new Vector3(8f, 0f, -8f),   // 35_rua_serpentine_links
+            new Vector3(-8f, 0f, -8f),   // 36_rua_serpentine_rechts
+            new Vector3(0f, 0f, 0f),   // 37_rua_steigung_sanft
+            new Vector3(0f, 0f, 0f),   // 38_bruecke_segment
+            new Vector3(0f, 0f, 0f),   // 39_bruecke_steigung
+            new Vector3(0f, 0f, 0f),   // 40_brueckenkopf
+            new Vector3(0f, 0f, 0f),   // 41_pfeiler_fundament
+            new Vector3(0f, 0f, 0f),   // 42_pfeiler_schaft_2m
+            new Vector3(0f, 0f, 0f),   // 43_pfeiler_schaft_8m
+            new Vector3(0f, 0f, 0f),   // 44_pfeiler_kopf
+            new Vector3(0f, 0f, 0f),   // 45_schnellstrasse_gerade
+            new Vector3(1.7035f, 0f, -12.941f),   // 46_schnellstrasse_bogen_15
+            new Vector3(6.6985f, 0f, -25f),   // 47_schnellstrasse_bogen_30
+            new Vector3(0f, 0f, 0f),   // 48_schnellstrasse_abfahrt
+            new Vector3(0f, 0f, 0f),   // 49_schnellstrasse_auffahrt
+            new Vector3(0f, 0f, 0f),   // 50_schnellstrasse_viadukt
+            new Vector3(0f, 0f, 0f),   // 51_stuetzmauer_2m
+            new Vector3(0f, 0f, 0f),   // 52_mauerabschluss_4m_rechts
+            new Vector3(0f, 0f, 0f),   // 53_mauerabschluss_4m_links
+            new Vector3(0f, 0f, 0f),   // 54_mauerabschluss_2m_rechts
+            new Vector3(0f, 0f, 0f),   // 55_mauerabschluss_2m_links
+        };
+
+        /// <summary>Mittelpunkt der Kachel in der Welt.</summary>
+        public static Vector3 Mitte(int index, Vector3 pos, float yaw)
+        {
+            if (index < HouseCount) return pos;
+            var o = RoadMitte[index - RoadBase];
+            if (o.sqrMagnitude < 1e-6f) return pos;
+            float rad = yaw * Mathf.Deg2Rad;
+            float c = Mathf.Cos(rad), s = Mathf.Sin(rad);
+            return pos + new Vector3(o.x * c + o.z * s, 0f, -o.x * s + o.z * c);
+        }
+
+        /// <summary>
         /// Die Anschlusspunkte jeder Kachel, in Unity-Koordinaten relativ
         /// zum Pivot: Name, Position, Blickrichtung in Grad.
         ///

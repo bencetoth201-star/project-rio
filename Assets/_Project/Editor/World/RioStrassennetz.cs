@@ -77,8 +77,13 @@ namespace Rio.WorldGen
             int u = rest.IndexOf('_');
             if (u <= 0) return false;
             typ = rest.Substring(0, u);
+            // Das Brueckendeck hat denselben Querschnitt wie eine Rua - die
+            // Anleitung zum Baukasten sagt es ausdruecklich: Fahrbahn exakt
+            // wie Rua, x plus/minus 3,5. Also passt eine Rua-Kachel an ein
+            // Brueckensegment, und der Brueckenkopf schliesst an die Stadt an.
+            if (typ == "Bruecke") typ = "Rua";
             return typ == "Rua" || typ == "Avenida" || typ == "Beco"
-                || typ == "Schnellstrasse" || typ == "Bruecke";
+                || typ == "Schnellstrasse";
         }
 
         void Sammeln()

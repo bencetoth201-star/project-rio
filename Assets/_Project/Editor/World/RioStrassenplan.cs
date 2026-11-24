@@ -418,6 +418,31 @@ namespace Rio.WorldGen
             (RioModelCatalog.RuaBogen30,   "Anschluss_Rua_Ende"),
         };
 
+        /// <summary>
+        /// Die Teile der Schnellstrasse. Dieselbe Mechanik wie bei der
+        /// Avenida, nur 24 m breit und mit 100 m Bogenradius.
+        /// </summary>
+        static readonly (int model, string anker)[] SchnellTeile =
+        {
+            (RioModelCatalog.SchnellGerade,  "Anschluss_Schnellstrasse_S"),
+            (RioModelCatalog.SchnellBogen15, "Anschluss_Schnellstrasse_S"),
+            (RioModelCatalog.SchnellBogen15, "Anschluss_Schnellstrasse_Ende"),
+            (RioModelCatalog.SchnellBogen30, "Anschluss_Schnellstrasse_S"),
+            (RioModelCatalog.SchnellBogen30, "Anschluss_Schnellstrasse_Ende"),
+        };
+
+        /// <summary>
+        /// Die Viertel, durch die der Schnellstrassenring laeuft, im
+        /// Uhrzeigersinn - und wieder zum ersten zurueck.
+        ///
+        /// Ein Ring und keine Strecke: eine Schnellstrasse, die irgendwo
+        /// aufhoert, braucht ein Endstueck, und das gibt es im Baukasten
+        /// nicht. Ein geschlossener Ring hat keine Enden. In Rio bilden Linha
+        /// Amarela, Av. Brasil und der Aterro zusammen genau so einen Ring um
+        /// die Bucht.
+        /// </summary>
+        static readonly int[] Ring = { 8, 7, 9, 10, 5, 2, 0 };
+
         /// <summary>Bis zu dieser Luftlinie wird mit Rua verbunden, darueber mit Avenida.</summary>
         public const float RuaGrenze = 420f;
 
@@ -500,7 +525,7 @@ namespace Rio.WorldGen
             for (int versuch = 0; versuch < 6 && versuch < starts.Count; versuch++)
             {
                 var start = starts[versuch];
-                if (!Suche(start, ziele, raster, teile,
+                if (!Suche(start, ziele, raster, teile, Fangweite, FangWinkel, MaxSchritte, 16f, Strahl,
                            out List<int> kette, out List<Zustand> alle, out int treffer))
                     continue;
 
@@ -719,6 +744,8 @@ namespace Rio.WorldGen
         /// </summary>
         bool Suche(in Andockstelle start, List<Andockstelle> ziele,
                    Dictionary<long, List<int>> raster, (int model, string anker)[] teile,
+                   float fang, float fangWinkel, int maxSchritte,
+                   float kuestenabstand, int strahl,
                    out List<int> kette, out List<Zustand> alle, out int treffer)
         {
             kette = null; treffer = -1;
@@ -731,7 +758,7 @@ namespace Rio.WorldGen
             var schicht = new List<int> { 0 };
             var naechste = new List<(float kosten, int index)>(Strahl * 8);
 
-            for (int schritt = 0; schritt < MaxSchritte; schritt++)
+            for (int schritt = 0; schritt < maxSchritte; schritt++)
             {
                 naechste.Clear();
 
@@ -747,7 +774,7 @@ namespace Rio.WorldGen
 
                         var mitte = new Vector2(pivot.x, pivot.z);
                         if (!_t.IsLand(mitte)) continue;
-                        if (_t.DistanceToCoast(mitte) < 16f) continue;
+                        if (_t.DistanceToCoast(mitte) < kuestenabstand) continue;
 
                         alle.Add(new Zustand
                         {
@@ -761,7 +788,8 @@ namespace Rio.WorldGen
                         // Gelenke. Exakt zu treffen ist mit 24-m-Geraden und
                         // Boegen in 15er Schritten praktisch unmoeglich: die
                         // erreichbaren Posen liegen diskret.
-                        if (Angekommen(neuPos, neuYaw, ziele, raster, out int gefunden))
+                        if (Angekommen(neuPos, neuYaw, ziele, raster, fang, fangWinkel,
+                                       out int gefunden))
                         {
                             treffer = gefunden;
                             kette = new List<int>();
@@ -791,17 +819,18 @@ namespace Rio.WorldGen
 
                 naechste.Sort((x, y) => x.kosten.CompareTo(y.kosten));
                 schicht.Clear();
-                for (int i = 0; i < naechste.Count && i < Strahl; i++)
+                for (int i = 0; i < naechste.Count && i < strahl; i++)
                     schicht.Add(naechste[i].index);
             }
             return false;
         }
 
         static bool Angekommen(Vector3 pos, float yaw, List<Andockstelle> ziele,
-                               Dictionary<long, List<int>> raster, out int treffer)
+                               Dictionary<long, List<int>> raster,
+                               float fang, float fangWinkel, out int treffer)
         {
             treffer = -1;
-            const int r = 3;        // Fangweite 10 m in einem 4-m-Raster
+            int r = Mathf.CeilToInt(fang / 4f);
             for (int dx = -r; dx <= r; dx++)
             for (int dz = -r; dz <= r; dz++)
             {
@@ -812,8 +841,8 @@ namespace Rio.WorldGen
                 {
                     var z = ziele[i];
                     if (Vector2.Distance(new Vector2(pos.x, pos.z),
-                                         new Vector2(z.pose.x, z.pose.z)) > Fangweite) continue;
-                    if (Mathf.Abs(Mathf.DeltaAngle(yaw + 180f, z.poseYaw)) > FangWinkel) continue;
+                                         new Vector2(z.pose.x, z.pose.z)) > fang) continue;
+                    if (Mathf.Abs(Mathf.DeltaAngle(yaw + 180f, z.poseYaw)) > fangWinkel) continue;
                     treffer = i;
                     return true;
                 }
@@ -850,8 +879,11 @@ namespace Rio.WorldGen
                 model = model,
                 colorSeed = RioHousePlanner.Hash((int)pivot.x, (int)pivot.z)
             });
-            // Belegen, sonst setzt der Hausplaner Haeuser auf die Strecke
-            _planner.Occupy(new Vector2(pivot.x, pivot.z), RioHousePlanner.Lot(model), yaw);
+            // Belegen, sonst setzt der Hausplaner Haeuser auf die Strecke.
+            // Ueber die wirkliche Kachelmitte, nicht ueber den Pivot - bei
+            // Boegen sind das zwei verschiedene Punkte.
+            var mitte2 = RioModelCatalog.Mitte(model, pivot, yaw);
+            _planner.Occupy(new Vector2(mitte2.x, mitte2.z), RioHousePlanner.Lot(model), yaw);
             return true;
         }
 
@@ -1072,6 +1104,389 @@ namespace Rio.WorldGen
                 if (Mathf.Abs(Mathf.DeltaAngle(yaw + a.yaw, richtungYaw)) < 20f) return a.name;
             }
             return null;
+        }
+
+        public int SchnellKacheln { get; private set; }
+        public int SchnellAbschnitte { get; private set; }
+        public int SchnellOffen { get; private set; }
+
+        /// <summary>Eine moegliche Auffahrt: wo die Kachel haengt und wo ihre Fahrbahn anschliesst.</summary>
+        struct Rampe
+        {
+            public int knoten, richtung;
+            public Vector3 pivot;
+            public float yaw;
+            public Vector3 vor, zurueck;
+            public float vorYaw, zurueckYaw;
+        }
+
+        /// <summary>
+        /// Legt den Schnellstrassenring.
+        ///
+        /// An jedem Viertel des Rings sitzt eine Auffahrt, mit ihrem
+        /// Rua-Anschluss am Viertelraster - dadurch kommt man von der Stadt
+        /// auf die Schnellstrasse und wieder herunter.
+        ///
+        /// Die Auffahrten werden nicht vorher festgelegt, sondern erst
+        /// gesetzt, wenn ein Abschnitt sie wirklich erreicht hat. Mit einem
+        /// einzigen vorgegebenen Ziel fand die Suche keinen einzigen
+        /// Abschnitt: die erreichbaren Posen liegen diskret, ein Punkt wird
+        /// praktisch nie getroffen. Mit allen Randknoten des naechsten
+        /// Viertels als Ziel trifft sie fast immer einen genau.
+        /// </summary>
+        public void Schnellstrassen(List<RioHouseWorld.Placement> ziel)
+        {
+            // Alles erst sammeln und nur uebernehmen, wenn der Ring wirklich
+            // rundum geschlossen ist. Eine halbe Schnellstrasse waere genau
+            // das, was vermieden werden soll: breite Fahrbahnen, die im Feld
+            // aufhoeren. Im Baukasten gibt es kein Endstueck.
+            int vorher = ziel.Count;
+            int stummelVorher = _k.Count;
+
+            Ringbau(ziel);
+
+            if (SchnellAbschnitte == Ring.Length) return;
+
+            ziel.RemoveRange(vorher, ziel.Count - vorher);
+            for (int i = stummelVorher; i < _k.Count; i++)
+                for (int r = 0; r < 4; r++)
+                {
+                    int nb = _kante[i * 4 + r];
+                    if (nb >= 0) _kante[nb * 4 + ((r + 2) & 3)] = -1;
+                    _kante[i * 4 + r] = -1;
+                }
+            _k.RemoveRange(stummelVorher, _k.Count - stummelVorher);
+            _kante.RemoveRange(stummelVorher * 4, _kante.Count - stummelVorher * 4);
+            SchnellKacheln = 0;
+            SchnellVerworfen = true;
+        }
+
+        /// <summary>Wahr, wenn der Ring nicht zustande kam und nichts gebaut wurde.</summary>
+        public bool SchnellVerworfen { get; private set; }
+
+        void Ringbau(List<RioHouseWorld.Placement> ziel)
+        {
+            int m = Ring.Length;
+
+            var erste = RampenKandidaten(Ring[0],
+                            RioDistricts.All[Ring[m - 1]].Center,
+                            RioDistricts.All[Ring[1]].Center);
+            if (erste.Count == 0) { SchnellOffen += m; return; }
+
+            var start = erste[0];
+            RampeSetzen(start, ziel);
+            var laufend = start;
+
+            for (int i = 1; i <= m; i++)
+            {
+                bool letzter = i == m;
+                List<Rampe> kandidaten;
+
+                if (letzter)
+                {
+                    // Zurueck nach Porto, aber an einer anderen Auffahrt als
+                    // der Startrampe - der Ring schliesst sich durch das
+                    // Strassennetz des Viertels.
+                    kandidaten = RampenKandidaten(Ring[0],
+                        RioDistricts.All[Ring[m - 1]].Center,
+                        RioDistricts.All[Ring[1]].Center);
+                    kandidaten.RemoveAll(k => k.knoten == start.knoten);
+                }
+                else
+                {
+                    kandidaten = RampenKandidaten(Ring[i],
+                        RioDistricts.All[Ring[i - 1]].Center,
+                        RioDistricts.All[Ring[(i + 1) % m]].Center);
+                }
+
+                if (kandidaten.Count == 0) { SchnellOffen++; continue; }
+
+                if (Abschnitt(laufend, kandidaten, ziel, out Rampe erreicht))
+                {
+                    RampeSetzen(erreicht, ziel);
+                    laufend = erreicht;
+                    SchnellAbschnitte++;
+                }
+                else SchnellOffen++;
+            }
+        }
+
+        /// <summary>
+        /// Alle Randknoten eines Viertels, an denen eine Auffahrt haengen
+        /// koennte, samt der Lage ihrer Durchgangsfahrbahn. Sortiert: am
+        /// besten liegt, wessen Fahrbahn zur Fahrtrichtung des Rings passt.
+        /// </summary>
+        List<Rampe> RampenKandidaten(int di, Vector2 vorher, Vector2 nachher)
+        {
+            var liste = new List<Rampe>();
+            if (!_gitter.TryGetValue(di, out var gitter)) return liste;
+
+            var mitte = RioDistricts.All[di].Center;
+            var fahrt = (nachher - vorher).normalized;
+            int model = RioModelCatalog.SchnellAuffahrt;
+
+            foreach (int k in gitter)
+            {
+                if (k < 0) continue;
+                var kn = _k[k];
+                if (kn.viertel == -2 || Grad(k) == 0 || Grad(k) >= 4) continue;
+
+                for (int rr = 0; rr < 4; rr++)
+                {
+                    if (_kante[k * 4 + rr] >= 0) continue;
+                    var dir = LokalZuWelt(kn.yaw, rr);
+                    if (Vector2.Dot(dir, (kn.p - mitte).normalized) < 0.2f) continue;
+
+                    float dirYaw = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+                    var fuge = new Vector3(kn.p.x + dir.x * Cell * 0.5f, kn.h,
+                                           kn.p.y + dir.y * Cell * 0.5f);
+
+                    if (!RioStrassennetz.Andocken(model, "Anschluss_Rua_S", fuge,
+                                                  Mathf.Repeat(dirYaw + 180f, 360f),
+                                                  out Vector3 pivot, out float yaw))
+                        continue;
+
+                    pivot.y = kn.h;
+                    var r = new Rampe { knoten = k, richtung = rr, pivot = pivot, yaw = yaw };
+
+                    bool vorDa = false, zurueckDa = false;
+                    foreach (var an in RioModelCatalog.Anchors(model))
+                    {
+                        if (!an.name.StartsWith("Anschluss_Schnellstrasse")) continue;
+                        var welt = RioModelCatalog.AnchorWorld(an, pivot, yaw);
+                        float wy = Mathf.Repeat(yaw + an.yaw, 360f);
+                        var hin = new Vector2(welt.x - pivot.x, welt.z - pivot.z).normalized;
+
+                        if (Vector2.Dot(hin, fahrt) > 0f)
+                        { r.vor = welt; r.vorYaw = wy; vorDa = true; }
+                        else
+                        { r.zurueck = welt; r.zurueckYaw = wy; zurueckDa = true; }
+                    }
+                    if (!vorDa || !zurueckDa) continue;
+
+                    liste.Add(r);
+                }
+            }
+
+            liste.Sort((x, y) =>
+                Vector2.Distance(new Vector2(y.pivot.x, y.pivot.z), vorher).CompareTo(
+                Vector2.Distance(new Vector2(x.pivot.x, x.pivot.z), vorher)));
+            return liste;
+        }
+
+        void RampeSetzen(in Rampe r, List<RioHouseWorld.Placement> ziel)
+        {
+            ziel.Add(new RioHouseWorld.Placement
+            {
+                position = r.pivot, yaw = r.yaw, model = RioModelCatalog.SchnellAuffahrt,
+                colorSeed = RioHousePlanner.Hash((int)r.pivot.x, (int)r.pivot.z)
+            });
+            _planner.Occupy(new Vector2(r.pivot.x, r.pivot.z),
+                            RioHousePlanner.Lot(RioModelCatalog.SchnellAuffahrt), r.yaw);
+            Stummel(r.knoten, r.richtung);
+            SchnellKacheln++;
+        }
+
+        /// <summary>Ein Abschnitt von einer Auffahrt zu irgendeiner der naechsten.</summary>
+        bool Abschnitt(in Rampe von, List<Rampe> nach,
+                       List<RioHouseWorld.Placement> ziel, out Rampe erreicht)
+        {
+            erreicht = default;
+
+            var start = new Andockstelle { knoten = -1, pose = von.vor, poseYaw = von.vorYaw };
+
+            var ziele = new List<Andockstelle>(nach.Count);
+            foreach (var r in nach)
+                ziele.Add(new Andockstelle { knoten = -1, pose = r.zurueck, poseYaw = r.zurueckYaw });
+
+            var raster = new Dictionary<long, List<int>>(ziele.Count * 2);
+            for (int i = 0; i < ziele.Count; i++)
+            {
+                long key = Raster2(ziele[i].pose);
+                if (!raster.TryGetValue(key, out var l)) raster[key] = l = new List<int>(2);
+                l.Add(i);
+            }
+
+            if (!Suche(start, ziele, raster, SchnellTeile, 24f, 25f, 300, 5f, 90,
+                       out List<int> kette, out List<Zustand> alle, out int treffer))
+                return false;
+
+            var ende = ziele[treffer];
+            var gelenk = new float[kette.Count];
+            float genau = Nachjustieren(alle, kette, start.pose, start.poseYaw, gelenk,
+                                        ende.pose, Mathf.Repeat(ende.poseYaw + 180f, 360f),
+                                        SchnellTeile);
+            if (genau > 0.25f) return false;
+
+            int erstes = ziel.Count;
+            Vector3 pp = start.pose;
+            float yy = start.poseYaw;
+            for (int i = 0; i < kette.Count; i++)
+            {
+                var z = alle[kette[i]];
+                if (Lege(SchnellTeile[z.teil].model, SchnellTeile[z.teil].anker,
+                         pp, yy + gelenk[i], ziel, ref pp, ref yy))
+                    SchnellKacheln++;
+            }
+
+            // Hoehe linear von Rampe zu Rampe: fuer die Schnellstrasse gibt es
+            // keine Steigungskachel, also laeuft sie auf einem Damm.
+            int anzahl = ziel.Count - erstes;
+            for (int i = 0; i < anzahl; i++)
+            {
+                var pl = ziel[erstes + i];
+                pl.position.y = Mathf.Lerp(start.pose.y, ende.pose.y, (i + 1f) / anzahl);
+                ziel[erstes + i] = pl;
+            }
+
+            GroessterKnick = Mathf.Max(GroessterKnick, MaxBetrag(gelenk));
+            erreicht = nach[treffer];
+            return true;
+        }
+
+        public int BrueckenKacheln { get; private set; }
+        public int Pfeiler { get; private set; }
+        public bool BrueckeSteht { get; private set; }
+
+        /// <summary>
+        /// Baut die Bruecke nach Niteroi aus den Teilen des Baukastens.
+        ///
+        /// Vorher war sie ein prozedurales Band aus Quads, mit Pylonen alle
+        /// 120 m und sichtbaren Luecken zwischen den Feldern. Jetzt ist sie
+        /// eine Kette aus Brueckenkopf, Steigungssegmenten und geraden
+        /// Segmenten, jedes ueber seine Anker an das vorige angedockt - also
+        /// ohne Luecke. Unter jede zweite Fuge kommt ein Pfeiler, gestapelt
+        /// aus Fundament, Schaeften und Kopf, bis er den Traeger erreicht.
+        ///
+        /// Das Deck steigt an beiden Ufern ueber Rampen auf Hoehe, damit
+        /// darunter Schiffe durchpassen - und damit die Strasse nicht
+        /// senkrecht aus dem Wasser kommt.
+        /// </summary>
+        public void Bruecke(List<RioHouseWorld.Placement> ziel)
+        {
+            var pfad = RioWorldLayout.ToWorld(RioWorldLayout.BridgePx);
+            if (pfad.Length < 2) return;
+
+            Vector2 von = pfad[0], bis = pfad[pfad.Length - 1];
+            Vector2 richtung = (bis - von).normalized;
+            float yaw = Mathf.Atan2(richtung.x, richtung.y) * Mathf.Rad2Deg;
+            float laenge = Vector2.Distance(von, bis);
+
+            const int Rampe = 8;            // Steigungssegmente je Seite, +2 m each
+            const float KopfLaenge = 48f;
+            const float SegmentLaenge = 24f;
+
+            int geraden = Mathf.Max(2, Mathf.FloorToInt(
+                (laenge - 2f * KopfLaenge - 2f * Rampe * SegmentLaenge) / SegmentLaenge));
+
+            // Startfuge: Unterkante des ersten Brueckenkopfs am Ufer
+            float uferH = _t.SampleHeight(von);
+            var ende = new Vector3(von.x, Mathf.Max(uferH, 0.5f), von.y);
+            float endeYaw = yaw;
+
+            if (!Lege(RioModelCatalog.Brueckenkopf, "Anschluss_Bruecke_S",
+                      ende, endeYaw, ziel, ref ende, ref endeYaw)) return;
+            BrueckenKacheln++;
+
+            var fugen = new List<Vector3>();
+
+            for (int i = 0; i < Rampe; i++)
+            {
+                if (!Lege(RioModelCatalog.BrueckeSteigung, "Anschluss_Bruecke_S",
+                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                BrueckenKacheln++;
+                fugen.Add(ende);
+            }
+
+            for (int i = 0; i < geraden; i++)
+            {
+                if (!Lege(RioModelCatalog.BrueckeSegment, "Anschluss_Bruecke_S",
+                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                BrueckenKacheln++;
+                fugen.Add(ende);
+            }
+
+            // Herunter: dasselbe Steigungssegment ueber seinen oberen Anschluss
+            // angedockt faellt statt zu steigen.
+            for (int i = 0; i < Rampe; i++)
+            {
+                if (!Lege(RioModelCatalog.BrueckeSteigung, "Anschluss_Bruecke_N",
+                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                BrueckenKacheln++;
+                fugen.Add(ende);
+            }
+
+            if (Lege(RioModelCatalog.Brueckenkopf, "Anschluss_Bruecke_N",
+                     ende, endeYaw, ziel, ref ende, ref endeYaw))
+            {
+                BrueckenKacheln++;
+                BrueckeSteht = true;
+            }
+
+            // Pfeiler unter jede zweite Fuge
+            for (int i = 1; i < fugen.Count; i += 2)
+                PfeilerStapeln(fugen[i], yaw, ziel);
+        }
+
+        /// <summary>
+        /// Stapelt einen Pfeiler vom Grund bis unter den Traeger.
+        ///
+        /// Fundament, dann 8-m- und 2-m-Schaefte, dann der Kopf. Was unten
+        /// nicht genau aufgeht, steckt im Grund - das sieht niemand.
+        /// </summary>
+        void PfeilerStapeln(Vector3 fuge, float yaw, List<RioHouseWorld.Placement> ziel)
+        {
+            float grund = _t.SampleHeight(new Vector2(fuge.x, fuge.z));
+            float traeger = fuge.y - 2.6f;          // Unterkante des Hohlkastens
+            float hoehe = traeger - grund;
+            if (hoehe < 3f) return;
+
+            float rest = hoehe - 1f - 1.4f;         // Fundament und Kopf abziehen
+            int gross = Mathf.Max(0, Mathf.FloorToInt(rest / 8f));
+            int klein = Mathf.Max(0, Mathf.RoundToInt((rest - gross * 8f) / 2f));
+
+            float y = traeger - 1.4f - gross * 8f - klein * 2f - 1f;
+
+            void Setzen(int model, float dicke)
+            {
+                ziel.Add(new RioHouseWorld.Placement
+                {
+                    position = new Vector3(fuge.x, y, fuge.z),
+                    yaw = yaw, model = model,
+                    colorSeed = RioHousePlanner.Hash((int)fuge.x, (int)(y * 10f))
+                });
+                y += dicke;
+                Pfeiler++;
+            }
+
+            Setzen(RioModelCatalog.PfeilerFundament, 1f);
+            for (int i = 0; i < gross; i++) Setzen(RioModelCatalog.PfeilerSchaft8, 8f);
+            for (int i = 0; i < klein; i++) Setzen(RioModelCatalog.PfeilerSchaft2, 2f);
+            Setzen(RioModelCatalog.PfeilerKopf, 1.4f);
+        }
+
+        /// <summary>Ein Platz mitten in der Stadt, fuer den Spielstart.</summary>
+        public bool Startpunkt(out Vector3 pos)
+        {
+            pos = Vector3.zero;
+            if (!_gitter.TryGetValue(0, out var gitter)) return false;
+
+            var mitte = RioDistricts.All[0].Center;
+            float best = float.MaxValue;
+            bool gefunden = false;
+
+            foreach (int k in gitter)
+            {
+                if (k < 0) continue;
+                var kn = _k[k];
+                if (kn.viertel == -2 || Grad(k) < 2) continue;
+                float d = Vector2.Distance(kn.p, mitte);
+                if (d >= best) continue;
+                best = d;
+                pos = new Vector3(kn.p.x, kn.h + 1.2f, kn.p.y);
+                gefunden = true;
+            }
+            return gefunden;
         }
 
         /// <summary>Hoehe je Knoten aus dem Gelaende, vor dem Hoehenausgleich.</summary>
@@ -1301,6 +1716,11 @@ namespace Rio.WorldGen
             $"{_k.Count - Entfernt:N0} Knoten ({Entfernt:N0} Splitter gestrichen), " +
             $"{Teilnetze:N0} Teilnetze, groesstes {GroesstesNetz:N0}, " +
             $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, "
+          + $"Bruecke {BrueckenKacheln:N0} Teile auf {Pfeiler:N0} Pfeilerstuecken"
+          + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend") + ", "
+          + (SchnellVerworfen ? "Schnellstrassenring kam nicht zustande, nichts gebaut, " : "")
+          + $"{SchnellKacheln:N0} Schnellstrassenkacheln in {SchnellAbschnitte:N0} Abschnitten "
+          + $"({SchnellOffen:N0} offen), "
           + $"{Terrassen:N0} Hoehenstufen, {SteigungKacheln:N0} Steigungskacheln, "
           + $"{OffeneStufen:N0} Stufen ohne Kachel "
           + $"(max {GroessteStufe:F1} m), " +

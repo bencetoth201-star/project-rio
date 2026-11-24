@@ -122,7 +122,12 @@ namespace Rio.WorldGen
                     {
                         // Strassen in der Ferne: nur eine flache Platte. Eine
                         // Kachel als Klotz waere falsch, Strassen sind flach.
-                        AddFlatTile(asphalt, p.position, lot, p.yaw);
+                        // Bei Boegen sitzt der Pivot auf dem Startanschluss,
+                        // nicht in der Kachelmitte - sonst liegt die Platte
+                        // daneben, und die Strasse sieht gestrichelt aus.
+                        AddFlatTile(asphalt,
+                                    Rio.WorldGen.RioModelCatalog.Mitte(p.model, p.position, p.yaw),
+                                    lot, p.yaw);
                         continue;
                     }
 
