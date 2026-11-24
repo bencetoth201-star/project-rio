@@ -224,6 +224,109 @@ namespace Rio.WorldGen
             }
         }
 
+        // ------------------------------------------------------------------
+        // Stempel
+        //
+        // Die Stadt legt hier ihre Hoehen ab, danach wird das Gelaende darauf
+        // gezogen. Vorher lief es umgekehrt: das Gelaende stand fest, und die
+        // Kacheln wurden darauf gelegt - auf einen Untergrund, der nichts von
+        // ihnen wusste. Daher die schwebenden Haeuser und das Gras, das durch
+        // die Fahrbahn stiess.
+        // ------------------------------------------------------------------
+
+        float[] _soll;
+        float[] _sollGewicht;
+
+        public void StempelBeginnen()
+        {
+            _soll = new float[_height.Length];
+            _sollGewicht = new float[_height.Length];
+        }
+
+        /// <summary>
+        /// Meldet eine Flaeche an, die auf Hoehe <paramref name="h"/> liegen
+        /// soll. <paramref name="rand"/> ist der Streifen aussen herum, in dem
+        /// das Gelaende weich in seine eigene Hoehe zurueckgeht.
+        /// </summary>
+        public void Stempeln(Vector2 mitte, Vector2 groesse, float yaw, float h, float rand)
+        {
+            if (_soll == null) return;
+
+            float rad = -yaw * Mathf.Deg2Rad;
+            float cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
+            float hx = groesse.x * 0.5f, hz = groesse.y * 0.5f;
+
+            float ex = Mathf.Abs(groesse.x * cs) * 0.5f + Mathf.Abs(groesse.y * sn) * 0.5f + rand;
+            float ez = Mathf.Abs(groesse.x * sn) * 0.5f + Mathf.Abs(groesse.y * cs) * 0.5f + rand;
+
+            int x0 = Mathf.Max(0, Mathf.FloorToInt((mitte.x - ex - MinX) / Cell));
+            int x1 = Mathf.Min(CountX - 1, Mathf.CeilToInt((mitte.x + ex - MinX) / Cell));
+            int z0 = Mathf.Max(0, Mathf.FloorToInt((mitte.y - ez - MinZ) / Cell));
+            int z1 = Mathf.Min(CountZ - 1, Mathf.CeilToInt((mitte.y + ez - MinZ) / Cell));
+
+            for (int ix = x0; ix <= x1; ix++)
+            for (int iz = z0; iz <= z1; iz++)
+            {
+                float wx = MinX + ix * Cell - mitte.x;
+                float wz = MinZ + iz * Cell - mitte.y;
+                float lx = wx * cs - wz * sn;
+                float lz = wx * sn + wz * cs;
+
+                // Abstand nach aussen vom Rechteck, in seinem eigenen System
+                float dx = Mathf.Max(0f, Mathf.Abs(lx) - hx);
+                float dz = Mathf.Max(0f, Mathf.Abs(lz) - hz);
+                float d = Mathf.Sqrt(dx * dx + dz * dz);
+                if (d > rand) continue;
+
+                float w = rand <= 0f ? 1f : 1f - Mathf.SmoothStep(0f, 1f, d / rand);
+                if (w <= 0f) continue;
+
+                int i = ix * CountZ + iz;
+                _soll[i] += h * w;
+                _sollGewicht[i] += w;
+            }
+        }
+
+        /// <summary>
+        /// Rechnet die Stempel in das Hoehenfeld ein und glaettet danach nur
+        /// die Zellen, die kein Stempel beansprucht hat - so bleiben die
+        /// Plateaus exakt, und das Gelaende daneben schliesst weich an.
+        /// </summary>
+        public void StempelAnwenden(int glaettung)
+        {
+            if (_soll == null) return;
+
+            var gestempelt = new bool[_height.Length];
+            for (int i = 0; i < _height.Length; i++)
+            {
+                float g = _sollGewicht[i];
+                if (g <= 1e-4f) continue;
+                float soll = _soll[i] / g;
+                float t = Mathf.Clamp01(g);
+                _height[i] = Mathf.Lerp(_height[i], soll, t);
+                if (t > 0.98f) gestempelt[i] = true;
+            }
+
+            var copy = new float[_height.Length];
+            for (int pass = 0; pass < glaettung; pass++)
+            {
+                System.Array.Copy(_height, copy, _height.Length);
+                for (int ix = 1; ix < CountX - 1; ix++)
+                for (int iz = 1; iz < CountZ - 1; iz++)
+                {
+                    int i = ix * CountZ + iz;
+                    if (gestempelt[i]) continue;
+                    if (copy[i] < 0.2f) continue;          // Wasser bleibt
+                    float avg = (copy[(ix - 1) * CountZ + iz] + copy[(ix + 1) * CountZ + iz]
+                               + copy[ix * CountZ + iz - 1] + copy[ix * CountZ + iz + 1]) * 0.25f;
+                    _height[i] = Mathf.Lerp(copy[i], avg, 0.5f);
+                }
+            }
+
+            _soll = null;
+            _sollGewicht = null;
+        }
+
         /// <summary>Nach dem Befuellen: Strassenkorridore in das Hoehenfeld einbuegeln.</summary>
         public void FlattenRoads()
         {

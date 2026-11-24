@@ -954,6 +954,16 @@ namespace Rio.WorldGen
                 if (kn.viertel == -2) continue;
                 if (kn.art == Art.Avenida) continue;      // hat seine Kachel schon
 
+                // Zwei Knoten mit Hoehenunterschied teilen sich eine
+                // Steigungskachel. Gesetzt wird sie vom unteren der beiden.
+                if (_partner != null && _partner[i] >= 0 && _stufe[_partner[i]] != _stufe[i])
+                {
+                    int nb = _partner[i];
+                    if (_stufe[i] > _stufe[nb]) continue;              // der andere macht es
+                    Steigungskachel(i, nb, ziel);
+                    continue;
+                }
+
                 int maske = Maske(i);
                 if (maske == 0) continue;
 
@@ -1008,6 +1018,49 @@ namespace Rio.WorldGen
         }
 
         /// <summary>
+        /// Setzt die Steigungskachel zwischen einem unteren und einem oberen
+        /// Knoten.
+        ///
+        /// Die Kachel deckt genau die beiden Rasterzellen ab. Angedockt wird
+        /// an ihrem unteren Anschluss - der liegt auf y = 0, der obere auf
+        /// y = 1,5 bzw. 3 m. Dadurch sitzen beide Enden genau auf der Hoehe
+        /// ihres Knotens, und die Fahrbahn laeuft durch statt zu springen.
+        /// </summary>
+        void Steigungskachel(int unten, int oben, List<RioHouseWorld.Placement> ziel)
+        {
+            int d = Mathf.Abs(_stufe[oben] - _stufe[unten]);
+            int model = d >= 2 ? RioModelCatalog.RuaSteigung : RioModelCatalog.RuaSteigungSanft;
+
+            var u = _k[unten];
+            var o = _k[oben];
+            Vector2 richtung = (o.p - u.p).normalized;        // bergauf
+            float yaw = Mathf.Atan2(richtung.x, richtung.y) * Mathf.Rad2Deg;
+
+            // Der untere Anschluss sitzt eine halbe Zelle hinter dem unteren
+            // Knoten, also am aeusseren Rand des Kachelpaars.
+            var fuge = new Vector3(u.p.x - richtung.x * Cell * 0.5f, u.h,
+                                   u.p.y - richtung.y * Cell * 0.5f);
+
+            if (!RioStrassennetz.Andocken(model, "Anschluss_Rua_S", fuge,
+                                          Mathf.Repeat(yaw + 180f, 360f),
+                                          out Vector3 pivot, out float kachelYaw))
+                return;
+
+            pivot.y = u.h;
+            ziel.Add(new RioHouseWorld.Placement
+            {
+                position = pivot,
+                yaw = kachelYaw,
+                model = model,
+                colorSeed = RioHousePlanner.Hash((int)pivot.x, (int)pivot.z)
+            });
+            _planner.Occupy(new Vector2(pivot.x, pivot.z), RioHousePlanner.Lot(model), kachelYaw);
+            SteigungKacheln++;
+        }
+
+        public int SteigungKacheln { get; private set; }
+
+        /// <summary>
         /// Welcher Anschluss einer Kachel in eine Weltrichtung zeigt, wenn die
         /// Kachel um <paramref name="yaw"/> gedreht steht.
         /// </summary>
@@ -1032,10 +1085,225 @@ namespace Rio.WorldGen
             }
         }
 
+        // ------------------------------------------------------------------
+        // Hoehen
+        // ------------------------------------------------------------------
+
+        int[] _stufe;        // Hoehe je Knoten in Vielfachen von RioStrassennetz.Stufe
+        int[] _partner;      // Knoten am anderen Ende einer Steigungskachel, sonst -1
+
+        public int Terrassen { get; private set; }
+        public int Steigungen { get; private set; }
+        public float GroessteStufe { get; private set; }
+        /// <summary>Stufen ohne Steigungskachel - jede davon ist ein Bruch.</summary>
+        public int OffeneStufen { get; private set; }
+
+        /// <summary>
+        /// Legt die Hoehen so fest, dass benachbarte Kacheln entweder genau
+        /// gleich hoch liegen oder sich um eine Stufe unterscheiden, die eine
+        /// Steigungskachel ueberbrueckt.
+        ///
+        /// Das ist die Ursache der schwebenden Objekte. Eine Kachel ist eine
+        /// flache Platte; stand sie auf der Gelaendehoehe ihrer Mitte, dann
+        /// schwebte sie auf der einen Seite und versank auf der anderen. Schon
+        /// 2 Prozent Neigung ergeben auf 12 m eine Stufe von 24 cm, und genau
+        /// diese Stufen sieht man im Spiel als Luecken - auf 89 Prozent der
+        /// Strecke liegt die Neigung unter 2 Prozent, steile Haenge sind also
+        /// nicht das Problem.
+        ///
+        /// Die Hoehen liegen danach auf einem Raster von 1,5 m - genau dem,
+        /// was die Kachel "Steigung sanft" ueberwindet. Kreuzungen werden
+        /// flach gehalten, wie in Wirklichkeit auch; ein Hoehenwechsel darf
+        /// nur auf einem geraden Stueck passieren.
+        /// </summary>
+        public void HoehenAusgleichen()
+        {
+            int n = _k.Count;
+            _stufe = new int[n];
+            _partner = new int[n];
+            var wunsch = new float[n];
+            for (int i = 0; i < n; i++) wunsch[i] = _k[i].h;
+
+            // Terrassen als Mengen von Knoten, die zwingend gleich hoch
+            // liegen muessen. Zusammengelegt wird mit Union-Find; das ist der
+            // Grund, warum das Verfahren terminiert: jede Runde, die einen
+            // Hoehenwechsel nicht unterbringt, legt zwei Terrassen zusammen,
+            // und zusammenlegen kann man nur endlich oft.
+            //
+            // Ein Durchlauf, der stattdessen einzelne Knoten einzieht, kreist:
+            // das Einebnen einer Kante bringt die naechste aus dem Lot. In der
+            // Messung blieben so 617 Stufen ohne Steigungskachel stehen - und
+            // jede davon ist ein Bruch in der Fahrbahn.
+            _vater = new int[n];
+            for (int i = 0; i < n; i++) _vater[i] = i;
+
+            // Kanten, an denen keine Steigungskachel stehen kann: Kreuzungen,
+            // Kurven, Enden. Die muessen flach sein - was in Wirklichkeit auch
+            // so ist.
+            for (int i = 0; i < n; i++)
+            for (int r = 0; r < 4; r++)
+            {
+                int nb = _kante[i * 4 + r];
+                if (nb < 0 || nb < i) continue;
+                if (!SteigungMoeglich(i, nb)) Vereinen(i, nb);
+            }
+
+            for (int runde = 0; runde < 40; runde++)
+            {
+                TerrassenHoehen(wunsch);
+
+                for (int i = 0; i < n; i++) _partner[i] = -1;
+                bool zusammengelegt = false;
+
+                for (int i = 0; i < n; i++)
+                for (int r = 0; r < 4; r++)
+                {
+                    int nb = _kante[i * 4 + r];
+                    if (nb < 0 || nb < i) continue;
+
+                    int d = _stufe[nb] - _stufe[i];
+                    if (d == 0) continue;                       // gleiche Terrasse
+
+                    bool geht = Mathf.Abs(d) <= 2
+                             && SteigungMoeglich(i, nb)
+                             && _partner[i] < 0 && _partner[nb] < 0;
+
+                    if (geht) { _partner[i] = nb; _partner[nb] = i; continue; }
+
+                    Vereinen(i, nb);
+                    zusammengelegt = true;
+                }
+
+                if (!zusammengelegt) break;
+            }
+
+            // Zurueckschreiben
+            var plateaus = new HashSet<int>();
+            for (int i = 0; i < n; i++)
+            {
+                var kn = _k[i];
+                kn.h = _stufe[i] * RioStrassennetz.Stufe;
+                _k[i] = kn;
+                plateaus.Add(_stufe[i]);
+            }
+            Terrassen = plateaus.Count;
+
+            GroessteStufe = 0f;
+            Steigungen = 0;
+            OffeneStufen = 0;
+            for (int i = 0; i < n; i++)
+            for (int r = 0; r < 4; r++)
+            {
+                int nb = _kante[i * 4 + r];
+                if (nb < 0 || nb < i) continue;
+                int d = Mathf.Abs(_stufe[nb] - _stufe[i]);
+                if (d == 0) continue;
+                Steigungen++;
+                GroessteStufe = Mathf.Max(GroessteStufe, d * RioStrassennetz.Stufe);
+                if (_partner[i] != nb) OffeneStufen++;
+            }
+        }
+
+        int[] _vater;
+
+        int Wurzel(int i)
+        {
+            while (_vater[i] != i) { _vater[i] = _vater[_vater[i]]; i = _vater[i]; }
+            return i;
+        }
+
+        void Vereinen(int a, int b)
+        {
+            int wa = Wurzel(a), wb = Wurzel(b);
+            if (wa != wb) _vater[wa] = wb;
+        }
+
+        /// <summary>
+        /// Gibt jeder Terrasse eine Hoehe: das Mittel der Wunschhoehen ihrer
+        /// Knoten, gerundet auf das 1,5-m-Raster - genau das, was die Kachel
+        /// "Steigung sanft" ueberwindet.
+        /// </summary>
+        void TerrassenHoehen(float[] wunsch)
+        {
+            int n = _k.Count;
+            var summe = new Dictionary<int, float>(n / 4 + 1);
+            var zahl = new Dictionary<int, int>(n / 4 + 1);
+
+            for (int i = 0; i < n; i++)
+            {
+                int w = Wurzel(i);
+                summe.TryGetValue(w, out float sv); summe[w] = sv + wunsch[i];
+                zahl.TryGetValue(w, out int zv); zahl[w] = zv + 1;
+            }
+
+            var stufe = new Dictionary<int, int>(summe.Count);
+            foreach (var kv in summe)
+                stufe[kv.Key] = Mathf.RoundToInt(kv.Value / zahl[kv.Key] / RioStrassennetz.Stufe);
+
+            for (int i = 0; i < n; i++) _stufe[i] = stufe[Wurzel(i)];
+        }
+
+        /// <summary>
+        /// Darf zwischen diesen beiden Knoten eine Steigungskachel stehen?
+        ///
+        /// Die Steigungskachel ist 12 x 24 m, sie nimmt also die Flaeche von
+        /// zwei Rasterzellen ein. Beide Knoten muessen deshalb Durchgangs-
+        /// knoten einer geraden Strecke sein - an einer Kreuzung oder in einer
+        /// Kurve ist kein Platz dafuer, und flache Kreuzungen sind ohnehin
+        /// richtig.
+        /// </summary>
+        bool SteigungMoeglich(int a, int b)
+        {
+            if (Grad(a) != 2 || Grad(b) != 2) return false;
+            return Gerade(a) && Gerade(b);
+        }
+
+        bool Gerade(int i) =>
+            (_kante[i * 4 + 0] >= 0 && _kante[i * 4 + 2] >= 0) ||
+            (_kante[i * 4 + 1] >= 0 && _kante[i * 4 + 3] >= 0);
+
+        /// <summary>
+        /// Meldet alle Flaechen der Stadt beim Gelaende an: Strassen auf ihrer
+        /// Kachelhoehe, und die Blockinnenflaechen auf der Hoehe der Strassen
+        /// drumherum.
+        /// </summary>
+        public void GelaendeMelden()
+        {
+            _t.StempelBeginnen();
+
+            for (int i = 0; i < _k.Count; i++)
+            {
+                var kn = _k[i];
+                if (kn.viertel == -2) continue;
+
+                // Die Kachel selbst, plus ein Stueck Vorland. Der Rand sorgt
+                // dafuer, dass das Gelaende weich anschliesst statt eine
+                // Kante zu bilden.
+                _t.Stempeln(kn.p, new Vector2(Cell, Cell), kn.yaw, kn.h - 0.05f, Cell);
+            }
+
+            _t.StempelAnwenden(3);
+        }
+
+        /// <summary>Gelaendehoehe entlang des Netzes, nach dem Stempeln.</summary>
+        public float GroessterUeberstand()
+        {
+            float max = 0f;
+            for (int i = 0; i < _k.Count; i++)
+            {
+                if (_k[i].viertel == -2) continue;
+                max = Mathf.Max(max, Mathf.Abs(_t.SampleHeight(_k[i].p) - (_k[i].h - 0.05f)));
+            }
+            return max;
+        }
+
         public override string ToString() =>
             $"{_k.Count - Entfernt:N0} Knoten ({Entfernt:N0} Splitter gestrichen), " +
             $"{Teilnetze:N0} Teilnetze, groesstes {GroesstesNetz:N0}, " +
-            $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, " +
+            $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, "
+          + $"{Terrassen:N0} Hoehenstufen, {SteigungKacheln:N0} Steigungskacheln, "
+          + $"{OffeneStufen:N0} Stufen ohne Kachel "
+          + $"(max {GroessteStufe:F1} m), " +
             $"Strecken {AvenidaStrecken:N0} Avenida + {RuaStrecken:N0} Rua geschlossen / "
           + $"{OffeneStrecken:N0} offen, "
           + $"groesster Knick {GroessterKnick:F2} Grad";

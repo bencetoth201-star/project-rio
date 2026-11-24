@@ -27,7 +27,12 @@ namespace Rio.WorldGen
         // Weltgrenzen in Metern. Deckt beide Inseln plus Meeresrand ab.
         const float MinX = -4100f, MaxX = 4100f;
         const float MinZ = -2800f, MaxZ = 2800f;
-        const float TerrainCell = 25f;
+        /// <summary>
+        /// Maschenweite des Hoehenfelds. Gleich der Kachelgroesse der Stadt:
+        /// mit 25 m konnte das Gelaende einer Terrassenstufe alle 12 m nicht
+        /// folgen, die Fahrbahn stand dadurch bis zu 3 m ueber dem Boden.
+        /// </summary>
+        const float TerrainCell = 12f;
 
         const float DistrictCell = 110f;
         const float FavelaCell = 62f;
@@ -45,7 +50,7 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Gelaende rechnen...", 0.1f);
 
             var terrain = new RioWorldTerrain(MinX, MaxX, MinZ, MaxZ, TerrainCell);
-            terrain.SmoothLowland(7);   // Ebene fuer die Stadt, Morros bleiben
+            terrain.SmoothLowland(24);   // Ebene fuer die Stadt, Morros bleiben
             terrain.FlattenRoads();
 
             var b = new Buckets();
@@ -72,6 +77,13 @@ namespace Rio.WorldGen
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.AufEinNetzReduzieren();
+
+            // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
+            // fertig, und ohne das fertige Netz weiss niemand, welche Kachel
+            // welche Nachbarn bekommt.
+            plan.HoehenAusgleichen();
+            plan.GelaendeMelden();
+
             plan.Kacheln(planner.PlacementList, rng);
 
             // Was jetzt noch nirgends anschliesst, ist ein Stummel im Feld

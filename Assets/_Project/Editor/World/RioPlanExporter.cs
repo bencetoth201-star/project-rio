@@ -32,8 +32,8 @@ namespace Rio.WorldGen
             var sw = System.Diagnostics.Stopwatch.StartNew();
             EditorUtility.DisplayProgressBar("Rio", "Gelaende rechnen...", 0.2f);
 
-            var terrain = new RioWorldTerrain(-4100f, 4100f, -2800f, 2800f, 25f);
-            terrain.SmoothLowland(7);
+            var terrain = new RioWorldTerrain(-4100f, 4100f, -2800f, 2800f, 12f);
+            terrain.SmoothLowland(24);
             terrain.FlattenRoads();
 
             EditorUtility.DisplayProgressBar("Rio", "Stadt planen...", 0.5f);
@@ -50,6 +50,13 @@ namespace Rio.WorldGen
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.AufEinNetzReduzieren();
+
+            // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
+            // fertig, und ohne das fertige Netz weiss niemand, welche Kachel
+            // welche Nachbarn bekommt.
+            plan.HoehenAusgleichen();
+            plan.GelaendeMelden();
+
             plan.Kacheln(planner.PlacementList, rng);
 
             // Was jetzt noch nirgends anschliesst, ist ein Stummel im Feld
@@ -61,7 +68,8 @@ namespace Rio.WorldGen
             planner.PlaceFavelas(rng);
 
             EditorUtility.DisplayProgressBar("Rio", "Netz pruefen...", 0.8f);
-            Debug.Log($"[Rio] Strassenplan: {plan}, {splitter:N0} Splitter weggeraeumt");
+            Debug.Log($"[Rio] Strassenplan: {plan}, {splitter:N0} Splitter weggeraeumt, "
+                    + $"groesster Ueberstand ueber Gelaende {plan.GroessterUeberstand():F2} m");
             var netz = new RioStrassennetz(planner.PlacementList);
             var groessen = netz.KomponentenGroessen();
             int winzig = 0;
