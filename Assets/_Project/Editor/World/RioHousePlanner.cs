@@ -102,6 +102,15 @@ namespace Rio.WorldGen
         // ------------------------------------------------------------------
 
         const float OccCell = 2f;
+
+        /// <summary>
+        /// Wie weit die Pruefung hinter die eigene Kante zurueckweicht.
+        /// Etwas mehr als eine halbe Rasterzelle, damit eine Zelle, deren
+        /// Mittelpunkt genau auf der gemeinsamen Kante liegt, keine
+        /// Kollision zwischen zwei aneinanderstossenden Kacheln meldet.
+        /// </summary>
+        const float Einzug = 1.1f;
+
         bool[] _occ;
         int _ow, _oh;
 
@@ -126,6 +135,14 @@ namespace Rio.WorldGen
             float rad = -yaw * Mathf.Deg2Rad;
             float cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
             float hx = size.x * 0.5f, hz = size.y * 0.5f;
+
+            // Beim Pruefen ein Stueck nach innen gehen. Zwei Kacheln, die
+            // aneinanderstossen, teilen sich die Zellen auf ihrer gemeinsamen
+            // Kante; ohne den Einzug hielt jede die Kante der anderen fuer
+            // belegt. Im Avenida-Router wurden dadurch 879 von 922 Kacheln zur
+            // Kreuzung, weil der Strang sich selbst blockierte.
+            if (!markieren) { hx -= Einzug; hz -= Einzug; }
+            if (hx <= 0f || hz <= 0f) return true;
 
             // achsparallele Huelle, nur um den Suchbereich einzugrenzen
             float ex = Mathf.Abs(size.x * cs) * 0.5f + Mathf.Abs(size.y * sn) * 0.5f;
@@ -191,6 +208,14 @@ namespace Rio.WorldGen
         int _gw, _gh;
 
         public IReadOnlyList<RioHouseWorld.Placement> Placements => _placements;
+
+        /// <summary>
+        /// Dieselbe Liste veraenderbar, fuer die Nachbearbeitung durch
+        /// <see cref="RioStrassennetz"/>. Hoehen und Kachelmodelle lassen sich
+        /// erst festlegen, wenn das ganze Netz steht - vorher weiss niemand,
+        /// welche Nachbarn eine Kachel bekommt.
+        /// </summary>
+        internal List<RioHouseWorld.Placement> PlacementList => _placements;
         public int Count => _placements.Count;
         public int RoadTiles { get; private set; }
         public int Houses { get; private set; }
@@ -365,7 +390,10 @@ namespace Rio.WorldGen
         // ------------------------------------------------------------------
 
         /// <summary>Taugt das Gelaende an dieser Stelle fuer Stadt?</summary>
-        bool TerrainOk(Vector2 w)
+        bool TerrainOk(Vector2 w) => IstStadt(w);
+
+        /// <summary>Darf an dieser Stelle ueberhaupt Stadt stehen?</summary>
+        public bool IstStadt(Vector2 w)
         {
             int gx = Mathf.FloorToInt((w.x - _t.MinX) / Cell);
             int gz = Mathf.FloorToInt((w.y - _t.MinZ) / Cell);
@@ -489,46 +517,10 @@ namespace Rio.WorldGen
                 street[iz * w + ix] = periodic || rand;
             }
 
-            // 3. Kacheln setzen
-            for (int ix = 0; ix < w; ix++)
-            for (int iz = 0; iz < h; iz++)
-            {
-                if (!street[iz * w + ix]) continue;
-
-                int mask = 0;
-                if (Get(street, w, h, ix, iz + 1)) mask |= RioModelCatalog.N;
-                if (Get(street, w, h, ix + 1, iz)) mask |= RioModelCatalog.E;
-                if (Get(street, w, h, ix, iz - 1)) mask |= RioModelCatalog.S;
-                if (Get(street, w, h, ix - 1, iz)) mask |= RioModelCatalog.W;
-                if (mask == 0) continue;
-
-                if (mask == RioModelCatalog.N || mask == RioModelCatalog.S)
-                    mask = RioModelCatalog.N | RioModelCatalog.S;
-                if (mask == RioModelCatalog.E || mask == RioModelCatalog.W)
-                    mask = RioModelCatalog.E | RioModelCatalog.W;
-
-                if (!RioModelCatalog.FindTile(mask, out int model, out float q)) continue;
-
-                var local = new Vector2((ix - nx) * Cell, (iz - nz) * Cell);
-                var world = RioDistricts.ToWorld(d, local);
-                int seed = Hash(ix + di * 977, iz);
-
-                if (model == RioModelCatalog.RoadStraight && (seed % 13) == 0)
-                    model = RioModelCatalog.RoadCobble;
-
-                float yaw = q + d.Rotation;
-                if (!Free(world, Lot(model), yaw)) continue;
-                Occupy(world, Lot(model), yaw);
-
-                _placements.Add(new RioHouseWorld.Placement
-                {
-                    position = new Vector3(world.x, _t.SampleHeight(world) + 0.05f, world.y),
-                    yaw = yaw,
-                    model = model,
-                    colorSeed = seed
-                });
-                RoadTiles++;
-            }
+            // Die Strassenkacheln setzt RioStrassenplan. Hier standen sie
+            // frueher auch, mit einem Free()-Test davor - und jede Kachel, die
+            // der Test ablehnte, riss ein Loch in eine Strasse. Der Graph
+            // entscheidet das jetzt vorher, und zwar fuer das ganze Netz.
 
             // 4. Blocks zwischen den Strassen bebauen
             var kind = (Viertel)(int)d.Type;

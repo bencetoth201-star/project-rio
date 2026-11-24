@@ -105,21 +105,39 @@ namespace Rio.WorldGen
             return r / (0.82f + n * 0.36f);
         }
 
+        // ------------------------------------------------------------------
+        // Das gedrehte Koordinatensystem eines Viertels
+        //
+        // Hier lag der Fehler, der das halbe Strassennetz zerrissen hat:
+        // Diese beiden Funktionen benutzten die uebliche mathematische
+        // 2D-Drehung, die gegen den Uhrzeigersinn dreht. Unitys Yaw dreht
+        // von oben gesehen aber im Uhrzeigersinn - yaw 90 zeigt nach +X.
+        //
+        // Das Kachelraster lief damit in die eine Richtung gedreht, die
+        // Kacheln selbst in die andere. Bei Rotation 0 fiel es nicht auf;
+        // in einem um 26 Grad gedrehten Viertel lagen die Anschluesse
+        // benachbarter Kacheln bis zu 10 m auseinander. Von 35.325
+        // Anschluessen hatten 26.485 keinen Partner.
+        //
+        // Beide Funktionen drehen jetzt wie Unity. Wer sie anfasst, muss
+        // sie weiter gegenseitig invers halten.
+        // ------------------------------------------------------------------
+
         /// <summary>Punkt in das gedrehte Koordinatensystem des Viertels.</summary>
         public static Vector2 ToLocal(in District d, Vector2 p)
         {
             Vector2 o = p - d.Center;
-            float rad = -d.Rotation * Mathf.Deg2Rad;
+            float rad = d.Rotation * Mathf.Deg2Rad;
             float c = Mathf.Cos(rad), s = Mathf.Sin(rad);
             return new Vector2(o.x * c - o.y * s, o.x * s + o.y * c);
         }
 
-        /// <summary>Zurueck in Weltkoordinaten.</summary>
+        /// <summary>Zurueck in Weltkoordinaten, mit Unitys Drehsinn.</summary>
         public static Vector2 ToWorld(in District d, Vector2 local)
         {
             float rad = d.Rotation * Mathf.Deg2Rad;
             float c = Mathf.Cos(rad), s = Mathf.Sin(rad);
-            return d.Center + new Vector2(local.x * c - local.y * s, local.x * s + local.y * c);
+            return d.Center + new Vector2(local.x * c + local.y * s, -local.x * s + local.y * c);
         }
 
         /// <summary>

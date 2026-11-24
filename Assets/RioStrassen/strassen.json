@@ -1176,5 +1176,783 @@
    12,
    8
   ]
+ },
+ {
+  "slug": "34_tunnel_mitte",
+  "name": "Tunnel – Mittelstück",
+  "cls": "Spezial",
+  "tris": 888,
+  "mats": 15,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   7.5,
+   24.0
+  ],
+  "anchors": {
+   "Tunnel_Innen": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   24
+  ]
+ },
+ {
+  "slug": "35_rua_serpentine_links",
+  "name": "Rua – Serpentine 90° links +3 m",
+  "cls": "Rua",
+  "tris": 3932,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   22.0,
+   9.6,
+   22.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_Ende": [
+    -16.0,
+    3.0,
+    -16.0,
+    270
+   ]
+  },
+  "lot": [
+   22.0,
+   22.0
+  ],
+  "offset": [
+   5.0,
+   11.0
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "36_rua_serpentine_rechts",
+  "name": "Rua – Serpentine 90° rechts +3 m",
+  "cls": "Rua",
+  "tris": 3932,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   22.0,
+   9.6,
+   22.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Rua_Ende": [
+    16.0,
+    3.0,
+    -16.0,
+    90
+   ]
+  },
+  "lot": [
+   22.0,
+   22.0
+  ],
+  "offset": [
+   -5.0,
+   11.0
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "37_rua_steigung_sanft",
+  "name": "Rua – Steigung sanft +1,5 m",
+  "cls": "Rua",
+  "tris": 356,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   8.3,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Rua_N": [
+    0.0,
+    1.5,
+    -12.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   24
+  ]
+ },
+ {
+  "slug": "38_bruecke_segment",
+  "name": "Brücke – Segment gerade",
+  "cls": "Brücke",
+  "tris": 632,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.1,
+   12.8,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Bruecke_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Pfeiler_S": [
+    0.0,
+    -2.6,
+    12.0,
+    0
+   ],
+   "Anschluss_Bruecke_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Pfeiler_N": [
+    0.0,
+    -2.6,
+    -12.0,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   24
+  ]
+ },
+ {
+  "slug": "39_bruecke_steigung",
+  "name": "Brücke – Segment +2 m",
+  "cls": "Brücke",
+  "tris": 632,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.1,
+   14.3,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Bruecke_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ],
+   "Pfeiler_S": [
+    0.0,
+    -2.6,
+    12.0,
+    0
+   ],
+   "Anschluss_Bruecke_N": [
+    0.0,
+    2.0,
+    -12.0,
+    180
+   ],
+   "Pfeiler_N": [
+    0.0,
+    -0.6,
+    -12.0,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   24
+  ]
+ },
+ {
+  "slug": "40_brueckenkopf",
+  "name": "Brückenkopf – Rampe +5 m",
+  "cls": "Brücke",
+  "tris": 496,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   12.8,
+   48.8
+  ],
+  "anchors": {
+   "Anschluss_Bruecke_S": [
+    0.0,
+    0.0,
+    24.0,
+    0
+   ],
+   "Anschluss_Bruecke_N": [
+    0.0,
+    5.0,
+    -24.0,
+    180
+   ]
+  },
+  "lot": [
+   12,
+   48
+  ]
+ },
+ {
+  "slug": "41_pfeiler_fundament",
+  "name": "Pfeiler – Fundament 1 m",
+  "cls": "Brücke",
+  "tris": 52,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   8.0,
+   1.0,
+   5.0
+  ],
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    1.0,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   8,
+   6
+  ]
+ },
+ {
+  "slug": "42_pfeiler_schaft_2m",
+  "name": "Pfeiler – Schaft 2 m",
+  "cls": "Brücke",
+  "tris": 56,
+  "mats": 2,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.0,
+   2.0,
+   2.2
+  ],
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    2.0,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   4,
+   4
+  ]
+ },
+ {
+  "slug": "43_pfeiler_schaft_8m",
+  "name": "Pfeiler – Schaft 8 m",
+  "cls": "Brücke",
+  "tris": 56,
+  "mats": 2,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.0,
+   8.0,
+   2.2
+  ],
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    8.0,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   4,
+   4
+  ]
+ },
+ {
+  "slug": "44_pfeiler_kopf",
+  "name": "Pfeiler – Kopf 1,4 m",
+  "cls": "Brücke",
+  "tris": 52,
+  "mats": 2,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.6,
+   1.4,
+   2.9
+  ],
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Traeger_Unterkante": [
+    0.0,
+    1.4,
+    0.0,
+    0
+   ]
+  },
+  "lot": [
+   8,
+   4
+  ]
+ },
+ {
+  "slug": "45_schnellstrasse_gerade",
+  "name": "Schnellstraße – Gerade",
+  "cls": "Schnellstraße",
+  "tris": 568,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.0,
+   11.3,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_N": [
+    0.0,
+    0.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Schnellstrasse_S": [
+    0.0,
+    0.0,
+    12.0,
+    0
+   ]
+  },
+  "lot": [
+   24,
+   24
+  ]
+ },
+ {
+  "slug": "46_schnellstrasse_bogen_15",
+  "name": "Schnellstraße – Bogen 15°",
+  "cls": "Schnellstraße",
+  "tris": 1240,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   27.0,
+   11.3,
+   29.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Schnellstrasse_Ende": [
+    -3.407,
+    0.0,
+    -25.882,
+    195
+   ]
+  },
+  "lot": [
+   27.0,
+   29.0
+  ],
+  "offset": [
+   1.5,
+   14.49
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "47_schnellstrasse_bogen_30",
+  "name": "Schnellstraße – Bogen 30°",
+  "cls": "Schnellstraße",
+  "tris": 2368,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   35.8,
+   11.3,
+   56.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_S": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Anschluss_Schnellstrasse_Ende": [
+    -13.397,
+    0.0,
+    -50.0,
+    210
+   ]
+  },
+  "lot": [
+   35.8,
+   56.0
+  ],
+  "offset": [
+   5.89,
+   28.0
+  ],
+  "noOutline": true
+ },
+ {
+  "slug": "48_schnellstrasse_abfahrt",
+  "name": "Schnellstraße – Abfahrt → Rua",
+  "cls": "Schnellstraße",
+  "tris": 4864,
+  "mats": 11,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   36.0,
+   11.3,
+   48.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_S": [
+    -6.0,
+    0.0,
+    24.0,
+    0
+   ],
+   "Anschluss_Schnellstrasse_N": [
+    -6.0,
+    0.0,
+    -24.0,
+    180
+   ],
+   "Anschluss_Rua_N": [
+    12.0,
+    0.0,
+    -24.0,
+    180
+   ]
+  },
+  "lot": [
+   36,
+   48
+  ]
+ },
+ {
+  "slug": "49_schnellstrasse_auffahrt",
+  "name": "Schnellstraße – Auffahrt ← Rua",
+  "cls": "Schnellstraße",
+  "tris": 3104,
+  "mats": 11,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   36.0,
+   11.3,
+   48.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_S": [
+    -6.0,
+    0.0,
+    24.0,
+    0
+   ],
+   "Anschluss_Schnellstrasse_N": [
+    -6.0,
+    0.0,
+    -24.0,
+    180
+   ],
+   "Anschluss_Rua_S": [
+    12.0,
+    0.0,
+    24.0,
+    0
+   ]
+  },
+  "lot": [
+   36,
+   48
+  ]
+ },
+ {
+  "slug": "50_schnellstrasse_viadukt",
+  "name": "Schnellstraße – Viadukt +9 m",
+  "cls": "Schnellstraße",
+  "tris": 792,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.1,
+   20.2,
+   24.0
+  ],
+  "anchors": {
+   "Anschluss_Schnellstrasse_N": [
+    0.0,
+    9.0,
+    -12.0,
+    180
+   ],
+   "Anschluss_Schnellstrasse_S": [
+    0.0,
+    9.0,
+    12.0,
+    0
+   ],
+   "Unterfahrt_West": [
+    -7.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Unterfahrt_Ost": [
+    7.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  },
+  "lot": [
+   24,
+   24
+  ]
+ },
+ {
+  "slug": "51_stuetzmauer_2m",
+  "name": "Stützmauer 2 m",
+  "cls": "Gelände",
+  "tris": 424,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   3.1,
+   4.0
+  ],
+  "anchors": {
+   "Oben": [
+    0.0,
+    2.0,
+    0.0,
+    180
+   ],
+   "Unten": [
+    0.0,
+    0.0,
+    2.5,
+    0
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "52_mauerabschluss_4m_rechts",
+  "name": "Mauerabschluss 4 m rechts",
+  "cls": "Gelände",
+  "tris": 340,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   5.1,
+   4.0
+  ],
+  "anchors": {
+   "Anschluss_Mauer": [
+    -6.0,
+    0.0,
+    2.0,
+    -90
+   ],
+   "Oben": [
+    -5.0,
+    3.667,
+    0.0,
+    180
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "53_mauerabschluss_4m_links",
+  "name": "Mauerabschluss 4 m links",
+  "cls": "Gelände",
+  "tris": 340,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   5.1,
+   4.0
+  ],
+  "anchors": {
+   "Anschluss_Mauer": [
+    6.0,
+    0.0,
+    2.0,
+    90
+   ],
+   "Oben": [
+    5.0,
+    3.667,
+    0.0,
+    -180
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "54_mauerabschluss_2m_rechts",
+  "name": "Mauerabschluss 2 m rechts",
+  "cls": "Gelände",
+  "tris": 304,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   3.2,
+   4.0
+  ],
+  "anchors": {
+   "Anschluss_Mauer": [
+    -6.0,
+    0.0,
+    2.0,
+    -90
+   ],
+   "Oben": [
+    -5.0,
+    1.833,
+    0.0,
+    180
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
+ },
+ {
+  "slug": "55_mauerabschluss_2m_links",
+  "name": "Mauerabschluss 2 m links",
+  "cls": "Gelände",
+  "tris": 304,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   3.1,
+   4.0
+  ],
+  "anchors": {
+   "Anschluss_Mauer": [
+    6.0,
+    0.0,
+    2.0,
+    90
+   ],
+   "Oben": [
+    5.0,
+    1.833,
+    0.0,
+    -180
+   ]
+  },
+  "lot": [
+   12,
+   4
+  ]
  }
 ]

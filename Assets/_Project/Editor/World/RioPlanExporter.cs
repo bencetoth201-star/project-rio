@@ -41,11 +41,33 @@ namespace Rio.WorldGen
             var rng = new System.Random(20261122);
             planner.BuildCityMask();
             planner.InitOccupancy();
-            planner.PlaceAvenidas(rng);
+
+            // Erst das Netz als Graph, dann Kacheln daraus. Die Reihenfolge ist
+            // entscheidend: die Strassen belegen ihren Platz, bevor ein Haus
+            // gesetzt wird, und kein Haus kann eine Strasse verhindern.
+            var plan = new RioStrassenplan(terrain, planner);
+            plan.Viertel();
+            plan.HoehenAusGelaende();
+            plan.AvenidasVerbinden(planner.PlacementList);
+            plan.AufEinNetzReduzieren();
+            plan.Kacheln(planner.PlacementList, rng);
+
+            // Was jetzt noch nirgends anschliesst, ist ein Stummel im Feld
+            int splitter = RioStrassennetz.SplitterEntfernen(planner.PlacementList, 6);
+
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
             planner.PlaceCity(rng);
             planner.PlaceFavelas(rng);
+
+            EditorUtility.DisplayProgressBar("Rio", "Netz pruefen...", 0.8f);
+            Debug.Log($"[Rio] Strassenplan: {plan}, {splitter:N0} Splitter weggeraeumt");
+            var netz = new RioStrassennetz(planner.PlacementList);
+            var groessen = netz.KomponentenGroessen();
+            int winzig = 0;
+            foreach (int g in groessen) if (g <= 3) winzig++;
+            Debug.Log($"[Rio] Strassennetz: {netz}, davon {winzig:N0} Teilnetze " +
+                      "mit 3 Kacheln oder weniger");
 
             EditorUtility.DisplayProgressBar("Rio", "Plan schreiben...", 0.85f);
             var inv = CultureInfo.InvariantCulture;
@@ -87,6 +109,7 @@ namespace Rio.WorldGen
             {
                 sb.Append(p.position.x.ToString("F1", inv)).Append(' ')
                   .Append(p.position.z.ToString("F1", inv)).Append(' ')
+                  .Append(p.position.y.ToString("F1", inv)).Append(' ')
                   .Append(p.yaw.ToString("F0", inv)).Append(' ')
                   .Append(p.model).Append('\n');
             }
@@ -112,7 +135,7 @@ namespace Rio.WorldGen
             sw.Stop();
 
             Debug.Log($"[Rio] Plan exportiert in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
-                      $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Avenidas:N0} Avenidas, {planner.Houses:N0} Haeuser, " +
+                      $"{planner.Houses:N0} Haeuser, " +
                       $"{planner.Shacks:N0} Huetten, {planner.Blocks:N0} Blocks -> {OutPath} " +
                       $"({sb.Length / 1024 / 1024} MB)");
         }

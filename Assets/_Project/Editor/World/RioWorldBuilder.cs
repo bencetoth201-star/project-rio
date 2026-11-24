@@ -51,31 +51,46 @@ namespace Rio.WorldGen
             var b = new Buckets();
             var rng = new System.Random(20261122);
 
-            EditorUtility.DisplayProgressBar("Rio", "Gelaende vernetzen...", 0.3f);
-            BuildTerrainMesh(terrain, b);
-            BuildWaterPlanes(b);
+            // Die Reihenfolge ist der Kern der Sache. Vorher wurde hier das
+            // Gelaendenetz gebaut und erst danach die Stadt geplant - das
+            // Gelaende stand also fest, bevor die erste Strassenkachel gesetzt
+            // war, und die Kacheln wurden auf einen Untergrund gelegt, der
+            // nichts von ihnen wusste. Daher die schwebenden Objekte und die
+            // Luecken an jeder Steigung.
+            //
+            // Jetzt plant die Stadt zuerst, legt ihre Hoehen fest, und das
+            // Gelaende wird danach gebaut - auf diese Hoehen.
 
-            EditorUtility.DisplayProgressBar("Rio", "Strassen und Bruecke...", 0.45f);
-            BuildRoads(terrain, b);
-            BuildBridge(terrain, b);
-
-            EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.55f);
+            EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.3f);
             var planner = new RioHousePlanner(terrain);
             planner.BuildCityMask();
             planner.InitOccupancy();
 
-            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.62f);
-            planner.PlaceAvenidas(rng);
+            EditorUtility.DisplayProgressBar("Rio", "Strassennetz planen...", 0.38f);
+            var plan = new RioStrassenplan(terrain, planner);
+            plan.Viertel();
+            plan.HoehenAusGelaende();
+            plan.AvenidasVerbinden(planner.PlacementList);
+            plan.AufEinNetzReduzieren();
+            plan.Kacheln(planner.PlacementList, rng);
+
+            // Was jetzt noch nirgends anschliesst, ist ein Stummel im Feld
+            int splitter = RioStrassennetz.SplitterEntfernen(planner.PlacementList, 6);
+
+            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.5f);
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
 
-            // Ein Viertel nach dem anderen: erst seine Strassen, dann seine
-            // Blocks. Jedes hat ein eigenes gedrehtes Raster.
-            EditorUtility.DisplayProgressBar("Rio", "Viertel bauen...", 0.7f);
+            EditorUtility.DisplayProgressBar("Rio", "Viertel bebauen...", 0.6f);
             planner.PlaceCity(rng);
 
-            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.82f);
+            EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.7f);
             planner.PlaceFavelas(rng);
+
+            EditorUtility.DisplayProgressBar("Rio", "Gelaende vernetzen...", 0.78f);
+            BuildTerrainMesh(terrain, b);
+            BuildWaterPlanes(b);
+            BuildBridge(terrain, b);
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen...", 0.85f);
             BuildPlaces(terrain, b, rng);
@@ -101,7 +116,7 @@ namespace Rio.WorldGen
             float landKm2 = EstimateLandArea(terrain) / 1_000_000f;
             Debug.Log($"[Rio] Welt gebaut in {sw.ElapsedMilliseconds / 1000f:F1}s: " +
                       $"Gelaende {tris:N0} Dreiecke. " +
-                      $"{planner.RoadTiles:N0} Strassenkacheln, {planner.Blocks:N0} Blocks mit " +
+                      $"{plan} | {planner.Blocks:N0} Blocks mit " +
                       $"{planner.Houses:N0} Haeusern, {planner.Freiflaechen:N0} Plaetzen/Parks, " +
                       $"{planner.Shacks:N0} Favela-Huetten. " +
                       $"Viertel: Centro {planner.KindCount[0]}, Orla {planner.KindCount[1]}, " +
