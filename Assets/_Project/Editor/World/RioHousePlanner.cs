@@ -424,9 +424,13 @@ namespace Rio.WorldGen
                 p += gewaehlt * step;
                 float yaw = Mathf.Atan2(gewaehlt.x, gewaehlt.y) * Mathf.Rad2Deg;
 
-                int model = RioModelCatalog.AvenidaStraight;
+                // Avenidas laufen vor der Stadt und haben Vorrang. Wenn hier
+                // doch etwas liegt, ist es eine andere Avenida - dann gibt es
+                // eine Kreuzung statt einer Luecke.
+                int model = Free(p, Lot(RioModelCatalog.AvenidaStraight), yaw)
+                          ? RioModelCatalog.AvenidaStraight
+                          : RioModelCatalog.AvenidaCross;
                 var lot = Lot(model);
-                if (!Free(p, lot, yaw)) continue;     // kreuzt eine Stadtstrasse: dort nichts setzen
                 Occupy(p, lot, yaw);
 
                 _placements.Add(new RioHouseWorld.Placement

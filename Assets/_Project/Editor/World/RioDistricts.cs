@@ -44,25 +44,25 @@ namespace Rio.WorldGen
         public static readonly District[] All =
         {
             // ---------------- Rio, Westinsel ----------------
-            D("Centro",        Kind.Centro,    735, 520, 52, 46,  14f),
-            D("Flamengo",      Kind.Orla,      772, 586, 30, 34,  10f),
-            D("Botafogo",      Kind.Bairro,    702, 596, 40, 36,  26f),
-            D("Copacabana",    Kind.Orla,      806, 676, 44, 30, -38f),
-            D("Ipanema",       Kind.Orla,      742, 726, 46, 26, -14f),
-            D("Lagoa",         Kind.Nobre,     588, 686, 48, 40,   4f),
-            D("Tijuca",        Kind.Bairro,    628, 556, 52, 40, -12f),
-            D("Zona Norte",    Kind.Bairro,    520, 486, 56, 50,  22f),
-            D("Porto",         Kind.Industrie, 520, 442, 40, 26,   0f),
-            D("Zona Oeste",    Kind.Bairro,    446, 626, 46, 50, -22f),
-            D("Barra",         Kind.Nobre,     470, 760, 50, 32,  12f),
+            D("Centro",        Kind.Centro,    730, 516, 62, 54,  14f),
+            D("Flamengo",      Kind.Orla,      778, 572, 34, 40,  10f),
+            D("Botafogo",      Kind.Bairro,    696, 592, 48, 44,  26f),
+            D("Copacabana",    Kind.Orla,      792, 660, 50, 36, -38f),
+            D("Ipanema",       Kind.Orla,      726, 712, 52, 32, -14f),
+            D("Lagoa",         Kind.Nobre,     584, 676, 54, 46,   4f),
+            D("Tijuca",        Kind.Bairro,    622, 548, 60, 46, -12f),
+            D("Zona Norte",    Kind.Bairro,    514, 480, 64, 56,  22f),
+            D("Porto",         Kind.Industrie, 516, 436, 44, 28,   0f),
+            D("Zona Oeste",    Kind.Bairro,    440, 618, 52, 56, -22f),
+            D("Barra",         Kind.Nobre,     472, 748, 56, 36,  12f),
 
             // ---------------- Niteroi, Ostinsel ----------------
-            D("Centro Niteroi", Kind.Centro,   1066, 452, 44, 40, -22f),
-            D("Icarai",         Kind.Orla,     1146, 356, 42, 32,  16f),
-            D("Niteroi Norte",  Kind.Bairro,   1180, 276, 46, 28,   0f),
-            D("Niteroi Leste",  Kind.Bairro,   1232, 478, 40, 42,  26f),
-            D("Niteroi Sul",    Kind.Bairro,   1142, 702, 50, 36, -16f),
-            D("Militaer",       Kind.Industrie,1236, 586, 32, 28,   0f),
+            D("Centro Niteroi", Kind.Centro,   1062, 448, 52, 46, -22f),
+            D("Icarai",         Kind.Orla,     1142, 352, 48, 36,  16f),
+            D("Niteroi Norte",  Kind.Bairro,   1178, 272, 52, 32,   0f),
+            D("Niteroi Leste",  Kind.Bairro,   1228, 474, 46, 48,  26f),
+            D("Niteroi Sul",    Kind.Bairro,   1138, 696, 56, 42, -16f),
+            D("Militaer",       Kind.Industrie,1236, 586, 36, 30,   0f),
         };
 
         /// <summary>
@@ -84,12 +84,25 @@ namespace Rio.WorldGen
             return best;
         }
 
-        /// <summary>Abstand im Viertelmass: unter 1 liegt innerhalb der Ellipse.</summary>
+        /// <summary>
+        /// Abstand im Viertelmass: unter 1 liegt innerhalb.
+        ///
+        /// Der Rand bekommt Rauschen aufgeschlagen. Eine perfekte Ellipse
+        /// sieht man einem Stadtplan sofort an - echte Viertelgrenzen folgen
+        /// Haengen, Kuesten und Hauptstrassen und sind entsprechend krumm.
+        /// </summary>
         public static float Norm(in District d, Vector2 p)
         {
             Vector2 local = ToLocal(d, p);
             float u = local.x / d.A, v = local.y / d.B;
-            return Mathf.Sqrt(u * u + v * v);
+            float r = Mathf.Sqrt(u * u + v * v);
+            if (r < 0.55f) return r;          // innen braucht es kein Rauschen
+
+            float winkel = Mathf.Atan2(v, u);
+            float n = Mathf.PerlinNoise(
+                Mathf.Cos(winkel) * 1.7f + d.Center.x * 0.0013f + 11f,
+                Mathf.Sin(winkel) * 1.7f + d.Center.y * 0.0013f + 23f);
+            return r / (0.82f + n * 0.36f);
         }
 
         /// <summary>Punkt in das gedrehte Koordinatensystem des Viertels.</summary>

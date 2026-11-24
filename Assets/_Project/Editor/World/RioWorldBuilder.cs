@@ -65,13 +65,13 @@ namespace Rio.WorldGen
             planner.InitOccupancy();
 
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen und Villen...", 0.62f);
+            planner.PlaceAvenidas(rng);
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
 
             // Ein Viertel nach dem anderen: erst seine Strassen, dann seine
             // Blocks. Jedes hat ein eigenes gedrehtes Raster.
             EditorUtility.DisplayProgressBar("Rio", "Viertel bauen...", 0.7f);
-            planner.PlaceAvenidas(rng);
             planner.PlaceCity(rng);
 
             EditorUtility.DisplayProgressBar("Rio", "Favelas...", 0.82f);

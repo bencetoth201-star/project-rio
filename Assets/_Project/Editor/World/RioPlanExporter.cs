@@ -41,9 +41,9 @@ namespace Rio.WorldGen
             var rng = new System.Random(20261122);
             planner.BuildCityMask();
             planner.InitOccupancy();
+            planner.PlaceAvenidas(rng);
             planner.PlaceVillas(rng);
             planner.PlaceSpecials(rng);
-            planner.PlaceAvenidas(rng);
             planner.PlaceCity(rng);
             planner.PlaceFavelas(rng);
 
