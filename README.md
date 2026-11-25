@@ -20,7 +20,11 @@ Deshalb nach dem Clone einmal, in dieser Reihenfolge:
 1. **Tools → Rio → Welt bauen (20 km2)**
 2. **Tools → Rio → Block-Figur bauen**
 
-Bis dahin zeigt die `SampleScene` fehlende Meshes. Das ist erwartet.
+Die Szene selbst liegt ebenfalls nicht im Repo - sie ist das Ergebnis der
+Generatoren, nicht ihre Quelle. Vor dem ersten Bau ist sie leer oder gar
+nicht da. Das ist erwartet.
+
+**Zu zweit arbeiten:** siehe `ZUSAMMENARBEIT.md`.
 
 Beide Generatoren brechen ab, wenn der Play Mode läuft — dort gebaute
 Objekte verschwinden beim Stoppen wieder.

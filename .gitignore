@@ -61,3 +61,11 @@ desktop.ini
 # 47 MB Mesh-Assets gehoeren nicht in die Versionsverwaltung.
 # Nach einem frischen Clone: Tools > Rio > Welt bauen, dann Block-Figur bauen.
 /Assets/_Project/Generated/
+
+# Die Szene ist das Ergebnis der Generatoren, nicht ihre Quelle.
+# Sie enthaelt nach einem Weltbau ueber 1000 Objekte und 2,3 MB YAML, die
+# sich bei jedem Lauf komplett aendern - zwei Leute, die beide bauen,
+# bekommen garantiert einen Konflikt, den Git nicht aufloesen kann.
+# Jeder baut sie lokal; bei festem Seed kommt ueberall dasselbe heraus.
+/Assets/Scenes/*.unity
+/Assets/Scenes/*.unity.meta
