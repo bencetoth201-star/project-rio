@@ -1,0 +1,72 @@
+{
+ "slug": "valente_gt",
+ "name": "Valente GT",
+ "cls": "Sport-Coupé",
+ "tris": 3492,
+ "mats": 13,
+ "slots": [
+  "slot_caliper_1",
+  "slot_paint_1",
+  "slot_rim_1"
+ ],
+ "combos": 576,
+ "size": [
+  2.24,
+  1.39,
+  4.96
+ ],
+ "lot": [
+  2.24,
+  4.96
+ ],
+ "anchors": {
+  "Fahrertuer": [
+   1.35,
+   0.0,
+   -0.15,
+   90
+  ],
+  "Beifahrertuer": [
+   -1.35,
+   0.0,
+   -0.15,
+   -90
+  ],
+  "Sitz_Fahrer": [
+   0.38,
+   0.48,
+   -0.4,
+   0
+  ],
+  "Sitz_Beifahrer": [
+   -0.38,
+   0.48,
+   -0.4,
+   0
+  ],
+  "Kofferraum": [
+   0.0,
+   0.5,
+   -2.9,
+   180
+  ],
+  "Motorhaube": [
+   0.0,
+   0.8,
+   1.6,
+   0
+  ],
+  "Auspuff": [
+   0.0,
+   0.31,
+   -2.5,
+   180
+  ],
+  "Scheinwerfer": [
+   0.0,
+   0.6,
+   2.5,
+   0
+  ]
+ }
+}

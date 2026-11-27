@@ -313,6 +313,7 @@ namespace Rio.WorldGen
                 if (h < 2.5f || h > 70f) continue;
                 if (_t.SlopeAt(p) > 0.12f) continue;        // flach genug fuer ein Raster
                 if (NearPlace(p, 45f)) continue;
+                if (RioWahrzeichen.Belegt(p, Cell)) continue;   // Flughafen, Stadion, Hafen ...
 
                 _city[gz * _gw + gx] = true;
             }
@@ -754,6 +755,7 @@ namespace Rio.WorldGen
             {
                 if (place.Kind != RioWorldLayout.Poi.BankGross &&
                     place.Kind != RioWorldLayout.Poi.BankKlein) continue;
+                if (RioWahrzeichen.Ersetzt(place.Label)) continue;   // Banco Central = Casa Império
 
                 float bYaw = (Hash((int)place.Position.x, (int)place.Position.y) & 3) * 90f;
                 _placements.Add(new RioHouseWorld.Placement

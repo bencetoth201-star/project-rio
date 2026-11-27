@@ -36,7 +36,7 @@ public static class RioHausDaten
         new Haus("16_tankstelle_257", "Tankstelle 257", "Spezial", 30f, 22f, 6560),
         new Haus("17_mansao_leblon", "Mansão Leblon · R$ 20 Mio.", "Luxus", 36f, 30f, 5044),
         new Haus("18_mansao_joatinga", "Mansão Joatinga · R$ 50 Mio.", "Luxus", 52f, 44f, 7600),
-        new Haus("19_banco_brasilia", "Banco de Brasilia", "Spezial", 28f, 24f, 14926),
+        new Haus("19_banco_brasilia", "Banco de Brasilia", "Spezial", 28f, 24f, 14950),
         new Haus("20_torre_centro", "Torre Centro (116 m)", "Centro", 32f, 34f, 2448),
         new Haus("21_edificio_70er", "Edifício Anos 70 (104 m)", "Centro", 40f, 22f, 1548),
         new Haus("22_igreja", "Igreja (Kirche)", "Spezial", 24f, 36f, 2920),
@@ -45,7 +45,12 @@ public static class RioHausDaten
         new Haus("25_eck_sobrado", "Eck-Sobrado", "Ecke", 14f, 14f, 1912),
         new Haus("26_eck_predio", "Eck-Prédio", "Ecke", 18f, 18f, 1104),
         new Haus("27_praca", "Praça mit Coreto", "Freifläche", 36f, 36f, 3478),
-        new Haus("28_parque", "Park mit Bolzplatz", "Freifläche", 36f, 36f, 2988)
+        new Haus("28_parque", "Park mit Bolzplatz", "Freifläche", 36f, 36f, 2988),
+        new Haus("29_clube_subsolo", "Clube Subsolo (Nachtclub)", "Spezial", 26f, 36f, 23188),
+        new Haus("30_garagem_021", "Garagem 021 (Tuning)", "Spezial", 26f, 30f, 19400),
+        new Haus("31_mega_moda", "Mega Moda Popular (Kleiderladen)", "Spezial", 8f, 16f, 29688),
+        new Haus("32_estadio_do_rio", "Estádio do Rio (Stadion)", "Spezial", 300f, 268f, 28530),
+        new Haus("33_esmeralda_joias", "Esmeralda Joias (Juwelier)", "Spezial", 12f, 24f, 26588)
     };
 
     public static readonly Dictionary<string, string[]> Paletten = new Dictionary<string, string[]>

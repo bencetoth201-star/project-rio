@@ -775,6 +775,7 @@ namespace Rio.WorldGen
                         var mitte = new Vector2(pivot.x, pivot.z);
                         if (!_t.IsLand(mitte)) continue;
                         if (_t.DistanceToCoast(mitte) < kuestenabstand) continue;
+                        if (RioWahrzeichen.Belegt(mitte, Cell)) continue;
 
                         alle.Add(new Zustand
                         {
@@ -1696,6 +1697,9 @@ namespace Rio.WorldGen
                 // Kante zu bilden.
                 _t.Stempeln(kn.p, new Vector2(Cell, Cell), kn.yaw, kn.h - 0.05f, Cell);
             }
+
+            // Grundflaechen der Wahrzeichen auf ihre eigene Hoehe
+            RioWahrzeichen.Stempeln(_t);
 
             _t.StempelAnwenden(3);
         }
