@@ -63,6 +63,12 @@ namespace Rio.WorldGen
             D("Niteroi Leste",  Kind.Bairro,   1228, 474, 46, 48,  26f),
             D("Niteroi Sul",    Kind.Bairro,   1138, 696, 56, 42, -16f),
             D("Militaer",       Kind.Industrie,1236, 586, 36, 30,   0f),
+
+            // ---------------- Rio, nachgetragen ----------------
+            // Hier lag vorher der Flughafen. Der ist als Halbinsel an die
+            // Ostkueste gezogen. Steht hinten, damit die Indizes oben und in
+            // den Verbindungen gleich bleiben.
+            D("Sao Cristovao",  Kind.Bairro,    648, 410, 60, 70,   8f),
         };
 
         /// <summary>
@@ -152,6 +158,8 @@ namespace Rio.WorldGen
             {7,9},{9,10},{10,5},{2,6},{0,2},{5,9},
             // Niteroi
             {11,12},{12,13},{11,14},{14,16},{11,15},{15,16},{13,14},
+            // Sao Cristovao
+            {17,7},{17,6},{17,0},
         };
 
         /// <summary>Strassenraster je Viertelstyp: Periode in X und Z, in 12-m-Kacheln.</summary>
