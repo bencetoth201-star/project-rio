@@ -151,7 +151,8 @@ namespace Rio.WorldGen
         {
             // --- Rio ---
             new Place(Poi.Hafen,          525, 448, "Hafen"),
-            new Place(Poi.FlughafenGross, 648, 448, "Flughafen Rio"),
+            // Halbinsel an der Ostkueste, wie Santos Dumont in der Bucht
+            new Place(Poi.FlughafenGross, 800, 532, "Flughafen Rio"),
             new Place(Poi.JeweleryKlein,  560, 524, "Jewelery Sul"),
             new Place(Poi.BankGross,      737, 524, "Banco Central"),
             new Place(Poi.Krankenhaus,    650, 570, "Hospital Rio"),

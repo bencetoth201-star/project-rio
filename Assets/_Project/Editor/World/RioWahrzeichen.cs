@@ -181,7 +181,7 @@ namespace Rio.WorldGen
                 switch (place.Kind)
                 {
                     case RioWorldLayout.Poi.FlughafenGross:
-                        Modell(t, place, "Flughafen_Santos_Dumont", Flughafen, 700f, 0.5f, 30f, new[] { "SDU_Wasser" });
+                        FlughafenPlanen(t, place);
                         break;
                     case RioWorldLayout.Poi.Militaerbasis:
                         Modell(t, place, "Militaerbasis", Militaer, 600f, 0.9f, 30f);
@@ -499,6 +499,87 @@ namespace Rio.WorldGen
                 Object.DestroyImmediate(palast);
                 Object.DestroyImmediate(netz);
             }
+        }
+
+        /// <summary>
+        /// Der Flughafen als Halbinsel in der Bucht, wie Santos Dumont: die
+        /// Westkante mit Terminals und Parkplaetzen liegt ein Stueck auf dem
+        /// Land, Vorfeld und Landebahn ragen ins Wasser. Das Modell bringt
+        /// seinen eigenen Boden mit (Unterseite bis -6,6 m), deshalb wird das
+        /// Gelaende unter dem Wasserteil abgesenkt statt aufgeschuettet - so
+        /// bleibt die Form der Halbinsel sichtbar und nicht ein Rechteck aus
+        /// Gelaende. Auf dem Landteil wird auf Flughafenhoehe abgetragen, mit
+        /// breitem Rand, damit die Stadt sanft herunterkommt.
+        /// </summary>
+        static void FlughafenPlanen(RioWorldTerrain t, RioWorldLayout.Place place)
+        {
+            var aus = new[] { "SDU_Wasser" };
+            if (!Grundflaeche(Flughafen, aus, out Vector2 fMitte, out Vector2 fGroesse)) return;
+
+            // Yaw 180: Terminals (lokal +X) nach Westen zur Stadt, Landebahn
+            // nach Osten aufs Wasser, Laengsachse Nord-Sued an der Kueste entlang.
+            const float yaw = 180f;
+            float breite = fGroesse.x, laenge = fGroesse.y;
+            Vector2 start = place.Position;
+
+            // Kuestenlinie entlang der ganzen Laenge abtasten: von weit im
+            // Land nach Osten laufen, bis Wasser kommt.
+            const float scheibe = 30f;
+            var kueste = new List<float>();
+            var proZ = new List<(float z, float x)>();
+            for (float z = start.y - laenge * 0.5f + scheibe * 0.5f; z < start.y + laenge * 0.5f; z += scheibe)
+            {
+                for (float x = start.x - 900f; x < start.x + 900f; x += 6f)
+                {
+                    if (t.IsLand(new Vector2(x, z))) continue;
+                    if (x > start.x - 900f + 6f) { kueste.Add(x); proZ.Add((z, x)); }
+                    break;
+                }
+            }
+            if (kueste.Count < 5)
+            {
+                Debug.LogWarning("[Rio] Flughafen: keine Ostkueste neben dem Startpunkt gefunden.");
+                return;
+            }
+            kueste.Sort();
+            float kuesteX = kueste[kueste.Count / 2];
+
+            const float aufLand = 150f;          // so weit greift die Westkante ins Land
+            const float hoehe = 1.2f;            // Wasser im Modell liegt bei -1,2 -> unser Meeresspiegel
+            float west = kuesteX - aufLand;
+            var mitte = new Vector2(west + breite * 0.5f, start.y);
+
+            var e = new Eintrag
+            {
+                Name = "Flughafen_Santos_Dumont", Label = place.Label,
+                Pos = mitte - Drehen(fMitte, yaw), Yaw = yaw, Hoehe = hoehe, Stempeln = false
+            };
+            e.Teile.Add(new Teil { Pfad = Flughafen, Aus = aus, Farben = false });
+
+            var ganz = new Flaeche(mitte, new Vector2(breite, laenge), 0f);
+            e.Sperre.Add(ganz);
+
+            // Scheibe fuer Scheibe entlang der Kueste: was Land ist, kommt auf
+            // Flughafenhoehe (mit Rand zur Stadt hin), was Wasser ist, unter
+            // den Meeresspiegel. Ein Rechteck ueber die ganze Laenge hatte an
+            // den Enden Sandzungen ins Wasser geschoben, weil die Kueste dort
+            // schraeg laeuft.
+            float ost = west + breite;
+            foreach (var (z, kx) in proZ)
+            {
+                float landBis = Mathf.Clamp(kx, west, ost);
+                if (landBis > west + 1f)
+                    e.Ebnen.Add((new Flaeche(new Vector2((west + landBis) * 0.5f, z), new Vector2(landBis - west, scheibe), 0f),
+                                 hoehe - 0.3f, 40f));
+                // Wasser ohne Rand, sonst mittelt es sich mit dem Landteil
+                e.Ebnen.Add((new Flaeche(new Vector2((landBis + ost) * 0.5f, z), new Vector2(ost - landBis, scheibe), 0f),
+                             -4f, 0f));
+            }
+
+            // Zwischen Stadt und Flughafen einen Streifen freihalten, als Zufahrt
+            e.Sperre.Add(new Flaeche(new Vector2(west - 20f, start.y), new Vector2(40f, laenge), 0f));
+
+            _liste.Add(e);
         }
 
         /// <summary>
