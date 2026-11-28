@@ -132,15 +132,17 @@ namespace Rio.WorldGen
         // den Gang-Vierteln, siehe RioDistricts) entsteht Stadt - vorher lagen
         // die Viertel als einzelne Inseln ueber beide Inseln verstreut.
         //
-        // Rio reicht hier weiter nach Norden als auf der Skizze: dort ist auf
-        // der Skizze eine Bucht, in der Welt aber Land (Sao Cristovao).
+        // Im Norden endet Rio an der Linie y = 452: dort ist auf der Skizze
+        // eine Bucht, in der Welt freies Land. Nur der Hafenbereich (Porto)
+        // ragt darueber hinaus. Im Westen gehoert Zona Oeste bis zur Kueste dazu.
         // ------------------------------------------------------------------
 
         public static readonly float[,] StadtRioPx =
         {
-            {470,455},{500,410},{560,360},{630,335},{690,340},{712,400},{765,435},
+            {440,400},{545,395},{555,452},{630,452},{700,452},{760,455},
             {805,520},{800,600},{790,650},{770,695},{735,722},{690,730},{640,705},
-            {600,690},{570,650},{520,645},{495,620},{470,560}
+            {600,690},{570,650},{520,645},{495,660},{450,700},{400,690},{385,600},
+            {395,520},{425,470}
         };
 
         public static readonly float[,] StadtNiteroiPx =

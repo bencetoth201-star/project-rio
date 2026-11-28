@@ -21,8 +21,8 @@ namespace Rio.WorldGen
     ///    Modelle in der Szene, mit Hitboxen, Farben und Heist-Komponenten.
     ///
     /// Gedreht wird nur um ganze Vielfache von 90 Grad, ausser am Hafen, der
-    /// der Kueste folgt. Das Belegungsraster und die Gelaendestempel drehen
-    /// andersherum als Unity, deshalb bekommen sie hier immer -yaw.
+    /// der Kueste folgt. Alle Drehwinkel sind Unity-Yaw (im Uhrzeigersinn),
+    /// auch im Belegungsraster und bei den Gelaendestempeln.
     /// </summary>
     public static class RioWahrzeichen
     {
@@ -39,7 +39,6 @@ namespace Rio.WorldGen
         const string Fahrzeuge = "Assets/RioFahrzeuge/Modelle/";
 
         const string Flughafen = Online + "flughafen/flughafen_santos_dumont.glb";
-        const string Flugzeug = Online + "flughafen/flugzeug.glb";
         const string Krankenhaus = Online + "krankenhaus/krankenhaus.glb";
         const string Militaer = Online + "militaerbasis/militaerbasis.glb";
         const string Casino = Online + "rubin_casino/rubin_casino.glb";
@@ -173,12 +172,10 @@ namespace Rio.WorldGen
                 if (place.Kind == RioWorldLayout.Poi.Hafen)
                     HafenPlanen(t, place);
 
-            // Die kleinen Landebahnen bleiben Kloetze, liegen aber mitten in
-            // den Gang-Vierteln. Ihre Flaeche wird gesperrt und eingeebnet,
-            // sonst stehen Huetten auf der Piste.
-            foreach (var place in RioWorldLayout.Places)
-                if (place.Kind == RioWorldLayout.Poi.FlughafenKlein)
-                    LandebahnFreihalten(t, place);
+            // Die kleinen Flugplaetze (FlughafenKlein) bekommen spaeter ein
+            // eigenes Modell. Bis dahin wird dort nichts gebaut und nichts
+            // gesperrt - ein Eintrag hier mit Modell() reicht dann, um sich
+            // Platz in der Stadt zu nehmen.
 
             // Die grossen Flaechen zuerst, dann die kleinen - so finden die
             // kleinen noch Luecken, die grossen nicht.
@@ -241,8 +238,8 @@ namespace Rio.WorldGen
                 garage.AnAnkern.Add(("Auto_Abholen_2", Sportwagen));
             }
 
-            // Das Drughouse steht im Gang-Viertel Zona Oeste, noerdlich der Landebahn
-            var drug = Einzeln(t, "Drughouse", Drughouse, RioWorldLayout.ToWorld(455, 560), 300f, 30f);
+            // Das Drughouse steht im Gang-Viertel Jacarezinho
+            var drug = Einzeln(t, "Drughouse", Drughouse, RioWorldLayout.ToWorld(497, 560), 300f, 30f);
             if (drug != null)
                 drug.Teile.Add(new Teil { Pfad = WaffenVan, Lokal = new Vector3(14f, 0f, 4f), Yaw = 0f, Farben = false });
 
@@ -509,33 +506,6 @@ namespace Rio.WorldGen
         }
 
         /// <summary>
-        /// Flaeche der kleinen Landebahn aus BuildAirport (780 x 30 m entlang X,
-        /// Terminal 70 x 28 m noerdlich daneben) sperren und einebnen. Kein
-        /// Label: der Platzhalter-Klotz bleibt, das hier ist nur die Sperre.
-        /// </summary>
-        static void LandebahnFreihalten(RioWorldTerrain t, RioWorldLayout.Place place)
-        {
-            var f = new Flaeche(place.Position + new Vector2(0f, 14f), new Vector2(820f, 90f), 0f);
-            var hoehen = new List<float>();
-            for (float lx = -400f; lx <= 400f; lx += 20f)
-            for (float lz = -40f; lz <= 40f; lz += 20f)
-            {
-                var p = f.Mitte + new Vector2(lx, lz);
-                if (t.IsLand(p)) hoehen.Add(t.SampleHeight(p));
-            }
-            if (hoehen.Count == 0) return;
-            hoehen.Sort();
-
-            var e = new Eintrag
-            {
-                Name = "Landebahn " + place.Label, Label = null,
-                Pos = place.Position, Yaw = 0f, Hoehe = Mathf.Max(3f, hoehen[hoehen.Count / 2]), Rand = 30f
-            };
-            e.Sperre.Add(f);
-            _liste.Add(e);
-        }
-
-        /// <summary>
         /// Der Flughafen als Halbinsel in der Bucht, wie Santos Dumont: die
         /// Westkante mit Terminals und Parkplaetzen liegt ein Stueck auf dem
         /// Land, Vorfeld und Landebahn ragen ins Wasser. Das Modell bringt
@@ -730,7 +700,7 @@ namespace Rio.WorldGen
         {
             if (_liste == null) return;
             foreach (var f in _sperren)
-                planner.Occupy(f.Mitte, f.Groesse + new Vector2(12f, 12f), -f.Yaw);
+                planner.Occupy(f.Mitte, f.Groesse + new Vector2(12f, 12f), f.Yaw);
         }
 
         /// <summary>Grundflaechen auf ihre Hoehe einebnen. Laeuft zwischen StempelBeginnen und StempelAnwenden.</summary>
@@ -741,9 +711,9 @@ namespace Rio.WorldGen
             {
                 if (e.Stempeln)
                     foreach (var f in e.Sperre)
-                        t.Stempeln(f.Mitte, f.Groesse, -f.Yaw, e.Hoehe - 0.05f, e.Rand);
+                        t.Stempeln(f.Mitte, f.Groesse, f.Yaw, e.Hoehe - 0.05f, e.Rand);
                 foreach (var (f, h, rand) in e.Ebnen)
-                    t.Stempeln(f.Mitte, f.Groesse, -f.Yaw, h - 0.05f, rand);
+                    t.Stempeln(f.Mitte, f.Groesse, f.Yaw, h - 0.05f, rand);
             }
         }
 
@@ -798,7 +768,6 @@ namespace Rio.WorldGen
                 if (e.Name == "Casa_Imperio" && erstes != null) AbriegelungVorbereiten(erstes, gruppe);
             }
 
-            n += FlugzeugeSetzen(wurzel, t);
             n += StrandSetzen(root.transform, t);
             return n;
         }
@@ -880,29 +849,6 @@ namespace Rio.WorldGen
             ab.Normal = normal;
             ab.Abgeriegelt = zu;
             zu.SetActive(false);
-        }
-
-        /// <summary>Auf jede kleine Landebahn zwei geparkte Flugzeuge.</summary>
-        static int FlugzeugeSetzen(Transform wurzel, RioWorldTerrain t)
-        {
-            int n = 0;
-            foreach (var place in RioWorldLayout.Places)
-            {
-                if (place.Kind != RioWorldLayout.Poi.FlughafenKlein) continue;
-                float g = t.SampleHeight(place.Position) + 0.3f;
-                var gruppe = new GameObject("Flugzeuge " + place.Label).transform;
-                gruppe.SetParent(wurzel, false);
-                foreach (float dx in new[] { -260f, 240f })
-                {
-                    var go = Instanz(Flugzeug, gruppe, Vector3.zero, 0f);
-                    if (go == null) continue;
-                    go.transform.SetPositionAndRotation(new Vector3(place.Position.x + dx, g, place.Position.y),
-                                                        Quaternion.Euler(0f, dx < 0f ? 90f : -90f, 0f));
-                    Einrichten(go, false, false, 1);
-                    n++;
-                }
-            }
-            return n;
         }
 
         // ------------------------------------------------------------------

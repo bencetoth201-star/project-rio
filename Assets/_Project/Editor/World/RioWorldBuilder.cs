@@ -321,6 +321,9 @@ namespace Rio.WorldGen
                 if (place.Kind == RioWorldLayout.Poi.BankGross ||
                     place.Kind == RioWorldLayout.Poi.BankKlein) continue;
 
+                // Die kleinen Flugplaetze bekommen spaeter ein eigenes Modell
+                if (place.Kind == RioWorldLayout.Poi.FlughafenKlein) continue;
+
                 Vector2 p = place.Position;
                 float g = t.SampleHeight(p);
 

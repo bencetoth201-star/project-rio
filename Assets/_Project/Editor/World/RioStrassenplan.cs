@@ -152,11 +152,12 @@ namespace Rio.WorldGen
             for (int iz = 0; iz < h; iz++)
             {
                 if (!gueltig[iz * w + ix]) continue;
-                bool linie = (ix - nx) % px == 0 || (iz - nz) % pz == 0;
+                bool linie = RioDistricts.IstStrasse(di, ix - nx, iz - nz);
                 bool rand = !Hole(gueltig, w, h, ix + 1, iz) || !Hole(gueltig, w, h, ix - 1, iz)
                          || !Hole(gueltig, w, h, ix, iz + 1) || !Hole(gueltig, w, h, ix, iz - 1);
                 strasse[iz * w + ix] = linie || rand;
             }
+            RioDistricts.StummelStreichen(strasse, w, h, MinNetz);
 
             var knoten = new int[w * h];
             for (int i = 0; i < knoten.Length; i++) knoten[i] = -1;
@@ -441,7 +442,7 @@ namespace Rio.WorldGen
         /// Amarela, Av. Brasil und der Aterro zusammen genau so einen Ring um
         /// die Bucht.
         /// </summary>
-        static readonly int[] Ring = { 2, 3, 9, 8, 5, 0 };   // Porto, Zona Norte, Zona Oeste, Lagoa, Botafogo, Centro
+        static readonly int[] Ring = { 1, 2, 8, 7, 4, 0 };   // Porto, Zona Norte, Zona Oeste, Lagoa, Botafogo, Centro
 
         /// <summary>Bis zu dieser Luftlinie wird mit Rua verbunden, darueber mit Avenida.</summary>
         public const float RuaGrenze = 420f;
@@ -962,9 +963,13 @@ namespace Rio.WorldGen
 
             Teilnetze = groesse.Count;
             GroesstesNetz = groesse[beste];
+            NetzeBehalten = 0;
+            foreach (int g in groesse) if (g >= MinNetz) NetzeBehalten++;
         }
 
         public int Teilnetze { get; private set; }
+        /// <summary>Teilnetze, die nach dem Streichen der Splitter uebrig bleiben.</summary>
+        public int NetzeBehalten { get; private set; }
         public int GroesstesNetz { get; private set; }
 
         // ------------------------------------------------------------------
@@ -1718,7 +1723,7 @@ namespace Rio.WorldGen
 
         public override string ToString() =>
             $"{_k.Count - Entfernt:N0} Knoten ({Entfernt:N0} Splitter gestrichen), " +
-            $"{Teilnetze:N0} Teilnetze, groesstes {GroesstesNetz:N0}, " +
+            $"{Teilnetze:N0} Teilnetze ({NetzeBehalten:N0} ab {MinNetz} Knoten), groesstes {GroesstesNetz:N0}, " +
             $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, "
           + $"Bruecke {BrueckenKacheln:N0} Teile auf {Pfeiler:N0} Pfeilerstuecken"
           + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend") + ", "

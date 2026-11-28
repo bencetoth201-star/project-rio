@@ -65,17 +65,26 @@ Gebaut wird nur innerhalb der beiden grünen Stadtumrisse der Skizze
 Viertel in `RioDistricts.cs` sind bewusst zu groß und überlappen sich, der
 Umriss schneidet sie außen ab. Außerhalb liegt nur freies Land.
 
-Die beiden Gang-Viertel (`Kind.Favela`) liegen an den kleinen Landebahnen:
-**Zona Oeste** im Westen von Rio (mit dem Drughouse) und **Morro do Estado**
-im Osten von Niterói. Dort stehen nur arme Häuser in einem engen Raster, und
-jede Lücke bis den Hang hinauf füllen Favela-Hütten. Hütten gibt es sonst
-nirgends mehr.
+**Organisch statt Raster:** Jedes Viertel hat unregelmäßige
+Straßenabstände, und einzelne Straßenstücke zwischen zwei Kreuzungen fallen
+weg (`RioDistricts.IstStrasse`). Die Blocks sind deshalb ungleich und
+verwinkelt. Häuser stehen nicht in Reihe: An jeder Straßenkante wird eines
+mit zufälligem Versatz, eigenem Abstand zur Straße und leicht schräg
+versucht, danach füllen Hinterhäuser die Blockmitte
+(`RioHousePlanner.BlockBebauen`).
+
+Die beiden Gang-Viertel (`Kind.Favela`): **Jacarezinho** in Rio zwischen
+Zona Oeste und Stadion (mit dem Drughouse) und **Morro do Estado** im Osten
+von Niterói. Dort stehen nur arme Häuser, die Gassen sind enger und
+brechen öfter ab, und jede Lücke bis den Hang hinauf füllen Favela-Hütten.
+Hütten gibt es sonst nirgends.
+
+Die beiden kleinen Flugplätze bekommen später ein eigenes Modell; bis dahin
+steht dort nichts.
 
 Die Casa Império (Banco Central) hat drei Untergeschosse und darunter die
 Maya-Kanalisation - dort bleibt das Gelände offen. Die abgeriegelte Version
 liegt deckungsgleich und abgeschaltet daneben (`RioAbriegelung`).
-
-Nur die beiden kleinen Landebahnen sind noch Klötze, mit je zwei Flugzeugen.
 
 ## Häuser: nah echt, fern Klötze
 

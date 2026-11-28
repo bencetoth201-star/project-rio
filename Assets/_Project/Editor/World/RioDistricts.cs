@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Rio.WorldGen
@@ -45,8 +46,9 @@ namespace Rio.WorldGen
         /// <summary>
         /// Nach der Skizze: die Viertel liegen dicht an dicht innerhalb der
         /// beiden gruenen Stadtumrisse (RioWorldLayout.InStadt) und ueberlappen
-        /// sich, damit keine Felder dazwischen frei bleiben. Ausserhalb gibt es
-        /// nur noch die beiden Gang-Viertel an den kleinen Flughaefen.
+        /// sich, damit keine Felder dazwischen frei bleiben. Dazu die beiden
+        /// Gang-Viertel: Jacarezinho in Rio zwischen Zona Oeste und Stadion,
+        /// Morro do Estado im Osten von Niteroi.
         ///
         /// Index 0 muss Centro bleiben (Startpunkt der Figur).
         /// </summary>
@@ -56,15 +58,15 @@ namespace Rio.WorldGen
             // Bewusst zu gross: die Ellipsen ueberlappen sich, damit dazwischen
             // kein Feld frei bleibt, und der Stadtumriss schneidet sie aussen ab.
             D("Centro",          Kind.Centro,    680, 470, 85, 70,  14f),   // 0
-            D("Sao Cristovao",   Kind.Bairro,    630, 385, 85, 62,   8f),   // 1
-            D("Porto",           Kind.Industrie, 500, 440, 55, 50,   0f),   // 2
-            D("Zona Norte",      Kind.Bairro,    545, 515, 80, 70,  22f),   // 3
-            D("Tijuca",          Kind.Bairro,    615, 585, 85, 65, -12f),   // 4
-            D("Botafogo",        Kind.Bairro,    725, 585, 70, 65,  26f),   // 5
-            D("Copacabana",      Kind.Orla,      762, 662, 55, 50, -38f),   // 6
-            D("Ipanema",         Kind.Orla,      705, 712, 50, 30, -14f),   // 7
-            D("Lagoa",           Kind.Nobre,     640, 672, 55, 40,   4f),   // 8
-            D("Zona Oeste",      Kind.Favela,    455, 600, 55, 100,  0f),   // 9  Gang-Viertel
+            D("Porto",           Kind.Industrie, 500, 440, 55, 50,   0f),   // 1
+            D("Zona Norte",      Kind.Bairro,    545, 515, 80, 70,  22f),   // 2
+            D("Tijuca",          Kind.Bairro,    615, 585, 85, 65, -12f),   // 3
+            D("Botafogo",        Kind.Bairro,    725, 585, 70, 65,  26f),   // 4
+            D("Copacabana",      Kind.Orla,      762, 662, 55, 50, -38f),   // 5
+            D("Ipanema",         Kind.Orla,      705, 712, 50, 30, -14f),   // 6
+            D("Lagoa",           Kind.Nobre,     640, 672, 55, 40,   4f),   // 7
+            D("Zona Oeste",      Kind.Bairro,    445, 600, 60, 100, -10f),  // 8
+            D("Jacarezinho",     Kind.Favela,    497, 565, 48, 85,  -8f),   // 9  Gang-Viertel
 
             // ---------------- Niteroi ----------------
             D("Centro Niteroi",  Kind.Centro,   1040, 460, 70, 58, -22f),   // 10
@@ -73,6 +75,135 @@ namespace Rio.WorldGen
             D("Fonseca",         Kind.Bairro,   1110, 470, 55, 65,   0f),   // 13
             D("Morro do Estado", Kind.Favela,   1205, 440, 72, 95,   0f),   // 14 Gang-Viertel
         };
+
+        // ------------------------------------------------------------------
+        // Strassenlinien
+        //
+        // Vorher lag jede Strasse im festen Abstand, alle Blocks gleich gross
+        // - das sah aus wie Millimeterpapier. Jetzt hat jedes Viertel eigene,
+        // unregelmaessige Abstaende, und einzelne Strassenstuecke zwischen zwei
+        // Kreuzungen fallen weg. Daraus entstehen ungleiche, verwinkelte
+        // Blocks. Strassenplan und Hausplaner fragen beide hier, damit sie
+        // dasselbe Netz sehen.
+        // ------------------------------------------------------------------
+
+        class Linien
+        {
+            public int[] X, Z;                 // sortierte Zellindizes der Strassenlinien
+            public HashSet<long> Weg;          // weggelassene Stuecke
+        }
+
+        static Linien[] _linien;
+
+        static void Abstaende(Kind k, out int min, out int max, out float weg)
+        {
+            switch (k)
+            {
+                case Kind.Centro:    min = 4; max = 6;  weg = 0.10f; break;
+                case Kind.Orla:      min = 4; max = 8;  weg = 0.15f; break;
+                case Kind.Nobre:     min = 4; max = 7;  weg = 0.22f; break;
+                case Kind.Industrie: min = 7; max = 10; weg = 0.10f; break;
+                case Kind.Favela:    min = 3; max = 5;  weg = 0.35f; break;
+                default:             min = 3; max = 6;  weg = 0.22f; break;   // Bairro
+            }
+        }
+
+        static Linien LinienVon(int di)
+        {
+            if (_linien == null || _linien.Length != All.Length) _linien = new Linien[All.Length];
+            if (_linien[di] != null) return _linien[di];
+
+            var d = All[di];
+            Abstaende(d.Type, out int min, out int max, out float quote);
+            var rng = new System.Random(7919 * (di + 1) + 17);
+            int nx = Mathf.CeilToInt(d.A / 12f) + 6, nz = Mathf.CeilToInt(d.B / 12f) + 6;
+
+            var l = new Linien { X = Folge(rng, nx, min, max), Z = Folge(rng, nz, min, max), Weg = new HashSet<long>() };
+            for (int i = 0; i < l.X.Length; i++)
+                for (int k = 0; k < l.Z.Length - 1; k++)
+                    if (rng.NextDouble() < quote) l.Weg.Add(Key(0, l.X[i], k));
+            for (int i = 0; i < l.Z.Length; i++)
+                for (int k = 0; k < l.X.Length - 1; k++)
+                    if (rng.NextDouble() < quote) l.Weg.Add(Key(1, l.Z[i], k));
+
+            _linien[di] = l;
+            return l;
+        }
+
+        static int[] Folge(System.Random rng, int n, int min, int max)
+        {
+            var liste = new List<int> { 0 };
+            for (int i = 0; i > -n;) { i -= rng.Next(min, max + 1); liste.Insert(0, i); }
+            for (int i = 0; i < n;) { i += rng.Next(min, max + 1); liste.Add(i); }
+            return liste.ToArray();
+        }
+
+        static long Key(int achse, int linie, int stueck) =>
+            ((long)achse << 48) | ((long)(linie + 32768) << 24) | (long)(stueck + 32768);
+
+        /// <summary>Gibt es das Stueck der Linie zwischen Querlinie k und k+1?</summary>
+        static bool Stueck(Linien l, int achse, int linie, int k, int anzahlQuer) =>
+            k >= 0 && k < anzahlQuer - 1 && !l.Weg.Contains(Key(achse, linie, k));
+
+        /// <summary>
+        /// Ist die Zelle (lokale Indizes ix, iz im gedrehten Raster des Viertels)
+        /// Strasse? Ohne Randring - den legen Strassen- und Hausplaner selbst.
+        /// </summary>
+        public static bool IstStrasse(int di, int ix, int iz)
+        {
+            var l = LinienVon(di);
+            int kx = System.Array.BinarySearch(l.X, ix);
+            int kz = System.Array.BinarySearch(l.Z, iz);
+
+            if (kx >= 0 && kz >= 0)
+            {
+                // Kreuzung: Strasse, solange mindestens ein Stueck daran haengt
+                return Stueck(l, 0, ix, kz - 1, l.Z.Length) || Stueck(l, 0, ix, kz, l.Z.Length)
+                    || Stueck(l, 1, iz, kx - 1, l.X.Length) || Stueck(l, 1, iz, kx, l.X.Length);
+            }
+            if (kx >= 0) return Stueck(l, 0, ix, ~kz - 1, l.Z.Length);
+            if (kz >= 0) return Stueck(l, 1, iz, ~kx - 1, l.X.Length);
+            return false;
+        }
+
+        /// <summary>
+        /// Streicht Strassenstuecke, die im Viertel mit weniger als min Zellen
+        /// zusammenhaengen. Laeuft im Strassenplan und im Hausplaner auf
+        /// demselben Raster - sonst wirft der Strassenplan die Stummel spaeter
+        /// als Splitter weg, und der Hausplaner laesst dort trotzdem einen
+        /// leeren Streifen frei.
+        /// </summary>
+        public static void StummelStreichen(bool[] strasse, int w, int h, int min)
+        {
+            var besucht = new bool[w * h];
+            var stueck = new List<int>();
+            var stapel = new Stack<int>();
+            for (int start = 0; start < w * h; start++)
+            {
+                if (!strasse[start] || besucht[start]) continue;
+                stueck.Clear();
+                stapel.Push(start);
+                besucht[start] = true;
+                while (stapel.Count > 0)
+                {
+                    int c = stapel.Pop();
+                    stueck.Add(c);
+                    int cx = c % w, cz = c / w;
+                    for (int r = 0; r < 4; r++)
+                    {
+                        int x = cx + (r == 0 ? 1 : r == 1 ? -1 : 0);
+                        int z = cz + (r == 2 ? 1 : r == 3 ? -1 : 0);
+                        if (x < 0 || z < 0 || x >= w || z >= h) continue;
+                        int n = z * w + x;
+                        if (!strasse[n] || besucht[n]) continue;
+                        besucht[n] = true;
+                        stapel.Push(n);
+                    }
+                }
+                if (stueck.Count < min)
+                    foreach (int c in stueck) strasse[c] = false;
+            }
+        }
 
         /// <summary>Liegt der Punkt in einem Gang-Viertel?</summary>
         public static bool InFavela(Vector2 p)
@@ -170,8 +301,8 @@ namespace Rio.WorldGen
         public static readonly int[,] Verbindungen =
         {
             // Rio
-            {0,1},{0,3},{0,4},{0,5},{1,2},{1,3},{2,3},{3,4},{3,9},{4,5},
-            {4,8},{4,9},{5,6},{6,7},{7,8},{8,9},
+            {0,1},{0,2},{0,3},{0,4},{1,2},{1,8},{2,3},{2,8},{2,9},{3,4},
+            {3,7},{3,9},{4,5},{5,6},{6,7},{7,8},{8,9},
             // Niteroi
             {10,11},{10,12},{10,13},{11,12},{12,13},{13,14},{12,14},
         };
