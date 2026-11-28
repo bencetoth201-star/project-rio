@@ -441,7 +441,7 @@ namespace Rio.WorldGen
         /// Amarela, Av. Brasil und der Aterro zusammen genau so einen Ring um
         /// die Bucht.
         /// </summary>
-        static readonly int[] Ring = { 8, 7, 9, 10, 5, 2, 0 };
+        static readonly int[] Ring = { 2, 3, 9, 8, 5, 0 };   // Porto, Zona Norte, Zona Oeste, Lagoa, Botafogo, Centro
 
         /// <summary>Bis zu dieser Luftlinie wird mit Rua verbunden, darueber mit Avenida.</summary>
         public const float RuaGrenze = 420f;

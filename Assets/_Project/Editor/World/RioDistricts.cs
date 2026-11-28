@@ -18,7 +18,8 @@ namespace Rio.WorldGen
     /// </summary>
     public static class RioDistricts
     {
-        public enum Kind { Centro, Orla, Bairro, Nobre, Industrie }
+        /// <summary>Favela = Gang-Viertel: kleines Raster, arme Haeuser, Huetten in jeder Luecke.</summary>
+        public enum Kind { Centro, Orla, Bairro, Nobre, Industrie, Favela }
 
         public struct District
         {
@@ -41,35 +42,45 @@ namespace Rio.WorldGen
             };
         }
 
+        /// <summary>
+        /// Nach der Skizze: die Viertel liegen dicht an dicht innerhalb der
+        /// beiden gruenen Stadtumrisse (RioWorldLayout.InStadt) und ueberlappen
+        /// sich, damit keine Felder dazwischen frei bleiben. Ausserhalb gibt es
+        /// nur noch die beiden Gang-Viertel an den kleinen Flughaefen.
+        ///
+        /// Index 0 muss Centro bleiben (Startpunkt der Figur).
+        /// </summary>
         public static readonly District[] All =
         {
-            // ---------------- Rio, Westinsel ----------------
-            D("Centro",        Kind.Centro,    730, 516, 62, 54,  14f),
-            D("Flamengo",      Kind.Orla,      778, 572, 34, 40,  10f),
-            D("Botafogo",      Kind.Bairro,    696, 592, 48, 44,  26f),
-            D("Copacabana",    Kind.Orla,      792, 660, 50, 36, -38f),
-            D("Ipanema",       Kind.Orla,      726, 712, 52, 32, -14f),
-            D("Lagoa",         Kind.Nobre,     584, 676, 54, 46,   4f),
-            D("Tijuca",        Kind.Bairro,    622, 548, 60, 46, -12f),
-            D("Zona Norte",    Kind.Bairro,    514, 480, 64, 56,  22f),
-            D("Porto",         Kind.Industrie, 516, 436, 44, 28,   0f),
-            D("Zona Oeste",    Kind.Bairro,    440, 618, 52, 56, -22f),
-            D("Barra",         Kind.Nobre,     472, 748, 56, 36,  12f),
+            // ---------------- Rio ----------------
+            // Bewusst zu gross: die Ellipsen ueberlappen sich, damit dazwischen
+            // kein Feld frei bleibt, und der Stadtumriss schneidet sie aussen ab.
+            D("Centro",          Kind.Centro,    680, 470, 85, 70,  14f),   // 0
+            D("Sao Cristovao",   Kind.Bairro,    630, 385, 85, 62,   8f),   // 1
+            D("Porto",           Kind.Industrie, 500, 440, 55, 50,   0f),   // 2
+            D("Zona Norte",      Kind.Bairro,    545, 515, 80, 70,  22f),   // 3
+            D("Tijuca",          Kind.Bairro,    615, 585, 85, 65, -12f),   // 4
+            D("Botafogo",        Kind.Bairro,    725, 585, 70, 65,  26f),   // 5
+            D("Copacabana",      Kind.Orla,      762, 662, 55, 50, -38f),   // 6
+            D("Ipanema",         Kind.Orla,      705, 712, 50, 30, -14f),   // 7
+            D("Lagoa",           Kind.Nobre,     640, 672, 55, 40,   4f),   // 8
+            D("Zona Oeste",      Kind.Favela,    455, 600, 55, 100,  0f),   // 9  Gang-Viertel
 
-            // ---------------- Niteroi, Ostinsel ----------------
-            D("Centro Niteroi", Kind.Centro,   1062, 448, 52, 46, -22f),
-            D("Icarai",         Kind.Orla,     1142, 352, 48, 36,  16f),
-            D("Niteroi Norte",  Kind.Bairro,   1178, 272, 52, 32,   0f),
-            D("Niteroi Leste",  Kind.Bairro,   1228, 474, 46, 48,  26f),
-            D("Niteroi Sul",    Kind.Bairro,   1138, 696, 56, 42, -16f),
-            D("Militaer",       Kind.Industrie,1236, 586, 36, 30,   0f),
-
-            // ---------------- Rio, nachgetragen ----------------
-            // Hier lag vorher der Flughafen. Der ist als Halbinsel an die
-            // Ostkueste gezogen. Steht hinten, damit die Indizes oben und in
-            // den Verbindungen gleich bleiben.
-            D("Sao Cristovao",  Kind.Bairro,    648, 410, 60, 70,   8f),
+            // ---------------- Niteroi ----------------
+            D("Centro Niteroi",  Kind.Centro,   1040, 460, 70, 58, -22f),   // 10
+            D("Icarai",          Kind.Orla,     1008, 372, 58, 52,  16f),   // 11
+            D("Niteroi Norte",   Kind.Bairro,   1100, 350, 72, 48,   0f),   // 12
+            D("Fonseca",         Kind.Bairro,   1110, 470, 55, 65,   0f),   // 13
+            D("Morro do Estado", Kind.Favela,   1205, 440, 72, 95,   0f),   // 14 Gang-Viertel
         };
+
+        /// <summary>Liegt der Punkt in einem Gang-Viertel?</summary>
+        public static bool InFavela(Vector2 p)
+        {
+            for (int i = 0; i < All.Length; i++)
+                if (All[i].Type == Kind.Favela && Norm(All[i], p) <= 1f) return true;
+            return false;
+        }
 
         /// <summary>
         /// Welches Viertel deckt diesen Punkt ab? -1 wenn keines.
@@ -78,6 +89,11 @@ namespace Rio.WorldGen
         /// </summary>
         public static int IndexAt(Vector2 p)
         {
+            // Gang-Viertel gehen immer vor: sonst frisst ein grosses
+            // Nachbarviertel ihren Rand.
+            for (int i = 0; i < All.Length; i++)
+                if (All[i].Type == Kind.Favela && Norm(All[i], p) <= 1f) return i;
+
             int best = -1;
             float bestArea = float.MaxValue;
 
@@ -154,12 +170,10 @@ namespace Rio.WorldGen
         public static readonly int[,] Verbindungen =
         {
             // Rio
-            {0,1},{1,2},{2,3},{3,4},{4,5},{5,6},{6,0},{6,7},{7,8},{8,0},
-            {7,9},{9,10},{10,5},{2,6},{0,2},{5,9},
+            {0,1},{0,3},{0,4},{0,5},{1,2},{1,3},{2,3},{3,4},{3,9},{4,5},
+            {4,8},{4,9},{5,6},{6,7},{7,8},{8,9},
             // Niteroi
-            {11,12},{12,13},{11,14},{14,16},{11,15},{15,16},{13,14},
-            // Sao Cristovao
-            {17,7},{17,6},{17,0},
+            {10,11},{10,12},{10,13},{11,12},{12,13},{13,14},{12,14},
         };
 
         /// <summary>Strassenraster je Viertelstyp: Periode in X und Z, in 12-m-Kacheln.</summary>
@@ -171,6 +185,7 @@ namespace Rio.WorldGen
                 case Kind.Orla:      px = 6; pz = 8; break;   // 60 x 84 m, Riegel quer zum Wasser
                 case Kind.Nobre:     px = 6; pz = 5; break;   // 60 x 48 m
                 case Kind.Industrie: px = 10; pz = 8; break;  // 108 x 84 m
+                case Kind.Favela:    px = 4; pz = 3; break;   // 36 x 24 m, enge Gassen
                 default:             px = 5; pz = 4; break;   // Bairro 48 x 36 m
             }
         }

@@ -44,7 +44,6 @@ namespace Rio.WorldGen
         const string Militaer = Online + "militaerbasis/militaerbasis.glb";
         const string Casino = Online + "rubin_casino/rubin_casino.glb";
         const string Cristo = Online + "cristo/cristo_redentor.glb";
-        const string Palace = Online + "augustus_palace/augustus_palace.glb";
         const string Drughouse = Online + "drughouse/drughouse.glb";
         const string HochhausBarra = Online + "hochhaeuser/hochhaus_barra.glb";
         const string HochhausCentro = Online + "hochhaeuser/hochhaus_centro.glb";
@@ -174,6 +173,13 @@ namespace Rio.WorldGen
                 if (place.Kind == RioWorldLayout.Poi.Hafen)
                     HafenPlanen(t, place);
 
+            // Die kleinen Landebahnen bleiben Kloetze, liegen aber mitten in
+            // den Gang-Vierteln. Ihre Flaeche wird gesperrt und eingeebnet,
+            // sonst stehen Huetten auf der Piste.
+            foreach (var place in RioWorldLayout.Places)
+                if (place.Kind == RioWorldLayout.Poi.FlughafenKlein)
+                    LandebahnFreihalten(t, place);
+
             // Die grossen Flaechen zuerst, dann die kleinen - so finden die
             // kleinen noch Luecken, die grossen nicht.
             foreach (var place in RioWorldLayout.Places)
@@ -227,15 +233,16 @@ namespace Rio.WorldGen
             Einzeln(t, "Hochhaus_Copacabana", HochhausCopa,
                     RioWorldLayout.BeachCenter + (centro - RioWorldLayout.BeachCenter).normalized * 520f, 450f, 12f);
             Einzeln(t, "Hochhaus_Barra", HochhausBarra,
-                    RioWorldLayout.LakeCenter + new Vector2(0f, RioWorldLayout.LakeRadius + 140f), 500f, 12f);
-            Einzeln(t, "Augustus_Palace", Palace, RioWorldLayout.ToWorld(760, 640), 450f, 14f);
+                    RioWorldLayout.LakeCenter + new Vector2(RioWorldLayout.LakeRadius + 180f, 60f), 500f, 12f);
             var garage = Einzeln(t, "Garagem_021", Garagem, RioWorldLayout.ToWorld(560, 470), 450f, 10f);
             if (garage != null)
             {
                 garage.AnAnkern.Add(("Auto_Abholen_1", ValenteGt));
                 garage.AnAnkern.Add(("Auto_Abholen_2", Sportwagen));
             }
-            var drug = Einzeln(t, "Drughouse", Drughouse, RioWorldLayout.ToWorld(742, 768), 400f, 30f);
+
+            // Das Drughouse steht im Gang-Viertel Zona Oeste, noerdlich der Landebahn
+            var drug = Einzeln(t, "Drughouse", Drughouse, RioWorldLayout.ToWorld(455, 560), 300f, 30f);
             if (drug != null)
                 drug.Teile.Add(new Teil { Pfad = WaffenVan, Lokal = new Vector3(14f, 0f, 4f), Yaw = 0f, Farben = false });
 
@@ -502,6 +509,33 @@ namespace Rio.WorldGen
         }
 
         /// <summary>
+        /// Flaeche der kleinen Landebahn aus BuildAirport (780 x 30 m entlang X,
+        /// Terminal 70 x 28 m noerdlich daneben) sperren und einebnen. Kein
+        /// Label: der Platzhalter-Klotz bleibt, das hier ist nur die Sperre.
+        /// </summary>
+        static void LandebahnFreihalten(RioWorldTerrain t, RioWorldLayout.Place place)
+        {
+            var f = new Flaeche(place.Position + new Vector2(0f, 14f), new Vector2(820f, 90f), 0f);
+            var hoehen = new List<float>();
+            for (float lx = -400f; lx <= 400f; lx += 20f)
+            for (float lz = -40f; lz <= 40f; lz += 20f)
+            {
+                var p = f.Mitte + new Vector2(lx, lz);
+                if (t.IsLand(p)) hoehen.Add(t.SampleHeight(p));
+            }
+            if (hoehen.Count == 0) return;
+            hoehen.Sort();
+
+            var e = new Eintrag
+            {
+                Name = "Landebahn " + place.Label, Label = null,
+                Pos = place.Position, Yaw = 0f, Hoehe = Mathf.Max(3f, hoehen[hoehen.Count / 2]), Rand = 30f
+            };
+            e.Sperre.Add(f);
+            _liste.Add(e);
+        }
+
+        /// <summary>
         /// Der Flughafen als Halbinsel in der Bucht, wie Santos Dumont: die
         /// Westkante mit Terminals und Parkplaetzen liegt ein Stueck auf dem
         /// Land, Vorfeld und Landebahn ragen ins Wasser. Das Modell bringt
@@ -727,6 +761,7 @@ namespace Rio.WorldGen
             int n = 0;
             foreach (var e in _liste)
             {
+                if (e.Teile.Count == 0) continue;      // reine Sperrflaeche, z. B. Landebahn
                 var gruppe = new GameObject(e.Name).transform;
                 gruppe.SetParent(wurzel, false);
                 gruppe.SetPositionAndRotation(new Vector3(e.Pos.x, e.Hoehe, e.Pos.y), Quaternion.Euler(0f, e.Yaw, 0f));

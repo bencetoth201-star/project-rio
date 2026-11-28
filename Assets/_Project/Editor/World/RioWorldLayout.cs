@@ -126,6 +126,53 @@ namespace Rio.WorldGen
         public static readonly float[][,] Roads = { MainRoadPx, CrossRoadPx, NiteroiRoadPx };
 
         // ------------------------------------------------------------------
+        // Stadtgebiete
+        //
+        // Die beiden gruenen Umrisse der Skizze. Nur innerhalb davon (und in
+        // den Gang-Vierteln, siehe RioDistricts) entsteht Stadt - vorher lagen
+        // die Viertel als einzelne Inseln ueber beide Inseln verstreut.
+        //
+        // Rio reicht hier weiter nach Norden als auf der Skizze: dort ist auf
+        // der Skizze eine Bucht, in der Welt aber Land (Sao Cristovao).
+        // ------------------------------------------------------------------
+
+        public static readonly float[,] StadtRioPx =
+        {
+            {470,455},{500,410},{560,360},{630,335},{690,340},{712,400},{765,435},
+            {805,520},{800,600},{790,650},{770,695},{735,722},{690,730},{640,705},
+            {600,690},{570,650},{520,645},{495,620},{470,560}
+        };
+
+        public static readonly float[,] StadtNiteroiPx =
+        {
+            {950,345},{1000,322},{1060,318},{1120,322},{1170,335},{1215,380},{1225,450},
+            {1180,510},{1120,540},{1065,545},{1035,515},{985,500},{948,460}
+        };
+
+        static Vector2[][] _stadt;
+
+        /// <summary>Liegt der Punkt in einem der beiden Stadtgebiete?</summary>
+        public static bool InStadt(Vector2 p)
+        {
+            if (_stadt == null) _stadt = new[] { ToWorld(StadtRioPx), ToWorld(StadtNiteroiPx) };
+            foreach (var poly in _stadt)
+                if (InPolygon(p, poly)) return true;
+            return false;
+        }
+
+        public static bool InPolygon(Vector2 p, Vector2[] poly)
+        {
+            bool drin = false;
+            for (int i = 0, j = poly.Length - 1; i < poly.Length; j = i++)
+            {
+                if ((poly[i].y > p.y) != (poly[j].y > p.y) &&
+                    p.x < (poly[j].x - poly[i].x) * (p.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x)
+                    drin = !drin;
+            }
+            return drin;
+        }
+
+        // ------------------------------------------------------------------
         // Orte aus der Legende
         // ------------------------------------------------------------------
 
@@ -154,7 +201,9 @@ namespace Rio.WorldGen
             // Halbinsel an der Ostkueste, wie Santos Dumont in der Bucht
             new Place(Poi.FlughafenGross, 800, 532, "Flughafen Rio"),
             new Place(Poi.JeweleryKlein,  560, 524, "Jewelery Sul"),
-            new Place(Poi.BankGross,      737, 524, "Banco Central"),
+            // Das Saeulengebaeude oben in der Mitte der Skizze. Lag vorher
+            // auf 737/524 - dort ist auf der Skizze der grosse Flughafen.
+            new Place(Poi.BankGross,      653, 466, "Banco Central"),
             new Place(Poi.Krankenhaus,    650, 570, "Hospital Rio"),
             new Place(Poi.Clothstore,     730, 580, "Clothstore"),
             new Place(Poi.BankKlein,      656, 620, "Banco do Morro"),

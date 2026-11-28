@@ -44,7 +44,7 @@ namespace Rio.WorldGen
         /// </summary>
         const int Super = 12;
 
-        public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie }
+        public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie, Favela }
 
         /// <summary>
         /// Periodenlaenge in X und Z je Viertel. Block = (p-1) Kacheln.
@@ -58,10 +58,11 @@ namespace Rio.WorldGen
             { 4, 3 },    // Bairro:    36 x 24 m, der Normalfall
             { 6, 4 },    // Nobre:     60 x 36 m, grosszuegig
             { 12, 6 },   // Industrie:132 x 60 m, grosse Hallen
+            { 4, 3 },    // Favela:    36 x 24 m, eng
         };
 
         /// <summary>Luecke zwischen den Haeusern je Viertel.</summary>
-        static readonly float[] Luecke = { 0.4f, 0.6f, 0.5f, 3.5f, 4f };
+        static readonly float[] Luecke = { 0.4f, 0.6f, 0.5f, 3.5f, 4f, 0.1f };
 
         // Modellindizes, der Lesbarkeit halber benannt
         const int Barraco = 0, Palafita = 1, Puxadinho = 2, FavelaReihe = 3, Cortico = 4;
@@ -81,13 +82,15 @@ namespace Rio.WorldGen
             new[] { CasaRio, Boteco, Sobrado, Mercadinho, Predio, CasaRio, Sobrado },
             new[] { VillaZonaSul, CasaBarra, CasaJoa, Cobertura, ZonaOeste },
             new[] { RioModelCatalog.Lagerhalle, Mercadinho, Cortico, Predio },
+            // Gang-Viertel: nur die armen Haeuser, dicht an dicht
+            new[] { Barraco, Puxadinho, FavelaReihe, Cortico, Barraco, Puxadinho, Boteco },
         };
 
         /// <summary>Eckgebaeude je Viertel, -1 wenn keines passt.</summary>
         static readonly int[] EckModell =
         {
             RioModelCatalog.EckPredio, RioModelCatalog.EckPredio,
-            RioModelCatalog.EckSobrado, -1, -1
+            RioModelCatalog.EckSobrado, -1, -1, -1
         };
 
         static readonly int[] FavelaPalette = { Barraco, Palafita, Puxadinho, FavelaReihe, Cortico };
@@ -228,7 +231,7 @@ namespace Rio.WorldGen
         public readonly List<Vector4> BlockRects = new List<Vector4>();
 
         /// <summary>Wie viele Blocks je Viertelstyp entstanden sind.</summary>
-        public readonly int[] KindCount = new int[5];
+        public readonly int[] KindCount = new int[6];
 
         public RioHousePlanner(RioWorldTerrain terrain) { _t = terrain; }
 
@@ -314,6 +317,10 @@ namespace Rio.WorldGen
                 if (_t.SlopeAt(p) > 0.12f) continue;        // flach genug fuer ein Raster
                 if (NearPlace(p, 45f)) continue;
                 if (RioWahrzeichen.Belegt(p, Cell)) continue;   // Flughafen, Stadion, Hafen ...
+
+                // Stadt nur in den gruenen Umrissen der Skizze und in den
+                // Gang-Vierteln - nicht mehr verstreut ueber beide Inseln
+                if (!RioWorldLayout.InStadt(p) && !RioDistricts.InFavela(p)) continue;
 
                 _city[gz * _gw + gx] = true;
             }
@@ -547,7 +554,7 @@ namespace Rio.WorldGen
 
                 var centerW = RioDistricts.ToWorld(d, new Vector2((lx0 + lx1) * 0.5f, (lz0 + lz1) * 0.5f));
 
-                if (kind != Viertel.Industrie && brng.NextDouble() < 0.09 &&
+                if (kind != Viertel.Industrie && kind != Viertel.Favela && brng.NextDouble() < 0.09 &&
                     (lx1 - lx0) >= 38f && (lz1 - lz0) >= 38f)
                 {
                     int frei = brng.NextDouble() < 0.5 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
@@ -616,8 +623,14 @@ namespace Rio.WorldGen
         // ------------------------------------------------------------------
 
         /// <summary>
-        /// An den Haengen gibt es kein Raster. Huetten werden dicht gestreut,
-        /// mit Mindestabstand statt Gitter, und stehen schief zueinander.
+        /// Huetten gibt es nur noch in den Gang-Vierteln (Zona Oeste, Morro do
+        /// Estado), dort aber in jeder Luecke: zwischen den Haeusern der
+        /// Blocks, in den Hinterhoefen und den Hang hinauf. Vorher standen sie
+        /// an jedem Hang beider Inseln und damit verstreut ueber die ganze
+        /// Karte.
+        ///
+        /// Kein Raster: dicht gestreut, mit Mindestabstand ueber das
+        /// Belegungsraster, schief zueinander.
         /// </summary>
         public void PlaceFavelas(System.Random rng)
         {
@@ -627,14 +640,16 @@ namespace Rio.WorldGen
             for (float z = _t.MinZ; z < _t.MaxZ; z += cell)
             {
                 var center = new Vector2(x + cell * 0.5f, z + cell * 0.5f);
+                if (!RioDistricts.InFavela(center)) continue;
                 if (!_t.IsLand(center) || _t.IsInLake(center)) continue;
 
                 float slope = _t.SlopeAt(center);
-                if (slope < 0.16f || slope > 0.85f) continue;      // nur echte Haenge
+                if (slope > 0.85f) continue;                       // zu steil auch fuer Huetten
 
                 float h = _t.SampleHeight(center);
-                if (h < 8f || h > 210f) continue;
+                if (h < 2.5f || h > 210f) continue;
                 if (NearPlace(center, 70f)) continue;
+                if (RioWahrzeichen.Belegt(center, 0f)) continue;
                 if (_t.DistanceToCoast(center) < 25f) continue;
 
                 // Nicht direkt neben die Villen. In echt grenzen Favelas zwar
@@ -649,7 +664,7 @@ namespace Rio.WorldGen
                     var p2 = center + new Vector2(
                         ((float)rng.NextDouble() - 0.5f) * cell,
                         ((float)rng.NextDouble() - 0.5f) * cell);
-                    if (!_t.IsLand(p2)) continue;
+                    if (!_t.IsLand(p2) || !RioDistricts.InFavela(p2)) continue;
 
                     int model = FavelaPalette[rng.Next(FavelaPalette.Length)];
                     float yaw = (float)rng.NextDouble() * 360f;
@@ -697,6 +712,7 @@ namespace Rio.WorldGen
                 {
                     var p = new Vector2(x, z);
                     if (!_t.IsLand(p) || _t.IsInLake(p)) continue;
+                    if (!RioWorldLayout.InStadt(p)) continue;      // Villen nur in der Stadt
                     if (_t.DistanceToCoast(p) < radius + 15f) continue;
                     if (_t.SlopeAt(p) > 0.10f) continue;
                     float h = _t.SampleHeight(p);
@@ -786,6 +802,7 @@ namespace Rio.WorldGen
                     foreach (var cand in new[] { on + side, on - side })
                     {
                         if (!_t.IsLand(cand) || _t.SlopeAt(cand) > 0.12f) continue;
+                        if (!RioWorldLayout.InStadt(cand)) continue;   // keine Tankstelle allein im Feld
                         if (IsReserved(cand, 20f)) continue;
 
                         float tYaw = Mathf.Atan2(-side.x, -side.y) * Mathf.Rad2Deg;

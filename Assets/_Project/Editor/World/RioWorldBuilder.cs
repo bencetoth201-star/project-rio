@@ -146,7 +146,7 @@ namespace Rio.WorldGen
                       $"{planner.Shacks:N0} Favela-Huetten. " +
                       $"Viertel: Centro {planner.KindCount[0]}, Orla {planner.KindCount[1]}, " +
                       $"Bairro {planner.KindCount[2]}, Nobre {planner.KindCount[3]}, " +
-                      $"Industrie {planner.KindCount[4]} Blocks. " +
+                      $"Industrie {planner.KindCount[4]}, Favela {planner.KindCount[5]} Blocks. " +
                       $"Gesamt {planner.Count:N0} Objekte in {lodObjects} Chunks. " +
                       $"Landflaeche rund {landKm2:F1} km2.");
         }

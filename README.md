@@ -41,7 +41,7 @@ Objekte verschwinden beim Stoppen wieder.
 | `Assets/RioStrassen/` | 56 Straßen-, Brücken- und Geländeteile |
 | `Assets/RioHafen/`, `Assets/RioStrand/`, `Assets/RioFahrzeuge/` | Hafen-Baukasten mit Containerschiff, 20 Strandobjekte, Valente GT |
 | `Assets/RioHeists/` | Casa Império (Banco Central), Megayacht SOBERANA, Maya-Kanalisation, Beute- und Abriegelungs-Skripte |
-| `Assets/RioOnline/` | Flughafen, Cristo, Krankenhaus, Militärbasis, Casino, Hochhäuser, Palast, Drughouse, Fahrzeuge, Waffen |
+| `Assets/RioOnline/` | Flughafen, Cristo, Krankenhaus, Militärbasis, Casino, Hochhäuser, Drughouse, Fahrzeuge, Waffen |
 | `Assets/RioGemeinsam/` | Hitboxen für alle Modelle (`Tools → Rio → Hitboxen einrichten`) |
 | `Docs/Modelle/` | Anleitungen zu allen Modellpaketen (Anker, bewegliche Teile, Heist-Abläufe) |
 | `Assets/_Project/Materials/` | Flache Farbmaterialien |
@@ -53,8 +53,23 @@ Die Orte aus der Legende sind keine Klötze mehr, sondern echte Modelle
 (`Assets/_Project/Editor/World/RioWahrzeichen.cs`). Jedes sucht sich beim
 Weltbau einen Platz nahe seinem Ort auf der Karte, nimmt seine Fläche aus
 der Stadt, ebnet das Gelände ein und wird am Ende mit Hitboxen und Farben
-gesetzt. Dazu kommen Hochhäuser, Palast, Drughouse, Tuning-Werkstatt, ein
-Containerhafen an der Küste und Strandobjekte am Strandbogen.
+gesetzt. Dazu kommen Hochhäuser, Drughouse, Tuning-Werkstatt, ein
+Containerhafen an der Küste und Strandobjekte am Strandbogen. Die Lage
+folgt der Whiteboard-Skizze; der große Flughafen liegt wie Santos Dumont
+als Halbinsel an Rios Ostküste.
+
+## Stadt und Gang-Viertel
+
+Gebaut wird nur innerhalb der beiden grünen Stadtumrisse der Skizze
+(`RioWorldLayout.StadtRioPx` / `StadtNiteroiPx`), dort aber dicht: die
+Viertel in `RioDistricts.cs` sind bewusst zu groß und überlappen sich, der
+Umriss schneidet sie außen ab. Außerhalb liegt nur freies Land.
+
+Die beiden Gang-Viertel (`Kind.Favela`) liegen an den kleinen Landebahnen:
+**Zona Oeste** im Westen von Rio (mit dem Drughouse) und **Morro do Estado**
+im Osten von Niterói. Dort stehen nur arme Häuser in einem engen Raster, und
+jede Lücke bis den Hang hinauf füllen Favela-Hütten. Hütten gibt es sonst
+nirgends mehr.
 
 Die Casa Império (Banco Central) hat drei Untergeschosse und darunter die
 Maya-Kanalisation - dort bleibt das Gelände offen. Die abgeriegelte Version
