@@ -78,9 +78,14 @@ versucht, danach füllen Hinterhäuser die Blockmitte
 An der Naht zwischen zwei Vierteln treffen die Straßen deshalb genau
 aufeinander und werden direkt verbunden (`RioStrassenplan.NaehteVerbinden`);
 die Ringstraße an einer Naht gehört dem Viertel mit dem kleineren Index.
-Rio und Niterói sind jeweils ein zusammenhängendes Netz, die Brücke ist an
-beiden Enden über eine Zufahrt angebunden (`BrueckeAnbinden`). Das Log
-zeigt beim Weltbau, welche Viertel in welchem Teilnetz liegen.
+Rio und Niterói sind jeweils ein zusammenhängendes Netz. Das Log zeigt beim
+Weltbau, welche Viertel in welchem Teilnetz liegen.
+
+Die Brücke zwischen den Inseln kommt später als eigenes Modell. Der alte
+Brückengenerator (`RioStrassenplan.Bruecke`, mit Zufahrt über
+`BrueckeAnbinden`) steht noch im Code, wird aber nicht mehr aufgerufen.
+Die Brückenenden aus der Skizze (`RioWorldLayout.BridgePx`) halten die
+Wahrzeichen weiter frei.
 
 Die beiden Gang-Viertel (`Kind.Favela`): **Jacarezinho** in Rio zwischen
 Zona Oeste und Stadion (mit dem Drughouse) und **Morro do Estado** im Osten

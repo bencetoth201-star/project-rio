@@ -85,8 +85,9 @@ namespace Rio.WorldGen
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
-            plan.Bruecke(planner.PlacementList);
-            plan.BrueckeAnbinden(planner.PlacementList);
+            // Die Bruecke nach Niteroi kommt spaeter als eigenes Modell.
+            // plan.Bruecke und plan.BrueckeAnbinden bleiben im Code, werden
+            // aber nicht mehr aufgerufen.
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht

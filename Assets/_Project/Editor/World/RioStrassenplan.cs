@@ -1982,9 +1982,11 @@ namespace Rio.WorldGen
             $"{_k.Count - Entfernt:N0} Knoten ({Entfernt:N0} Splitter gestrichen), " +
             $"{Teilnetze:N0} Teilnetze ({NetzeBehalten:N0} ab {MinNetz} Knoten), groesstes {GroesstesNetz:N0}, " +
             $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, "
-          + $"Bruecke {BrueckenKacheln:N0} Teile auf {Pfeiler:N0} Pfeilerstuecken"
-          + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend")
-          + $", {BrueckeAngebunden} von 2 Enden an die Stadt angebunden ({BrueckenZufahrt} Kacheln), "
+          + (BrueckenKacheln == 0
+                ? "keine Bruecke (kommt als eigenes Modell), "
+                : $"Bruecke {BrueckenKacheln:N0} Teile auf {Pfeiler:N0} Pfeilerstuecken"
+                  + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend")
+                  + $", {BrueckeAngebunden} von 2 Enden an die Stadt angebunden ({BrueckenZufahrt} Kacheln), ")
           + (SchnellVerworfen ? "Schnellstrassenring kam nicht zustande, nichts gebaut, " : "")
           + $"{SchnellKacheln:N0} Schnellstrassenkacheln in {SchnellAbschnitte:N0} Abschnitten "
           + $"({SchnellOffen:N0} offen), "

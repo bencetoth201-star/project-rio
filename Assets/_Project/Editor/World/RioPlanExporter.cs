@@ -53,8 +53,7 @@ namespace Rio.WorldGen
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
-            plan.Bruecke(planner.PlacementList);
-            plan.BrueckeAnbinden(planner.PlacementList);
+            // Die Bruecke kommt spaeter als eigenes Modell (siehe RioWorldBuilder)
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
