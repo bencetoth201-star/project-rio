@@ -17,8 +17,15 @@ wären Unsinn, wenn zwei Sekunden Rechenzeit dasselbe liefern.
 
 Deshalb nach dem Clone einmal, in dieser Reihenfolge:
 
-1. **Tools → Rio → Welt bauen (20 km2)**
-2. **Tools → Rio → Block-Figur bauen**
+1. **Tools → Rio → Block-Figur bauen**
+2. **Tools → Rio → Welt bauen (20 km2)**
+3. Szene speichern (Strg+S) als `Assets/Scenes/SampleScene.unity`
+
+Die Reihenfolge ist wichtig: der Weltbau setzt die Figur mitten in die
+Stadt, aber nur, wenn es sie schon gibt. Andersherum steht sie auf ihrem
+festen Startpunkt (0, 4, −6,5) außerhalb der Stadt, und im Umkreis des
+Streamers liegen kaum Häuser. Wer es verkehrt gemacht hat: einfach die
+Welt noch einmal bauen.
 
 Die Szene selbst liegt ebenfalls nicht im Repo - sie ist das Ergebnis der
 Generatoren, nicht ihre Quelle. Vor dem ersten Bau ist sie leer oder gar
@@ -37,9 +44,68 @@ Objekte verschwinden beim Stoppen wieder.
 | `Assets/_Project/Editor/Player/` | Generator für die Block-Figur |
 | `Assets/_Project/Scripts/Player/` | Steuerung, Kamera, Lauf-Rig (Laufzeitcode) |
 | `Assets/_Project/Scripts/World/` | Hausdaten und Streaming (Laufzeitcode) |
-| `Assets/RioHaeuser/` | Die 19 Gebäudemodelle samt Farbsystem |
+| `Assets/RioHaeuser/` | 33 Gebäudemodelle samt Farbsystem, darunter Stadion, Nachtclub, Juwelier, Kleiderladen, Tuning-Werkstatt |
+| `Assets/RioStrassen/` | 56 Straßen-, Brücken- und Geländeteile |
+| `Assets/RioHafen/`, `Assets/RioStrand/`, `Assets/RioFahrzeuge/` | Hafen-Baukasten mit Containerschiff, 20 Strandobjekte, Valente GT |
+| `Assets/RioHeists/` | Casa Império (Banco Central), Megayacht SOBERANA, Maya-Kanalisation, Beute- und Abriegelungs-Skripte |
+| `Assets/RioOnline/` | Flughafen, Cristo, Krankenhaus, Militärbasis, Casino, Hochhäuser, Drughouse, Fahrzeuge, Waffen |
+| `Assets/RioGemeinsam/` | Hitboxen für alle Modelle (`Tools → Rio → Hitboxen einrichten`) |
+| `Docs/Modelle/` | Anleitungen zu allen Modellpaketen (Anker, bewegliche Teile, Heist-Abläufe) |
 | `Assets/_Project/Materials/` | Flache Farbmaterialien |
 | `Assets/_Project/Generated/` | Erzeugte Meshes und Hausdaten — nicht im Repo |
+
+## Wahrzeichen
+
+Die Orte aus der Legende sind keine Klötze mehr, sondern echte Modelle
+(`Assets/_Project/Editor/World/RioWahrzeichen.cs`). Jedes sucht sich beim
+Weltbau einen Platz nahe seinem Ort auf der Karte, nimmt seine Fläche aus
+der Stadt, ebnet das Gelände ein und wird am Ende mit Hitboxen und Farben
+gesetzt. Dazu kommen Hochhäuser, Drughouse, Tuning-Werkstatt, ein
+Containerhafen an der Küste und Strandobjekte am Strandbogen. Die Lage
+folgt der Whiteboard-Skizze; der große Flughafen liegt wie Santos Dumont
+als Halbinsel an Rios Ostküste.
+
+## Stadt und Gang-Viertel
+
+Gebaut wird nur innerhalb der beiden grünen Stadtumrisse der Skizze
+(`RioWorldLayout.StadtRioPx` / `StadtNiteroiPx`), dort aber dicht: die
+Viertel in `RioDistricts.cs` sind bewusst zu groß und überlappen sich, der
+Umriss schneidet sie außen ab. Außerhalb liegt nur freies Land.
+
+**Organisch statt Raster:** Jedes Viertel hat unregelmäßige
+Straßenabstände, und einzelne Straßenstücke zwischen zwei Kreuzungen fallen
+weg (`RioDistricts.IstStrasse`). Die Blocks sind deshalb ungleich und
+verwinkelt. Häuser stehen nicht in Reihe: An jeder Straßenkante wird eines
+mit zufälligem Versatz, eigenem Abstand zur Straße und leicht schräg
+versucht, danach füllen Hinterhäuser die Blockmitte
+(`RioHousePlanner.BlockBebauen`).
+
+**Ein Straßennetz je Insel:** Alle Viertel einer Insel liegen auf demselben
+12-m-Raster mit derselben Drehung (`RioDistricts.D`, Rio 8°, Niterói −8°).
+An der Naht zwischen zwei Vierteln treffen die Straßen deshalb genau
+aufeinander und werden direkt verbunden (`RioStrassenplan.NaehteVerbinden`);
+die Ringstraße an einer Naht gehört dem Viertel mit dem kleineren Index.
+Rio und Niterói sind jeweils ein zusammenhängendes Netz. Das Log zeigt beim
+Weltbau, welche Viertel in welchem Teilnetz liegen.
+
+Die Brücke zwischen den Inseln kommt später als eigenes Modell. Der alte
+Brückengenerator (`RioStrassenplan.Bruecke`, mit Zufahrt über
+`BrueckeAnbinden`) steht noch im Code, wird aber nicht mehr aufgerufen.
+Die Brückenenden aus der Skizze (`RioWorldLayout.BridgePx`) halten die
+Wahrzeichen weiter frei.
+
+Die beiden Gang-Viertel (`Kind.Favela`): **Jacarezinho** in Rio zwischen
+Zona Oeste und Stadion (mit dem Drughouse) und **Morro do Estado** im Osten
+von Niterói. Dort stehen nur arme Häuser, die Gassen sind enger und
+brechen öfter ab, und jede Lücke bis den Hang hinauf füllen Favela-Hütten.
+Hütten gibt es sonst nirgends.
+
+Die beiden kleinen Flugplätze bekommen später ein eigenes Modell; bis dahin
+steht dort nichts.
+
+Die Casa Império (Banco Central) hat drei Untergeschosse und darunter die
+Maya-Kanalisation - dort bleibt das Gelände offen. Die abgeriegelte Version
+liegt deckungsgleich und abgeschaltet daneben (`RioAbriegelung`).
 
 ## Häuser: nah echt, fern Klötze
 

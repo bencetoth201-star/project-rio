@@ -1,0 +1,535 @@
+[
+ {
+  "slug": "01_kokospalme",
+  "name": "Kokospalme",
+  "cls": "Natur",
+  "tris": 660,
+  "mats": 5,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.2,
+   9.5,
+   4.4
+  ],
+  "lot": [
+   6.0,
+   6.0
+  ],
+  "anchors": {}
+ },
+ {
+  "slug": "02_palmengruppe",
+  "name": "Palmengruppe",
+  "cls": "Natur",
+  "tris": 1500,
+  "mats": 4,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   8.9,
+   11.0,
+   8.6
+  ],
+  "lot": [
+   10.0,
+   10.0
+  ],
+  "anchors": {}
+ },
+ {
+  "slug": "03_haengematte",
+  "name": "Hängematte zwischen Palmen",
+  "cls": "Natur",
+  "tris": 600,
+  "mats": 5,
+  "slots": [
+   "slot_accent_1"
+  ],
+  "combos": 6,
+  "size": [
+   10.1,
+   7.4,
+   4.8
+  ],
+  "lot": [
+   12.0,
+   6.0
+  ],
+  "anchors": {
+   "Liegen": [
+    -0.048,
+    0.8,
+    0.611,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "04_rettungsturm",
+  "name": "Rettungsturm (Salva-Vidas)",
+  "cls": "Rettung",
+  "tris": 1570,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   5.3,
+   7.6,
+   9.0
+  ],
+  "lot": [
+   6.0,
+   10.0
+  ],
+  "anchors": {
+   "Rettungsschwimmer": [
+    -0.243,
+    2.55,
+    3.07,
+    0
+   ],
+   "Rampe_Unten": [
+    -0.243,
+    0.0,
+    -3.93,
+    180
+   ]
+  }
+ },
+ {
+  "slug": "05_duschen",
+  "name": "Strandduschen",
+  "cls": "Rettung",
+  "tris": 668,
+  "mats": 5,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   3.2,
+   2.5,
+   2.0
+  ],
+  "lot": [
+   4.0,
+   2.0
+  ],
+  "anchors": {
+   "Duschen": [
+    0.0,
+    0.08,
+    0.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "06_muell_warnflagge",
+  "name": "Mülleimer + Warnflagge",
+  "cls": "Rettung",
+  "tris": 1440,
+  "mats": 5,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   2.8,
+   5.0,
+   1.0
+  ],
+  "lot": [
+   4.0,
+   2.0
+  ],
+  "anchors": {
+   "Muell": [
+    -1.09,
+    0.0,
+    1.15,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "07_strandkiosk",
+  "name": "Strandkiosk (Quiosque)",
+  "cls": "Essen",
+  "tris": 3018,
+  "mats": 10,
+  "slots": [
+   "slot_accent_2"
+  ],
+  "combos": 6,
+  "size": [
+   9.6,
+   3.5,
+   7.4
+  ],
+  "lot": [
+   10.0,
+   8.0
+  ],
+  "anchors": {
+   "Kaufen": [
+    -0.004,
+    0.12,
+    1.8,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "08_eisladen",
+  "name": "Eisladen",
+  "cls": "Essen",
+  "tris": 1306,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.0,
+   5.5,
+   2.9
+  ],
+  "lot": [
+   6.0,
+   4.0
+  ],
+  "anchors": {
+   "Kaufen": [
+    0.0,
+    0.1,
+    2.2,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "09_eiswagen",
+  "name": "Eis-Fahrrad (Picolé)",
+  "cls": "Essen",
+  "tris": 956,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   1.8,
+   2.6,
+   2.9
+  ],
+  "lot": [
+   2.0,
+   4.0
+  ],
+  "anchors": {
+   "Kaufen": [
+    0.0,
+    0.0,
+    2.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "10_kokos_stand",
+  "name": "Kokosnuss-Stand",
+  "cls": "Essen",
+  "tris": 1536,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   3.6,
+   2.8,
+   3.0
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "anchors": {
+   "Kaufen": [
+    -0.08,
+    0.0,
+    1.5,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "11_barraca",
+  "name": "Barraca (Strandverleih)",
+  "cls": "Essen",
+  "tris": 1414,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   3.4,
+   2.9,
+   3.5
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "anchors": {
+   "Kaufen": [
+    0.0,
+    0.0,
+    2.55,
+    0
+   ],
+   "Stuehle_Mieten": [
+    -0.8,
+    0.0,
+    1.85,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "12_sandburg",
+  "name": "Sandburg",
+  "cls": "Freizeit",
+  "tris": 752,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.0,
+   1.9,
+   3.5
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "anchors": {}
+ },
+ {
+  "slug": "13_sonnenschirm_set",
+  "name": "Sonnenschirm + 2 Stühle",
+  "cls": "Freizeit",
+  "tris": 236,
+  "mats": 6,
+  "slots": [
+   "slot_accent_1",
+   "slot_accent_3"
+  ],
+  "combos": 36,
+  "size": [
+   3.0,
+   2.7,
+   3.0
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "anchors": {
+   "Sitz_1": [
+    -0.7,
+    0.33,
+    1.1,
+    0
+   ],
+   "Sitz_2": [
+    0.4,
+    0.33,
+    1.1,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "14_strandtuch_set",
+  "name": "Strandtücher-Set",
+  "cls": "Freizeit",
+  "tris": 324,
+  "mats": 8,
+  "slots": [
+   "slot_accent_1",
+   "slot_accent_2"
+  ],
+  "combos": 36,
+  "size": [
+   3.5,
+   0.4,
+   1.9
+  ],
+  "lot": [
+   4.0,
+   2.0
+  ],
+  "anchors": {
+   "Liegen_1": [
+    -0.604,
+    0.02,
+    0.05,
+    0
+   ],
+   "Liegen_2": [
+    0.696,
+    0.02,
+    0.05,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "15_volleyball",
+  "name": "Beachvolleyball-Feld",
+  "cls": "Sport",
+  "tris": 276,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   16.1,
+   3.2,
+   12.2
+  ],
+  "lot": [
+   18.0,
+   14.0
+  ],
+  "anchors": {
+   "Feld_Mitte": [
+    0.0,
+    0.0,
+    0.893,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "16_fussballtor",
+  "name": "Beach-Soccer-Tor",
+  "cls": "Sport",
+  "tris": 220,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   5.6,
+   2.2,
+   4.7
+  ],
+  "lot": [
+   6.0,
+   6.0
+  ],
+  "anchors": {
+   "Tor": [
+    0.0,
+    0.0,
+    -0.11,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "17_fitness",
+  "name": "Fitness-Station",
+  "cls": "Sport",
+  "tris": 424,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.0,
+   2.5,
+   4.0
+  ],
+  "lot": [
+   6.0,
+   4.0
+  ],
+  "anchors": {
+   "Training": [
+    0.0,
+    0.05,
+    0.0,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "18_surfbretter",
+  "name": "Surfbrett-Ständer",
+  "cls": "Sport",
+  "tris": 760,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   3.8,
+   2.2,
+   1.7
+  ],
+  "lot": [
+   4.0,
+   2.0
+  ],
+  "anchors": {
+   "Surfbrett": [
+    -0.866,
+    0.0,
+    1.171,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "19_leihraeder",
+  "name": "Leihrad-Station",
+  "cls": "Freizeit",
+  "tris": 2136,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.4,
+   1.5,
+   1.7
+  ],
+  "lot": [
+   8.0,
+   2.0
+  ],
+  "anchors": {
+   "Fahrrad_Leihen": [
+    0.0,
+    0.08,
+    1.285,
+    0
+   ]
+  }
+ },
+ {
+  "slug": "20_fischerboot",
+  "name": "Fischerboot",
+  "cls": "Freizeit",
+  "tris": 880,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   3.5,
+   1.2,
+   5.6
+  ],
+  "lot": [
+   4.0,
+   6.0
+  ],
+  "anchors": {
+   "Boot": [
+    -0.627,
+    0.0,
+    0.2,
+    0
+   ]
+  }
+ }
+]

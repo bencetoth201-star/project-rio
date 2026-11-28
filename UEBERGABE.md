@@ -26,8 +26,11 @@ Unity öffnen, dann im Menü:
    schreibt `Screenshots/rio_plan.txt`. Dauert ~20 s, baut nichts in 3D.
 2. `python -I Tools/stadtplan_zeichnen.py` — macht daraus
    `Screenshots/RIO_STADTPLAN.png`.
-3. **Tools → Rio → Welt bauen (20 km2)** — baut die 3D-Welt. Dauert ~30 s.
-4. **Tools → Rio → Block-Figur bauen** — setzt die Spielfigur.
+3. **Tools → Rio → Block-Figur bauen** — legt die Spielfigur an.
+4. **Tools → Rio → Welt bauen (20 km2)** — baut die 3D-Welt und setzt die
+   Figur nach Centro. Dauert ~20 s. Erst die Figur, dann die Welt -
+   andersherum bleibt die Figur auf ihrem festen Startpunkt ausserhalb der
+   Stadt.
 
 Beide Generatoren brechen ab, wenn der Play Mode läuft.
 

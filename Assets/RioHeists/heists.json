@@ -1,0 +1,7708 @@
+[
+ {
+  "slug": "01_casa_imperio",
+  "name": "Casa Império (Mega-Heist-Palast)",
+  "cls": "Heist",
+  "tris": 219500,
+  "mats": 85,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   73.1,
+   78.4,
+   114.0
+  ],
+  "lot": [
+   74.0,
+   116.0
+  ],
+  "levels": [
+   "Dach",
+   "OG3",
+   "OG2",
+   "OG1",
+   "EG",
+   "UG1",
+   "UG2",
+   "UG3"
+  ],
+  "kollision": 112704,
+  "trigger": 213,
+  "anchors": {
+   "Polizei_Linie": [
+    0.0,
+    0.0,
+    47.5,
+    180
+   ],
+   "Wachhaus_Tor_W": [
+    -9.8,
+    0.0,
+    48.3,
+    180
+   ],
+   "Wachhaus_Tor_O": [
+    9.8,
+    0.0,
+    48.3,
+    180
+   ],
+   "Haupttor": [
+    0.0,
+    0.0,
+    53.5,
+    180
+   ],
+   "Wachhaus_Hof": [
+    7.6,
+    0.0,
+    -52.7,
+    -90
+   ],
+   "Strom_Trafo": [
+    23.5,
+    0.0,
+    -46.3,
+    180
+   ],
+   "Geldtransporter_Hof": [
+    0.0,
+    0.0,
+    -47.5,
+    0
+   ],
+   "Eingang": [
+    0.0,
+    1.65,
+    26.5,
+    180
+   ],
+   "Treppenhaus_W_UG2": [
+    -28.2,
+    -10.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_UG2": [
+    28.2,
+    -10.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_UG2": [
+    -8.0,
+    -10.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_UG2": [
+    8.0,
+    -10.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_UG1": [
+    -28.2,
+    -4.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_UG1": [
+    28.2,
+    -4.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_UG1": [
+    -8.0,
+    -4.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_UG1": [
+    8.0,
+    -4.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_EG": [
+    -28.2,
+    1.65,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_EG": [
+    28.2,
+    1.65,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_EG": [
+    -8.0,
+    1.65,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_EG": [
+    8.0,
+    1.65,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG1": [
+    -28.2,
+    9.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG1": [
+    28.2,
+    9.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG1": [
+    -8.0,
+    9.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG1": [
+    8.0,
+    9.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG2": [
+    -28.2,
+    15.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG2": [
+    28.2,
+    15.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG2": [
+    -8.0,
+    15.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG2": [
+    8.0,
+    15.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG3": [
+    -28.2,
+    21.0,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG3": [
+    28.2,
+    21.0,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG3": [
+    -8.0,
+    21.0,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG3": [
+    8.0,
+    21.0,
+    -19.3,
+    0
+   ],
+   "Druckplatten": [
+    0.0,
+    1.65,
+    -7.5,
+    0
+   ],
+   "Estrela_do_Rio": [
+    0.0,
+    4.0,
+    -7.5,
+    0
+   ],
+   "Rezeption": [
+    7.0,
+    1.65,
+    3.9,
+    180
+   ],
+   "Schleuse_1": [
+    -8.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_2": [
+    -4.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_3": [
+    0.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_4": [
+    4.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_5": [
+    8.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Wachmann_Eingang_W": [
+    -15.0,
+    1.65,
+    10.9,
+    180
+   ],
+   "Wachmann_Eingang_O": [
+    15.0,
+    1.65,
+    10.9,
+    180
+   ],
+   "EG_Vitrine_1_Punkt": [
+    -24.0,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_2_Punkt": [
+    -24.0,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_3_Punkt": [
+    -24.0,
+    1.65,
+    -4.5,
+    0
+   ],
+   "EG_Vitrine_4_Punkt": [
+    -24.0,
+    1.65,
+    1.5,
+    0
+   ],
+   "EG_Vitrine_5_Punkt": [
+    -20.6,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_6_Punkt": [
+    -20.6,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_7_Punkt": [
+    -20.6,
+    1.65,
+    -4.5,
+    0
+   ],
+   "EG_Vitrine_8_Punkt": [
+    -20.6,
+    1.65,
+    1.5,
+    0
+   ],
+   "EG_Vitrine_9_Punkt": [
+    21.5,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_10_Punkt": [
+    21.5,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_11_Punkt": [
+    24.8,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_12_Punkt": [
+    24.8,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_13_Punkt": [
+    21.5,
+    1.65,
+    -5.5,
+    0
+   ],
+   "EG_Vitrine_14_Punkt": [
+    21.5,
+    1.65,
+    0.5,
+    0
+   ],
+   "EG_Vitrine_15_Punkt": [
+    -27.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_16_Punkt": [
+    -21.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_17_Punkt": [
+    27.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_18_Punkt": [
+    21.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "Fahrzeugaufzug_EG": [
+    0.0,
+    1.65,
+    -30.8,
+    0
+   ],
+   "Geldtransporter_EG": [
+    0.0,
+    1.65,
+    -30.8,
+    0
+   ],
+   "Tesouraria": [
+    -11.25,
+    1.65,
+    -25.1,
+    0
+   ],
+   "Goldannahme": [
+    11.25,
+    1.65,
+    -25.1,
+    0
+   ],
+   "Wachposten_Hof": [
+    21.5,
+    1.65,
+    -28.3,
+    180
+   ],
+   "Strombox": [
+    -20.7,
+    1.65,
+    -35.3,
+    180
+   ],
+   "Sicherheitsbox": [
+    -19.35,
+    1.65,
+    -35.4,
+    90
+   ],
+   "Technikraum": [
+    -21.5,
+    1.65,
+    -29.5,
+    0
+   ],
+   "Waffenkontrolle": [
+    0.0,
+    1.65,
+    -25.3,
+    0
+   ],
+   "Lagereingang": [
+    0.0,
+    1.65,
+    -38.3,
+    0
+   ],
+   "Lkw_Lieferung": [
+    0.0,
+    0.95,
+    -44.5,
+    0
+   ],
+   "Wache_Lieferung_1": [
+    -1.8,
+    1.65,
+    -24.5,
+    180
+   ],
+   "Wache_Lieferung_2": [
+    4.9,
+    1.65,
+    -24.7,
+    -90
+   ],
+   "Wache_Tesouraria": [
+    -11.0,
+    1.65,
+    -30.75,
+    0
+   ],
+   "Wache_Goldannahme": [
+    11.0,
+    1.65,
+    -30.75,
+    0
+   ],
+   "Kamera_EG_1": [
+    -31.0,
+    8.69,
+    8.0,
+    135
+   ],
+   "Kamera_EG_2": [
+    31.0,
+    8.69,
+    8.0,
+    -135
+   ],
+   "Kamera_EG_3": [
+    -31.0,
+    8.69,
+    -23.1,
+    45
+   ],
+   "Kamera_EG_4": [
+    31.0,
+    8.69,
+    -23.1,
+    -45
+   ],
+   "Kamera_EG_5": [
+    -17.6,
+    8.69,
+    17.4,
+    135
+   ],
+   "Kamera_EG_6": [
+    17.6,
+    8.69,
+    17.4,
+    -135
+   ],
+   "Kamera_EG_7": [
+    -13.6,
+    8.69,
+    -19.1,
+    45
+   ],
+   "Kamera_EG_8": [
+    13.6,
+    8.69,
+    -19.1,
+    -45
+   ],
+   "Kamera_EG_9": [
+    0.0,
+    8.69,
+    -23.9,
+    180
+   ],
+   "Kamera_EG_10": [
+    -17.6,
+    8.69,
+    -36.5,
+    45
+   ],
+   "Kamera_EG_11": [
+    17.6,
+    8.69,
+    -36.5,
+    -45
+   ],
+   "Kamera_EG_12": [
+    0.0,
+    8.69,
+    8.1,
+    180
+   ],
+   "Kartenleser_Sala_W": [
+    -19.0,
+    9.5,
+    13.85,
+    90
+   ],
+   "Kartenleser_Sala_O": [
+    19.0,
+    9.5,
+    13.85,
+    -90
+   ],
+   "Laser_Start": [
+    0.0,
+    9.5,
+    7.7,
+    0
+   ],
+   "Laser_Ende": [
+    0.0,
+    9.5,
+    12.2,
+    0
+   ],
+   "Laser_Steuerung": [
+    1.85,
+    9.5,
+    7.5,
+    180
+   ],
+   "Coroa_Imperial": [
+    0.0,
+    10.75,
+    14.1,
+    0
+   ],
+   "OG1_Vitrine_1_Punkt": [
+    -6.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_2_Punkt": [
+    6.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_3_Punkt": [
+    -12.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_4_Punkt": [
+    12.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_5_Punkt": [
+    -9.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_6_Punkt": [
+    9.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_7_Punkt": [
+    -15.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_8_Punkt": [
+    15.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_9_Punkt": [
+    -15.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_10_Punkt": [
+    15.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "Thron": [
+    0.0,
+    9.9,
+    17.35,
+    180
+   ],
+   "Kamera_Sala_1": [
+    -17.4,
+    14.69,
+    9.1,
+    135
+   ],
+   "Kamera_Sala_2": [
+    17.4,
+    14.69,
+    9.1,
+    -135
+   ],
+   "Kamera_Sala_3": [
+    -17.4,
+    14.69,
+    17.6,
+    45
+   ],
+   "Kamera_Sala_4": [
+    17.4,
+    14.69,
+    17.6,
+    -45
+   ],
+   "OG1_Vitrine_11_Punkt": [
+    -24.0,
+    9.5,
+    -19.5,
+    0
+   ],
+   "OG1_Vitrine_12_Punkt": [
+    -24.0,
+    9.5,
+    -13.5,
+    0
+   ],
+   "OG1_Vitrine_13_Punkt": [
+    -24.0,
+    9.5,
+    -5.5,
+    0
+   ],
+   "OG1_Vitrine_14_Punkt": [
+    -24.0,
+    9.5,
+    0.5,
+    0
+   ],
+   "OG1_Vitrine_15_Punkt": [
+    -20.6,
+    9.5,
+    -13.5,
+    0
+   ],
+   "OG1_Vitrine_16_Punkt": [
+    -20.6,
+    9.5,
+    -5.5,
+    0
+   ],
+   "OG1_Vitrine_17_Punkt": [
+    -24.0,
+    9.5,
+    6.5,
+    0
+   ],
+   "OG1_Vitrine_18_Punkt": [
+    -24.0,
+    9.5,
+    12.5,
+    0
+   ],
+   "OG1_Vitrine_19_Punkt": [
+    -20.6,
+    9.5,
+    6.5,
+    0
+   ],
+   "OG1_Vitrine_20_Punkt": [
+    -20.6,
+    9.5,
+    12.5,
+    0
+   ],
+   "OG1_Vitrine_21_Punkt": [
+    -27.6,
+    9.5,
+    16.1,
+    0
+   ],
+   "Astronomische_Uhr": [
+    -29.9,
+    9.5,
+    12.0,
+    90
+   ],
+   "Auktionssaal": [
+    24.7,
+    9.5,
+    -17.5,
+    0
+   ],
+   "OG1_Vitrine_22_Punkt": [
+    21.5,
+    9.5,
+    9.0,
+    0
+   ],
+   "OG1_Vitrine_23_Punkt": [
+    21.5,
+    9.5,
+    14.0,
+    0
+   ],
+   "OG1_Vitrine_24_Punkt": [
+    27.5,
+    9.5,
+    9.0,
+    0
+   ],
+   "OG1_Vitrine_25_Punkt": [
+    27.5,
+    9.5,
+    14.0,
+    0
+   ],
+   "Auktionator": [
+    24.7,
+    9.9,
+    -21.3,
+    0
+   ],
+   "Archiv": [
+    0.0,
+    9.5,
+    -29.5,
+    0
+   ],
+   "Kamera_OG1_1": [
+    -31.0,
+    14.69,
+    -23.1,
+    45
+   ],
+   "Kamera_OG1_2": [
+    31.0,
+    14.69,
+    -23.1,
+    -45
+   ],
+   "Kamera_OG1_3": [
+    0.0,
+    14.69,
+    -23.9,
+    180
+   ],
+   "Kamera_OG1_4": [
+    -31.0,
+    14.69,
+    8.0,
+    135
+   ],
+   "Sitzungssaal": [
+    0.0,
+    15.5,
+    10.5,
+    0
+   ],
+   "Schleiferei": [
+    -26.0,
+    15.5,
+    -9.5,
+    90
+   ],
+   "Goldschmiede": [
+    27.0,
+    15.5,
+    -9.5,
+    -90
+   ],
+   "Kantine": [
+    -8.0,
+    15.5,
+    -30.5,
+    0
+   ],
+   "Arbeitstresor": [
+    21.0,
+    15.5,
+    -29.7,
+    180
+   ],
+   "Kamera_OG2_1": [
+    -31.0,
+    20.19,
+    -23.1,
+    45
+   ],
+   "Kamera_OG2_2": [
+    31.0,
+    20.19,
+    -23.1,
+    -45
+   ],
+   "Kamera_OG2_3": [
+    0.0,
+    20.19,
+    8.1,
+    180
+   ],
+   "Kamera_OG2_4": [
+    -17.6,
+    20.19,
+    17.4,
+    135
+   ],
+   "Sicherheitszentrale": [
+    0.0,
+    21.0,
+    11.5,
+    0
+   ],
+   "Alarm_Hauptschalter": [
+    16.2,
+    21.0,
+    16.9,
+    0
+   ],
+   "Ueberwachung_Kameras": [
+    0.0,
+    21.0,
+    13.5,
+    0
+   ],
+   "Direktor_Safe": [
+    -30.6,
+    21.0,
+    3.5,
+    90
+   ],
+   "Direktor": [
+    -25.0,
+    21.0,
+    0.1,
+    180
+   ],
+   "Lager": [
+    23.0,
+    21.0,
+    -13.5,
+    90
+   ],
+   "Lager_Depot": [
+    29.3,
+    21.0,
+    6.9,
+    90
+   ],
+   "Kamera_OG3_1": [
+    -17.6,
+    26.14,
+    8.9,
+    135
+   ],
+   "Kamera_OG3_2": [
+    17.6,
+    26.14,
+    8.9,
+    -135
+   ],
+   "Kamera_OG3_3": [
+    -31.0,
+    26.14,
+    -23.1,
+    45
+   ],
+   "Kamera_OG3_4": [
+    31.0,
+    26.14,
+    -5.9,
+    -45
+   ],
+   "Kamera_OG3_5": [
+    0.0,
+    26.14,
+    -23.9,
+    180
+   ],
+   "Geldtransporter_W15": [
+    -15.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_W11": [
+    -11.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_O11": [
+    11.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_O15": [
+    15.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Panzergarage": [
+    0.0,
+    -4.5,
+    -22.0,
+    0
+   ],
+   "Notendruckerei": [
+    0.0,
+    -4.5,
+    -15.5,
+    0
+   ],
+   "Bargeld_Paletten": [
+    0.0,
+    -4.5,
+    12.0,
+    0
+   ],
+   "Server": [
+    -25.0,
+    -4.5,
+    6.2,
+    90
+   ],
+   "Hauptstrom": [
+    24.5,
+    -4.5,
+    1.5,
+    0
+   ],
+   "Lueftungsschacht_UG1": [
+    -23.6,
+    -4.5,
+    -34.1,
+    0
+   ],
+   "Checkpoint": [
+    23.0,
+    -4.5,
+    -14.1,
+    180
+   ],
+   "Wertsack_Lager": [
+    28.0,
+    -4.5,
+    -12.5,
+    90
+   ],
+   "Kamera_UG1_1": [
+    -17.6,
+    0.84,
+    -36.5,
+    45
+   ],
+   "Kamera_UG1_2": [
+    17.6,
+    0.84,
+    -36.5,
+    -45
+   ],
+   "Kamera_UG1_3": [
+    0.0,
+    0.84,
+    -17.9,
+    180
+   ],
+   "Kamera_UG1_4": [
+    -18.4,
+    0.84,
+    17.4,
+    135
+   ],
+   "Kamera_UG1_5": [
+    18.4,
+    0.84,
+    17.4,
+    -135
+   ],
+   "Kamera_UG1_6": [
+    17.6,
+    0.84,
+    -18.5,
+    -45
+   ],
+   "Schmelzoefen": [
+    -20.5,
+    -10.5,
+    9.5,
+    0
+   ],
+   "Gusslinie": [
+    -19.0,
+    -10.5,
+    2.0,
+    0
+   ],
+   "Praegerei": [
+    -22.0,
+    -10.5,
+    -4.5,
+    180
+   ],
+   "Raffinerie": [
+    18.0,
+    -10.5,
+    -1.5,
+    90
+   ],
+   "Wache_Tresor": [
+    7.5,
+    -10.5,
+    -21.3,
+    180
+   ],
+   "Biometrie": [
+    1.85,
+    -10.5,
+    -25.9,
+    0
+   ],
+   "Tresoraufzug_UG2": [
+    0.0,
+    -10.5,
+    -28.2,
+    0
+   ],
+   "Flutsteuerung": [
+    24.0,
+    -10.5,
+    -24.4,
+    0
+   ],
+   "Wartungstreppe_UG2": [
+    20.5,
+    -10.5,
+    -23.7,
+    0
+   ],
+   "Kamera_UG2_1": [
+    -30.8,
+    -5.31,
+    17.4,
+    135
+   ],
+   "Kamera_UG2_2": [
+    -6.6,
+    -5.31,
+    -18.9,
+    -45
+   ],
+   "Kamera_UG2_3": [
+    30.8,
+    -5.31,
+    17.4,
+    -135
+   ],
+   "Kamera_UG2_4": [
+    0.0,
+    -5.31,
+    -20.1,
+    0
+   ],
+   "Kamera_UG2_5": [
+    -11.6,
+    -5.31,
+    -27.1,
+    45
+   ],
+   "Kamera_UG2_6": [
+    11.6,
+    -5.31,
+    -36.5,
+    -45
+   ],
+   "Tunnel_Tuer": [
+    3.7,
+    -20.5,
+    -27.6,
+    -90
+   ],
+   "Zeitschloss": [
+    4.1,
+    -20.5,
+    -24.5,
+    180
+   ],
+   "Tresor_Tuer": [
+    0.0,
+    -20.5,
+    -25.5,
+    0
+   ],
+   "Tresoraufzug_UG3": [
+    0.0,
+    -20.5,
+    -28.2,
+    0
+   ],
+   "Tresor": [
+    0.0,
+    -20.5,
+    -9.5,
+    0
+   ],
+   "Goldpaletten": [
+    -8.0,
+    -20.5,
+    -7.5,
+    0
+   ],
+   "Bargeld": [
+    9.0,
+    -20.5,
+    7.5,
+    0
+   ],
+   "Coracao_do_Brasil": [
+    0.0,
+    -19.3,
+    8.5,
+    0
+   ],
+   "UG3_Flutschieber_1_Punkt": [
+    -14.0,
+    -20.5,
+    -18.45,
+    0
+   ],
+   "UG3_Flutschieber_2_Punkt": [
+    14.0,
+    -20.5,
+    -18.45,
+    0
+   ],
+   "UG3_Flutschieber_3_Punkt": [
+    -14.0,
+    -20.5,
+    9.45,
+    180
+   ],
+   "UG3_Flutschieber_4_Punkt": [
+    14.0,
+    -20.5,
+    9.45,
+    180
+   ],
+   "Flutwasser": [
+    0.0,
+    -20.5,
+    -4.5,
+    0
+   ],
+   "Sprengladung_Tresor": [
+    24.8,
+    -20.5,
+    -5.5,
+    -90
+   ],
+   "Sprengladung_Kanal": [
+    30.6,
+    -20.5,
+    -5.5,
+    90
+   ],
+   "Kanal_Anschluss": [
+    32.0,
+    -20.5,
+    -5.5,
+    90
+   ],
+   "Wache_UG3_Tunnel": [
+    4.5,
+    -20.5,
+    -30.0,
+    0
+   ],
+   "Wache_UG3_Gang_1": [
+    27.5,
+    -20.5,
+    -21.5,
+    0
+   ],
+   "Wache_UG3_Gang_2": [
+    27.5,
+    -20.5,
+    4.5,
+    180
+   ],
+   "Wache_UG3_Tresor_1": [
+    -10.0,
+    -20.5,
+    3.5,
+    180
+   ],
+   "Wache_UG3_Tresor_2": [
+    10.3,
+    -20.5,
+    -19.3,
+    0
+   ],
+   "Kamera_UG3_1": [
+    -21.4,
+    -11.61,
+    -20.9,
+    135
+   ],
+   "Kamera_UG3_2": [
+    21.4,
+    -11.61,
+    -20.9,
+    -135
+   ],
+   "Kamera_UG3_3": [
+    -21.4,
+    -11.61,
+    11.9,
+    45
+   ],
+   "Kamera_UG3_4": [
+    21.4,
+    -11.61,
+    11.9,
+    -45
+   ],
+   "Kamera_UG3_5": [
+    0.0,
+    -11.61,
+    4.1,
+    180
+   ],
+   "Kamera_UG3_6": [
+    -2.2,
+    -11.61,
+    -28.5,
+    0
+   ],
+   "Kamera_UG3_7": [
+    28.5,
+    -11.61,
+    -33.5,
+    0
+   ],
+   "Kuppel_Laterne": [
+    0.0,
+    43.7,
+    -4.9,
+    0
+   ],
+   "Wachturm_WN": [
+    -29.0,
+    27.0,
+    -34.5,
+    0
+   ],
+   "Wachturm_WS": [
+    -29.0,
+    27.0,
+    15.5,
+    0
+   ],
+   "Wachturm_OS": [
+    29.0,
+    27.0,
+    15.5,
+    0
+   ],
+   "Hubschrauber": [
+    -14.0,
+    28.27,
+    -28.5,
+    0
+   ],
+   "Dachtuer": [
+    24.2,
+    27.0,
+    -27.9,
+    -90
+   ],
+   "Dachluke": [
+    10.7,
+    27.35,
+    -30.8,
+    0
+   ],
+   "Lueftungsschacht_Dach": [
+    -23.6,
+    28.7,
+    -35.9,
+    0
+   ],
+   "Kamera_Dach_1": [
+    -31.6,
+    28.24,
+    18.1,
+    180
+   ],
+   "Kamera_Dach_2": [
+    31.6,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Kamera_Dach_3": [
+    0.0,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Kamera_Dach_4": [
+    -31.6,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Wache_EG_Salon_W": [
+    -22.3,
+    1.65,
+    -9.0,
+    90
+   ],
+   "Wache_EG_Salon_O": [
+    23.2,
+    1.65,
+    -8.5,
+    -90
+   ],
+   "Wache_EG_Halle": [
+    0.0,
+    1.65,
+    -21.8,
+    0
+   ],
+   "Wache_OG1_1": [
+    -16.0,
+    9.5,
+    6.5,
+    135
+   ],
+   "Wache_OG1_2": [
+    16.0,
+    9.5,
+    6.5,
+    -135
+   ],
+   "Wache_OG1_3": [
+    0.0,
+    9.5,
+    -21.5,
+    0
+   ],
+   "Wache_OG2_1": [
+    -16.0,
+    15.5,
+    -21.5,
+    45
+   ],
+   "Wache_OG2_2": [
+    16.0,
+    15.5,
+    6.5,
+    -135
+   ],
+   "Wache_OG3_1": [
+    0.0,
+    21.0,
+    7.1,
+    180
+   ],
+   "Wache_OG3_2": [
+    -16.0,
+    21.0,
+    -21.5,
+    45
+   ],
+   "Wache_OG3_3": [
+    16.0,
+    21.0,
+    -21.5,
+    -45
+   ],
+   "Wache_UG1_1": [
+    -10.0,
+    -4.5,
+    -9.5,
+    90
+   ],
+   "Wache_UG1_2": [
+    10.0,
+    -4.5,
+    0.5,
+    -90
+   ],
+   "Wache_UG1_3": [
+    0.0,
+    -4.5,
+    -29.5,
+    0
+   ],
+   "Wache_UG2_1": [
+    -6.0,
+    -10.5,
+    -25.5,
+    0
+   ],
+   "Wache_UG2_2": [
+    6.5,
+    -10.5,
+    0.5,
+    180
+   ],
+   "Wache_Dach_1": [
+    0.0,
+    27.0,
+    -29.5,
+    -90
+   ],
+   "Wache_Dach_2": [
+    18.0,
+    27.0,
+    10.5,
+    180
+   ]
+  },
+  "beweglich": [
+   "Dach_Tuer",
+   "EG_Abriegelung_Klappe",
+   "EG_Beute_Edelstein_Estrela",
+   "EG_Beute_Schmuck_Vitrine1",
+   "EG_Beute_Schmuck_Vitrine10",
+   "EG_Beute_Schmuck_Vitrine11",
+   "EG_Beute_Schmuck_Vitrine12",
+   "EG_Beute_Schmuck_Vitrine13",
+   "EG_Beute_Schmuck_Vitrine14",
+   "EG_Beute_Schmuck_Vitrine17",
+   "EG_Beute_Schmuck_Vitrine18",
+   "EG_Beute_Schmuck_Vitrine2",
+   "EG_Beute_Schmuck_Vitrine3",
+   "EG_Beute_Schmuck_Vitrine4",
+   "EG_Beute_Schmuck_Vitrine5",
+   "EG_Beute_Schmuck_Vitrine6",
+   "EG_Beute_Schmuck_Vitrine7",
+   "EG_Beute_Schmuck_Vitrine8",
+   "EG_Beute_Schmuck_Vitrine9",
+   "EG_Beute_Uhr_Vitrine15",
+   "EG_Beute_Uhr_Vitrine16",
+   "EG_Diamant_Glas",
+   "EG_Fahrzeugaufzug",
+   "EG_Portal_1L",
+   "EG_Portal_1R",
+   "EG_Portal_2L",
+   "EG_Portal_2R",
+   "EG_Portal_3L",
+   "EG_Portal_3R",
+   "EG_Schleuse_1A",
+   "EG_Schleuse_1B",
+   "EG_Schleuse_2A",
+   "EG_Schleuse_2B",
+   "EG_Schleuse_3A",
+   "EG_Schleuse_3B",
+   "EG_Schleuse_4A",
+   "EG_Schleuse_4B",
+   "EG_Schleuse_5A",
+   "EG_Schleuse_5B",
+   "EG_Strom_Hebel",
+   "EG_Technik_Tuer",
+   "EG_Vitrine_1",
+   "EG_Vitrine_10",
+   "EG_Vitrine_11",
+   "EG_Vitrine_12",
+   "EG_Vitrine_13",
+   "EG_Vitrine_14",
+   "EG_Vitrine_15",
+   "EG_Vitrine_16",
+   "EG_Vitrine_17",
+   "EG_Vitrine_18",
+   "EG_Vitrine_2",
+   "EG_Vitrine_3",
+   "EG_Vitrine_4",
+   "EG_Vitrine_5",
+   "EG_Vitrine_6",
+   "EG_Vitrine_7",
+   "EG_Vitrine_8",
+   "EG_Vitrine_9",
+   "OG1_Beute_Krone",
+   "OG1_Beute_Schmuck_Vitrine22",
+   "OG1_Beute_Schmuck_Vitrine23",
+   "OG1_Beute_Schmuck_Vitrine24",
+   "OG1_Beute_Schmuck_Vitrine25",
+   "OG1_Beute_Uhr_Vitrine11",
+   "OG1_Beute_Uhr_Vitrine12",
+   "OG1_Beute_Uhr_Vitrine13",
+   "OG1_Beute_Uhr_Vitrine14",
+   "OG1_Beute_Uhr_Vitrine15",
+   "OG1_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Uhr_Vitrine17",
+   "OG1_Beute_Uhr_Vitrine18",
+   "OG1_Beute_Uhr_Vitrine19",
+   "OG1_Beute_Uhr_Vitrine20",
+   "OG1_Beute_Uhr_Vitrine21",
+   "OG1_Krone_Glas",
+   "OG1_Laser",
+   "OG1_Sala_Seitentuer_O",
+   "OG1_Sala_Seitentuer_W",
+   "OG1_Sala_Tuer",
+   "OG1_Vitrine_1",
+   "OG1_Vitrine_10",
+   "OG1_Vitrine_11",
+   "OG1_Vitrine_12",
+   "OG1_Vitrine_13",
+   "OG1_Vitrine_14",
+   "OG1_Vitrine_15",
+   "OG1_Vitrine_16",
+   "OG1_Vitrine_17",
+   "OG1_Vitrine_18",
+   "OG1_Vitrine_19",
+   "OG1_Vitrine_2",
+   "OG1_Vitrine_20",
+   "OG1_Vitrine_21",
+   "OG1_Vitrine_22",
+   "OG1_Vitrine_23",
+   "OG1_Vitrine_24",
+   "OG1_Vitrine_25",
+   "OG1_Vitrine_3",
+   "OG1_Vitrine_4",
+   "OG1_Vitrine_5",
+   "OG1_Vitrine_6",
+   "OG1_Vitrine_7",
+   "OG1_Vitrine_8",
+   "OG1_Vitrine_9",
+   "OG2_Arbeitstresor_Tuer",
+   "OG3_Gemaelde",
+   "OG3_Lager_Tuer",
+   "Tor_Haupt_L",
+   "Tor_Haupt_R",
+   "Tor_Hintertuer",
+   "Tor_Hof",
+   "Tor_Logistik",
+   "UG1_Beute_Bargeld_1",
+   "UG1_Beute_Bargeld_10",
+   "UG1_Beute_Bargeld_11",
+   "UG1_Beute_Bargeld_12",
+   "UG1_Beute_Bargeld_13",
+   "UG1_Beute_Bargeld_14",
+   "UG1_Beute_Bargeld_15",
+   "UG1_Beute_Bargeld_16",
+   "UG1_Beute_Bargeld_17",
+   "UG1_Beute_Bargeld_18",
+   "UG1_Beute_Bargeld_19",
+   "UG1_Beute_Bargeld_2",
+   "UG1_Beute_Bargeld_20",
+   "UG1_Beute_Bargeld_21",
+   "UG1_Beute_Bargeld_22",
+   "UG1_Beute_Bargeld_23",
+   "UG1_Beute_Bargeld_24",
+   "UG1_Beute_Bargeld_25",
+   "UG1_Beute_Bargeld_26",
+   "UG1_Beute_Bargeld_3",
+   "UG1_Beute_Bargeld_4",
+   "UG1_Beute_Bargeld_5",
+   "UG1_Beute_Bargeld_6",
+   "UG1_Beute_Bargeld_7",
+   "UG1_Beute_Bargeld_8",
+   "UG1_Beute_Bargeld_9",
+   "UG1_Beute_Bargeld_Wagen1",
+   "UG1_Beute_Bargeld_Wagen2",
+   "UG1_Beute_Bargeld_Wagen3",
+   "UG1_Beute_Bargeld_Wagen4",
+   "UG1_Beute_Bargeld_Wagen5",
+   "UG1_Gitter",
+   "UG2_Gitter_1",
+   "UG2_Gitter_2",
+   "UG2_Laser",
+   "UG2_Schott",
+   "UG2_Tresoraufzug",
+   "UG3_Beute_Bargeld_1",
+   "UG3_Beute_Bargeld_2",
+   "UG3_Beute_Bargeld_3",
+   "UG3_Beute_Bargeld_4",
+   "UG3_Beute_Bargeld_5",
+   "UG3_Beute_Bargeld_6",
+   "UG3_Beute_Edelstein_Coracao",
+   "UG3_Beute_Gold_1",
+   "UG3_Beute_Gold_10",
+   "UG3_Beute_Gold_100",
+   "UG3_Beute_Gold_101",
+   "UG3_Beute_Gold_102",
+   "UG3_Beute_Gold_103",
+   "UG3_Beute_Gold_104",
+   "UG3_Beute_Gold_105",
+   "UG3_Beute_Gold_106",
+   "UG3_Beute_Gold_107",
+   "UG3_Beute_Gold_108",
+   "UG3_Beute_Gold_11",
+   "UG3_Beute_Gold_12",
+   "UG3_Beute_Gold_13",
+   "UG3_Beute_Gold_14",
+   "UG3_Beute_Gold_15",
+   "UG3_Beute_Gold_16",
+   "UG3_Beute_Gold_17",
+   "UG3_Beute_Gold_18",
+   "UG3_Beute_Gold_19",
+   "UG3_Beute_Gold_2",
+   "UG3_Beute_Gold_20",
+   "UG3_Beute_Gold_21",
+   "UG3_Beute_Gold_22",
+   "UG3_Beute_Gold_23",
+   "UG3_Beute_Gold_24",
+   "UG3_Beute_Gold_25",
+   "UG3_Beute_Gold_26",
+   "UG3_Beute_Gold_27",
+   "UG3_Beute_Gold_28",
+   "UG3_Beute_Gold_29",
+   "UG3_Beute_Gold_3",
+   "UG3_Beute_Gold_30",
+   "UG3_Beute_Gold_31",
+   "UG3_Beute_Gold_32",
+   "UG3_Beute_Gold_33",
+   "UG3_Beute_Gold_34",
+   "UG3_Beute_Gold_35",
+   "UG3_Beute_Gold_36",
+   "UG3_Beute_Gold_37",
+   "UG3_Beute_Gold_38",
+   "UG3_Beute_Gold_39",
+   "UG3_Beute_Gold_4",
+   "UG3_Beute_Gold_40",
+   "UG3_Beute_Gold_41",
+   "UG3_Beute_Gold_42",
+   "UG3_Beute_Gold_43",
+   "UG3_Beute_Gold_44",
+   "UG3_Beute_Gold_45",
+   "UG3_Beute_Gold_46",
+   "UG3_Beute_Gold_47",
+   "UG3_Beute_Gold_48",
+   "UG3_Beute_Gold_49",
+   "UG3_Beute_Gold_5",
+   "UG3_Beute_Gold_50",
+   "UG3_Beute_Gold_51",
+   "UG3_Beute_Gold_52",
+   "UG3_Beute_Gold_53",
+   "UG3_Beute_Gold_54",
+   "UG3_Beute_Gold_55",
+   "UG3_Beute_Gold_56",
+   "UG3_Beute_Gold_57",
+   "UG3_Beute_Gold_58",
+   "UG3_Beute_Gold_59",
+   "UG3_Beute_Gold_6",
+   "UG3_Beute_Gold_60",
+   "UG3_Beute_Gold_61",
+   "UG3_Beute_Gold_62",
+   "UG3_Beute_Gold_63",
+   "UG3_Beute_Gold_64",
+   "UG3_Beute_Gold_65",
+   "UG3_Beute_Gold_66",
+   "UG3_Beute_Gold_67",
+   "UG3_Beute_Gold_68",
+   "UG3_Beute_Gold_69",
+   "UG3_Beute_Gold_7",
+   "UG3_Beute_Gold_70",
+   "UG3_Beute_Gold_71",
+   "UG3_Beute_Gold_72",
+   "UG3_Beute_Gold_73",
+   "UG3_Beute_Gold_74",
+   "UG3_Beute_Gold_75",
+   "UG3_Beute_Gold_76",
+   "UG3_Beute_Gold_77",
+   "UG3_Beute_Gold_78",
+   "UG3_Beute_Gold_79",
+   "UG3_Beute_Gold_8",
+   "UG3_Beute_Gold_80",
+   "UG3_Beute_Gold_81",
+   "UG3_Beute_Gold_82",
+   "UG3_Beute_Gold_83",
+   "UG3_Beute_Gold_84",
+   "UG3_Beute_Gold_85",
+   "UG3_Beute_Gold_86",
+   "UG3_Beute_Gold_87",
+   "UG3_Beute_Gold_88",
+   "UG3_Beute_Gold_89",
+   "UG3_Beute_Gold_9",
+   "UG3_Beute_Gold_90",
+   "UG3_Beute_Gold_91",
+   "UG3_Beute_Gold_92",
+   "UG3_Beute_Gold_93",
+   "UG3_Beute_Gold_94",
+   "UG3_Beute_Gold_95",
+   "UG3_Beute_Gold_96",
+   "UG3_Beute_Gold_97",
+   "UG3_Beute_Gold_98",
+   "UG3_Beute_Gold_99",
+   "UG3_Beute_Schmuck_1",
+   "UG3_Beute_Schmuck_2",
+   "UG3_Flutschieber_1",
+   "UG3_Flutschieber_2",
+   "UG3_Flutschieber_3",
+   "UG3_Flutschieber_4",
+   "UG3_Flutwasser",
+   "UG3_Glastuer",
+   "UG3_Kanalwand",
+   "UG3_Laser",
+   "UG3_Tresortuer",
+   "UG3_Tresorwand_Sprengstelle",
+   "UG3_Tunnel_Laser",
+   "UG3_Tunnel_Tuer"
+  ],
+  "beute": [
+   "EG_Beute_Edelstein_Estrela",
+   "EG_Beute_Schmuck_Vitrine1",
+   "EG_Beute_Schmuck_Vitrine10",
+   "EG_Beute_Schmuck_Vitrine11",
+   "EG_Beute_Schmuck_Vitrine12",
+   "EG_Beute_Schmuck_Vitrine13",
+   "EG_Beute_Schmuck_Vitrine14",
+   "EG_Beute_Schmuck_Vitrine17",
+   "EG_Beute_Schmuck_Vitrine18",
+   "EG_Beute_Schmuck_Vitrine2",
+   "EG_Beute_Schmuck_Vitrine3",
+   "EG_Beute_Schmuck_Vitrine4",
+   "EG_Beute_Schmuck_Vitrine5",
+   "EG_Beute_Schmuck_Vitrine6",
+   "EG_Beute_Schmuck_Vitrine7",
+   "EG_Beute_Schmuck_Vitrine8",
+   "EG_Beute_Schmuck_Vitrine9",
+   "EG_Beute_Uhr_Vitrine15",
+   "EG_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Krone",
+   "OG1_Beute_Schmuck_Vitrine22",
+   "OG1_Beute_Schmuck_Vitrine23",
+   "OG1_Beute_Schmuck_Vitrine24",
+   "OG1_Beute_Schmuck_Vitrine25",
+   "OG1_Beute_Uhr_Vitrine11",
+   "OG1_Beute_Uhr_Vitrine12",
+   "OG1_Beute_Uhr_Vitrine13",
+   "OG1_Beute_Uhr_Vitrine14",
+   "OG1_Beute_Uhr_Vitrine15",
+   "OG1_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Uhr_Vitrine17",
+   "OG1_Beute_Uhr_Vitrine18",
+   "OG1_Beute_Uhr_Vitrine19",
+   "OG1_Beute_Uhr_Vitrine20",
+   "OG1_Beute_Uhr_Vitrine21",
+   "UG1_Beute_Bargeld_1",
+   "UG1_Beute_Bargeld_10",
+   "UG1_Beute_Bargeld_11",
+   "UG1_Beute_Bargeld_12",
+   "UG1_Beute_Bargeld_13",
+   "UG1_Beute_Bargeld_14",
+   "UG1_Beute_Bargeld_15",
+   "UG1_Beute_Bargeld_16",
+   "UG1_Beute_Bargeld_17",
+   "UG1_Beute_Bargeld_18",
+   "UG1_Beute_Bargeld_19",
+   "UG1_Beute_Bargeld_2",
+   "UG1_Beute_Bargeld_20",
+   "UG1_Beute_Bargeld_21",
+   "UG1_Beute_Bargeld_22",
+   "UG1_Beute_Bargeld_23",
+   "UG1_Beute_Bargeld_24",
+   "UG1_Beute_Bargeld_25",
+   "UG1_Beute_Bargeld_26",
+   "UG1_Beute_Bargeld_3",
+   "UG1_Beute_Bargeld_4",
+   "UG1_Beute_Bargeld_5",
+   "UG1_Beute_Bargeld_6",
+   "UG1_Beute_Bargeld_7",
+   "UG1_Beute_Bargeld_8",
+   "UG1_Beute_Bargeld_9",
+   "UG1_Beute_Bargeld_Wagen1",
+   "UG1_Beute_Bargeld_Wagen2",
+   "UG1_Beute_Bargeld_Wagen3",
+   "UG1_Beute_Bargeld_Wagen4",
+   "UG1_Beute_Bargeld_Wagen5",
+   "UG3_Beute_Bargeld_1",
+   "UG3_Beute_Bargeld_2",
+   "UG3_Beute_Bargeld_3",
+   "UG3_Beute_Bargeld_4",
+   "UG3_Beute_Bargeld_5",
+   "UG3_Beute_Bargeld_6",
+   "UG3_Beute_Edelstein_Coracao",
+   "UG3_Beute_Gold_1",
+   "UG3_Beute_Gold_10",
+   "UG3_Beute_Gold_100",
+   "UG3_Beute_Gold_101",
+   "UG3_Beute_Gold_102",
+   "UG3_Beute_Gold_103",
+   "UG3_Beute_Gold_104",
+   "UG3_Beute_Gold_105",
+   "UG3_Beute_Gold_106",
+   "UG3_Beute_Gold_107",
+   "UG3_Beute_Gold_108",
+   "UG3_Beute_Gold_11",
+   "UG3_Beute_Gold_12",
+   "UG3_Beute_Gold_13",
+   "UG3_Beute_Gold_14",
+   "UG3_Beute_Gold_15",
+   "UG3_Beute_Gold_16",
+   "UG3_Beute_Gold_17",
+   "UG3_Beute_Gold_18",
+   "UG3_Beute_Gold_19",
+   "UG3_Beute_Gold_2",
+   "UG3_Beute_Gold_20",
+   "UG3_Beute_Gold_21",
+   "UG3_Beute_Gold_22",
+   "UG3_Beute_Gold_23",
+   "UG3_Beute_Gold_24",
+   "UG3_Beute_Gold_25",
+   "UG3_Beute_Gold_26",
+   "UG3_Beute_Gold_27",
+   "UG3_Beute_Gold_28",
+   "UG3_Beute_Gold_29",
+   "UG3_Beute_Gold_3",
+   "UG3_Beute_Gold_30",
+   "UG3_Beute_Gold_31",
+   "UG3_Beute_Gold_32",
+   "UG3_Beute_Gold_33",
+   "UG3_Beute_Gold_34",
+   "UG3_Beute_Gold_35",
+   "UG3_Beute_Gold_36",
+   "UG3_Beute_Gold_37",
+   "UG3_Beute_Gold_38",
+   "UG3_Beute_Gold_39",
+   "UG3_Beute_Gold_4",
+   "UG3_Beute_Gold_40",
+   "UG3_Beute_Gold_41",
+   "UG3_Beute_Gold_42",
+   "UG3_Beute_Gold_43",
+   "UG3_Beute_Gold_44",
+   "UG3_Beute_Gold_45",
+   "UG3_Beute_Gold_46",
+   "UG3_Beute_Gold_47",
+   "UG3_Beute_Gold_48",
+   "UG3_Beute_Gold_49",
+   "UG3_Beute_Gold_5",
+   "UG3_Beute_Gold_50",
+   "UG3_Beute_Gold_51",
+   "UG3_Beute_Gold_52",
+   "UG3_Beute_Gold_53",
+   "UG3_Beute_Gold_54",
+   "UG3_Beute_Gold_55",
+   "UG3_Beute_Gold_56",
+   "UG3_Beute_Gold_57",
+   "UG3_Beute_Gold_58",
+   "UG3_Beute_Gold_59",
+   "UG3_Beute_Gold_6",
+   "UG3_Beute_Gold_60",
+   "UG3_Beute_Gold_61",
+   "UG3_Beute_Gold_62",
+   "UG3_Beute_Gold_63",
+   "UG3_Beute_Gold_64",
+   "UG3_Beute_Gold_65",
+   "UG3_Beute_Gold_66",
+   "UG3_Beute_Gold_67",
+   "UG3_Beute_Gold_68",
+   "UG3_Beute_Gold_69",
+   "UG3_Beute_Gold_7",
+   "UG3_Beute_Gold_70",
+   "UG3_Beute_Gold_71",
+   "UG3_Beute_Gold_72",
+   "UG3_Beute_Gold_73",
+   "UG3_Beute_Gold_74",
+   "UG3_Beute_Gold_75",
+   "UG3_Beute_Gold_76",
+   "UG3_Beute_Gold_77",
+   "UG3_Beute_Gold_78",
+   "UG3_Beute_Gold_79",
+   "UG3_Beute_Gold_8",
+   "UG3_Beute_Gold_80",
+   "UG3_Beute_Gold_81",
+   "UG3_Beute_Gold_82",
+   "UG3_Beute_Gold_83",
+   "UG3_Beute_Gold_84",
+   "UG3_Beute_Gold_85",
+   "UG3_Beute_Gold_86",
+   "UG3_Beute_Gold_87",
+   "UG3_Beute_Gold_88",
+   "UG3_Beute_Gold_89",
+   "UG3_Beute_Gold_9",
+   "UG3_Beute_Gold_90",
+   "UG3_Beute_Gold_91",
+   "UG3_Beute_Gold_92",
+   "UG3_Beute_Gold_93",
+   "UG3_Beute_Gold_94",
+   "UG3_Beute_Gold_95",
+   "UG3_Beute_Gold_96",
+   "UG3_Beute_Gold_97",
+   "UG3_Beute_Gold_98",
+   "UG3_Beute_Gold_99",
+   "UG3_Beute_Schmuck_1",
+   "UG3_Beute_Schmuck_2"
+  ]
+ },
+ {
+  "slug": "02_yacht_soberana",
+  "name": "Megayacht SOBERANA (150 m)",
+  "cls": "Heist",
+  "tris": 108970,
+  "mats": 72,
+  "slots": [
+   "slot_hull_1"
+  ],
+  "combos": 8,
+  "size": [
+   157.3,
+   39.0,
+   28.7
+  ],
+  "lot": [
+   158.0,
+   30.0
+  ],
+  "levels": [
+   "Dach",
+   "Sonnendeck",
+   "Brueckendeck",
+   "Eignerdeck",
+   "Oberdeck",
+   "Hauptdeck",
+   "Unterdeck",
+   "Tankdeck"
+  ],
+  "kollision": 77836,
+  "trigger": 103,
+  "anchors": {
+   "Passerelle_Oben": [
+    0.0,
+    5.0,
+    -11.4,
+    0
+   ],
+   "Passerelle_Unten": [
+    0.0,
+    3.0,
+    -17.2,
+    0
+   ],
+   "Lueftung_Hauptdeck_Klappe_1": [
+    -46.0,
+    5.0,
+    5.0,
+    0
+   ],
+   "Lueftung_Hauptdeck_Klappe_2": [
+    -22.0,
+    5.0,
+    5.0,
+    0
+   ],
+   "Lueftung_Hauptdeck_Klappe_3": [
+    -4.0,
+    5.0,
+    5.0,
+    0
+   ],
+   "Lueftung_Hauptdeck_Klappe_4": [
+    12.0,
+    5.0,
+    5.0,
+    0
+   ],
+   "Lueftung_Hauptdeck_Klappe_5": [
+    28.0,
+    5.0,
+    5.0,
+    0
+   ],
+   "Lueftung_Hauptdeck_Einstieg": [
+    -50.0,
+    5.0,
+    10.9,
+    180
+   ],
+   "Wache_Hauptdeck_1": [
+    -46.0,
+    5.0,
+    5.0,
+    -90
+   ],
+   "Wache_Hauptdeck_2": [
+    -22.0,
+    5.0,
+    5.0,
+    90
+   ],
+   "Wache_Hauptdeck_3": [
+    -4.0,
+    5.0,
+    5.0,
+    -90
+   ],
+   "Wache_Hauptdeck_4": [
+    12.0,
+    5.0,
+    5.0,
+    90
+   ],
+   "Wache_Hauptdeck_5": [
+    28.0,
+    5.0,
+    5.0,
+    -90
+   ],
+   "Lueftung_Oberdeck_Klappe_1": [
+    -34.0,
+    8.6,
+    5.0,
+    0
+   ],
+   "Lueftung_Oberdeck_Klappe_2": [
+    -12.0,
+    8.6,
+    5.0,
+    0
+   ],
+   "Lueftung_Oberdeck_Klappe_3": [
+    0.0,
+    8.6,
+    5.0,
+    0
+   ],
+   "Lueftung_Oberdeck_Klappe_4": [
+    11.0,
+    8.6,
+    5.0,
+    0
+   ],
+   "Lueftung_Oberdeck_Klappe_5": [
+    24.5,
+    8.6,
+    5.0,
+    0
+   ],
+   "Lueftung_Oberdeck_Einstieg": [
+    -40.0,
+    8.6,
+    11.1,
+    180
+   ],
+   "Wache_Oberdeck_1": [
+    -34.0,
+    8.6,
+    5.0,
+    -90
+   ],
+   "Wache_Oberdeck_2": [
+    -12.0,
+    8.6,
+    5.0,
+    90
+   ],
+   "Wache_Oberdeck_3": [
+    0.0,
+    8.6,
+    5.0,
+    -90
+   ],
+   "Wache_Oberdeck_4": [
+    11.0,
+    8.6,
+    5.0,
+    90
+   ],
+   "Wache_Oberdeck_5": [
+    24.5,
+    8.6,
+    5.0,
+    -90
+   ],
+   "Lueftung_Eignerdeck_Klappe_1": [
+    -20.0,
+    12.2,
+    5.0,
+    0
+   ],
+   "Lueftung_Eignerdeck_Klappe_2": [
+    -6.0,
+    12.2,
+    5.0,
+    0
+   ],
+   "Lueftung_Eignerdeck_Klappe_3": [
+    4.0,
+    12.2,
+    5.0,
+    0
+   ],
+   "Lueftung_Eignerdeck_Klappe_4": [
+    13.0,
+    12.2,
+    5.0,
+    0
+   ],
+   "Lueftung_Eignerdeck_Klappe_5": [
+    24.0,
+    12.2,
+    5.0,
+    0
+   ],
+   "Lueftung_Eignerdeck_Einstieg": [
+    -26.0,
+    12.2,
+    10.5,
+    180
+   ],
+   "Wache_Eignerdeck_1": [
+    -20.0,
+    12.2,
+    5.0,
+    -90
+   ],
+   "Wache_Eignerdeck_2": [
+    -6.0,
+    12.2,
+    5.0,
+    90
+   ],
+   "Wache_Eignerdeck_3": [
+    4.0,
+    12.2,
+    5.0,
+    -90
+   ],
+   "Wache_Eignerdeck_4": [
+    13.0,
+    12.2,
+    5.0,
+    90
+   ],
+   "Wache_Eignerdeck_5": [
+    24.0,
+    12.2,
+    5.0,
+    -90
+   ],
+   "Lueftung_Brueckendeck_Klappe_1": [
+    -14.0,
+    15.8,
+    5.0,
+    0
+   ],
+   "Lueftung_Brueckendeck_Klappe_2": [
+    -5.0,
+    15.8,
+    5.0,
+    0
+   ],
+   "Lueftung_Brueckendeck_Klappe_3": [
+    3.0,
+    15.8,
+    5.0,
+    0
+   ],
+   "Lueftung_Brueckendeck_Klappe_4": [
+    14.0,
+    15.8,
+    5.0,
+    0
+   ],
+   "Lueftung_Brueckendeck_Klappe_5": [
+    27.0,
+    15.8,
+    5.0,
+    0
+   ],
+   "Lueftung_Brueckendeck_Einstieg": [
+    -18.0,
+    15.8,
+    9.9,
+    180
+   ],
+   "Wache_Brueckendeck_1": [
+    -14.0,
+    15.8,
+    5.0,
+    -90
+   ],
+   "Wache_Brueckendeck_2": [
+    -5.0,
+    15.8,
+    5.0,
+    90
+   ],
+   "Wache_Brueckendeck_3": [
+    3.0,
+    15.8,
+    5.0,
+    -90
+   ],
+   "Wache_Brueckendeck_4": [
+    14.0,
+    15.8,
+    5.0,
+    90
+   ],
+   "Wache_Brueckendeck_5": [
+    27.0,
+    15.8,
+    5.0,
+    -90
+   ],
+   "Aufzug_Unterdeck": [
+    1.4,
+    1.2,
+    0.0,
+    90
+   ],
+   "Wendeltreppe_Unterdeck": [
+    6.9,
+    1.2,
+    0.0,
+    -90
+   ],
+   "Aufzug_Hauptdeck": [
+    1.4,
+    5.0,
+    0.0,
+    90
+   ],
+   "Wendeltreppe_Hauptdeck": [
+    6.9,
+    5.0,
+    0.0,
+    -90
+   ],
+   "Aufzug_Oberdeck": [
+    1.4,
+    8.6,
+    0.0,
+    90
+   ],
+   "Wendeltreppe_Oberdeck": [
+    6.9,
+    8.6,
+    0.0,
+    -90
+   ],
+   "Aufzug_Eignerdeck": [
+    1.4,
+    12.2,
+    0.0,
+    90
+   ],
+   "Wendeltreppe_Eignerdeck": [
+    6.9,
+    12.2,
+    0.0,
+    -90
+   ],
+   "Aufzug_Brueckendeck": [
+    1.4,
+    15.8,
+    0.0,
+    90
+   ],
+   "Wendeltreppe_Brueckendeck": [
+    6.9,
+    15.8,
+    0.0,
+    -90
+   ],
+   "Aufzug_Sonnendeck": [
+    1.4,
+    19.4,
+    0.0,
+    90
+   ],
+   "Crew_Treppe_Tankdeck": [
+    20.8,
+    -2.6,
+    0.4,
+    0
+   ],
+   "Crew_Treppe_Unterdeck": [
+    20.8,
+    1.2,
+    0.4,
+    0
+   ],
+   "Crew_Treppe_Hauptdeck": [
+    20.8,
+    5.0,
+    0.4,
+    0
+   ],
+   "Crew_Treppe_Oberdeck": [
+    20.8,
+    8.6,
+    0.4,
+    0
+   ],
+   "Crew_Treppe_Eignerdeck": [
+    20.8,
+    12.2,
+    0.4,
+    0
+   ],
+   "Crew_Treppe_Brueckendeck": [
+    20.8,
+    15.8,
+    0.4,
+    0
+   ],
+   "Privataufzug_Tankdeck": [
+    -11.25,
+    -2.6,
+    -5.2,
+    0
+   ],
+   "Privataufzug_Eignerdeck": [
+    -11.25,
+    12.2,
+    -5.2,
+    0
+   ],
+   "Notabschaltung": [
+    -29.6,
+    -2.6,
+    0.0,
+    90
+   ],
+   "Maschinenraum": [
+    -44.0,
+    -2.6,
+    0.0,
+    0
+   ],
+   "Maschinenkontrollraum": [
+    -24.0,
+    -2.6,
+    4.6,
+    180
+   ],
+   "Wache_Tresor": [
+    -8.0,
+    -2.6,
+    -7.4,
+    180
+   ],
+   "Laser_Start": [
+    -6.8,
+    -2.6,
+    0.0,
+    90
+   ],
+   "Laser_Ende": [
+    -0.6,
+    -2.6,
+    0.0,
+    90
+   ],
+   "Zeitschloss": [
+    -0.8,
+    -2.6,
+    -0.65,
+    90
+   ],
+   "Tresor_Tuer": [
+    -1.2,
+    -2.6,
+    0.0,
+    90
+   ],
+   "Safira_Soberana": [
+    4.7,
+    -1.5,
+    0.0,
+    0
+   ],
+   "Tresor": [
+    5.0,
+    -2.6,
+    0.0,
+    0
+   ],
+   "Kamera_Tankdeck_1": [
+    -13.6,
+    0.59,
+    -9.0,
+    45
+   ],
+   "Kamera_Tankdeck_2": [
+    -6.4,
+    0.59,
+    1.6,
+    90
+   ],
+   "Kamera_Tankdeck_3": [
+    0.8,
+    0.59,
+    -5.2,
+    135
+   ],
+   "Kamera_Tankdeck_4": [
+    9.2,
+    0.59,
+    5.2,
+    -45
+   ],
+   "Kamera_Tankdeck_5": [
+    -54.0,
+    0.59,
+    0.0,
+    90
+   ],
+   "Kamera_Tankdeck_6": [
+    -28.0,
+    0.59,
+    8.5,
+    -135
+   ],
+   "Weinkeller": [
+    15.0,
+    -2.6,
+    3.0,
+    90
+   ],
+   "Beach_Club": [
+    -71.0,
+    1.2,
+    0.0,
+    90
+   ],
+   "Badeplattform": [
+    -77.0,
+    1.0,
+    0.0,
+    90
+   ],
+   "Tendergarage": [
+    -55.0,
+    1.2,
+    0.0,
+    0
+   ],
+   "Crew_Messe": [
+    -44.5,
+    1.2,
+    -4.5,
+    0
+   ],
+   "Crew_Kabinen": [
+    -25.0,
+    1.2,
+    0.0,
+    0
+   ],
+   "Spa": [
+    -5.0,
+    1.2,
+    0.0,
+    0
+   ],
+   "Wachraum": [
+    14.5,
+    1.2,
+    1.4,
+    180
+   ],
+   "Waffenkammer": [
+    14.5,
+    1.2,
+    7.0,
+    0
+   ],
+   "Kamera_Unterdeck_1": [
+    -62.4,
+    4.39,
+    -9.5,
+    45
+   ],
+   "Kamera_Unterdeck_2": [
+    -48.6,
+    4.39,
+    9.5,
+    -135
+   ],
+   "Kamera_Unterdeck_3": [
+    -10.6,
+    4.39,
+    -9.0,
+    45
+   ],
+   "Kamera_Unterdeck_4": [
+    10.6,
+    4.39,
+    9.0,
+    -45
+   ],
+   "Kamera_Unterdeck_5": [
+    24.4,
+    4.39,
+    -8.0,
+    135
+   ],
+   "Kamera_Unterdeck_6": [
+    -73.6,
+    4.39,
+    7.0,
+    45
+   ],
+   "Pool": [
+    -68.0,
+    5.0,
+    0.0,
+    90
+   ],
+   "Hauptdeck_Beute_Bild_1_Punkt": [
+    -47.0,
+    5.15,
+    -8.85,
+    0
+   ],
+   "Hauptdeck_Beute_Bild_2_Punkt": [
+    -47.0,
+    5.15,
+    8.85,
+    0
+   ],
+   "Salon": [
+    -47.0,
+    5.0,
+    0.0,
+    90
+   ],
+   "Hauptdeck_Beute_Bild_3_Punkt": [
+    -22.0,
+    5.1,
+    8.85,
+    0
+   ],
+   "Speisesaal": [
+    -22.0,
+    5.0,
+    3.0,
+    180
+   ],
+   "Hauptdeck_Beute_Skulptur_1_Punkt": [
+    -7.0,
+    5.0,
+    -6.0,
+    0
+   ],
+   "Hauptdeck_Beute_Skulptur_2_Punkt": [
+    -7.0,
+    5.0,
+    6.0,
+    0
+   ],
+   "Lobby": [
+    -3.0,
+    5.0,
+    4.0,
+    180
+   ],
+   "Kombuese": [
+    14.0,
+    5.0,
+    5.5,
+    0
+   ],
+   "Rettungstender": [
+    55.0,
+    5.0,
+    -2.5,
+    0
+   ],
+   "Festmachen_Bug": [
+    64.0,
+    5.0,
+    -4.0,
+    0
+   ],
+   "Festmachen_Heck": [
+    -72.0,
+    5.0,
+    -9.5,
+    180
+   ],
+   "Kamera_Hauptdeck_1": [
+    -57.6,
+    7.99,
+    -9.5,
+    45
+   ],
+   "Kamera_Hauptdeck_2": [
+    -57.6,
+    7.99,
+    9.5,
+    135
+   ],
+   "Kamera_Hauptdeck_3": [
+    -14.4,
+    7.99,
+    9.5,
+    -135
+   ],
+   "Kamera_Hauptdeck_4": [
+    7.6,
+    7.99,
+    -9.5,
+    -45
+   ],
+   "Kamera_Hauptdeck_5": [
+    39.0,
+    7.99,
+    0.0,
+    180
+   ],
+   "Kamera_Hauptdeck_6": [
+    -1.0,
+    7.99,
+    -9.5,
+    0
+   ],
+   "Achterdeck_Dinner": [
+    -54.5,
+    8.6,
+    3.0,
+    180
+   ],
+   "Sky_Lounge": [
+    -35.0,
+    8.6,
+    0.0,
+    90
+   ],
+   "Kino": [
+    -16.0,
+    8.6,
+    0.0,
+    90
+   ],
+   "Oberdeck_Beute_Bild_1_Punkt": [
+    15.05,
+    8.9,
+    -2.25,
+    0
+   ],
+   "Oberdeck_Beute_Bild_2_Punkt": [
+    28.85,
+    8.9,
+    -2.25,
+    0
+   ],
+   "Oberdeck_Beute_Bild_3_Punkt": [
+    28.85,
+    8.9,
+    2.25,
+    0
+   ],
+   "Hubschrauber_Bug": [
+    50.0,
+    8.6,
+    0.0,
+    0
+   ],
+   "Kamera_Oberdeck_1": [
+    -45.6,
+    11.59,
+    -9.5,
+    45
+   ],
+   "Kamera_Oberdeck_2": [
+    -24.4,
+    11.59,
+    9.5,
+    -135
+   ],
+   "Kamera_Oberdeck_3": [
+    -7.6,
+    11.59,
+    -9.5,
+    -45
+   ],
+   "Kamera_Oberdeck_4": [
+    39.6,
+    11.59,
+    0.0,
+    180
+   ],
+   "Feuerstelle": [
+    -44.0,
+    12.2,
+    0.0,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_1_Punkt": [
+    -31.0,
+    12.25,
+    -8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_2_Punkt": [
+    -31.0,
+    12.25,
+    8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_3_Punkt": [
+    -24.0,
+    12.25,
+    -8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_4_Punkt": [
+    -24.0,
+    12.25,
+    8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_5_Punkt": [
+    -17.0,
+    12.25,
+    -8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_6_Punkt": [
+    -17.0,
+    12.25,
+    8.4,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_7_Punkt": [
+    -27.0,
+    12.35,
+    -2.08,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_8_Punkt": [
+    -27.0,
+    12.35,
+    2.08,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_9_Punkt": [
+    -20.0,
+    12.35,
+    -2.08,
+    0
+   ],
+   "Eignerdeck_Beute_Bild_10_Punkt": [
+    -20.0,
+    12.35,
+    2.08,
+    0
+   ],
+   "Eignerdeck_Beute_Skulptur_1_Punkt": [
+    -30.0,
+    12.2,
+    0.0,
+    0
+   ],
+   "Eignerdeck_Beute_Skulptur_2_Punkt": [
+    -23.5,
+    12.2,
+    0.0,
+    0
+   ],
+   "Eignerdeck_Beute_Skulptur_3_Punkt": [
+    -16.5,
+    12.2,
+    0.0,
+    0
+   ],
+   "Kunstgalerie": [
+    -24.0,
+    12.2,
+    0.0,
+    90
+   ],
+   "Geheimregal": [
+    -11.25,
+    12.2,
+    -5.0,
+    180
+   ],
+   "Eignerbuero": [
+    -6.0,
+    12.2,
+    3.0,
+    180
+   ],
+   "Eignerdeck_Beute_Bild_Buero_Punkt": [
+    -13.0,
+    12.4,
+    3.0,
+    0
+   ],
+   "Eignerdeck_Vitrine_1_Punkt": [
+    13.0,
+    12.2,
+    -8.4,
+    0
+   ],
+   "Eignerdeck_Vitrine_2_Punkt": [
+    13.0,
+    12.2,
+    -6.6,
+    0
+   ],
+   "Eignerdeck_Vitrine_3_Punkt": [
+    13.0,
+    12.2,
+    -4.8,
+    0
+   ],
+   "Eignerdeck_Vitrine_4_Punkt": [
+    16.0,
+    12.2,
+    -8.4,
+    0
+   ],
+   "Eignerdeck_Vitrine_5_Punkt": [
+    16.0,
+    12.2,
+    -6.6,
+    0
+   ],
+   "Ankleide": [
+    14.5,
+    12.2,
+    -3.0,
+    180
+   ],
+   "Eignersuite": [
+    24.0,
+    12.2,
+    0.0,
+    90
+   ],
+   "Privatdeck_Jacuzzi": [
+    39.5,
+    12.2,
+    0.0,
+    0
+   ],
+   "Kamera_Eignerdeck_1": [
+    -33.6,
+    15.19,
+    -9.0,
+    45
+   ],
+   "Kamera_Eignerdeck_2": [
+    -14.4,
+    15.19,
+    9.0,
+    -135
+   ],
+   "Kamera_Eignerdeck_3": [
+    -0.4,
+    15.19,
+    -9.0,
+    -45
+   ],
+   "Kamera_Eignerdeck_4": [
+    17.6,
+    15.19,
+    -9.0,
+    -45
+   ],
+   "Kamera_Eignerdeck_5": [
+    33.0,
+    15.19,
+    0.0,
+    180
+   ],
+   "Kartenleser_Sicherheit": [
+    -0.2,
+    15.8,
+    -1.4,
+    -90
+   ],
+   "Hubschrauber_Achtern": [
+    -33.0,
+    15.8,
+    0.0,
+    0
+   ],
+   "Panorama_Lounge": [
+    -17.0,
+    15.8,
+    0.0,
+    90
+   ],
+   "Sicherheitszentrale": [
+    -6.0,
+    15.8,
+    0.0,
+    -90
+   ],
+   "Alarm_Hauptschalter": [
+    -2.0,
+    15.8,
+    7.0,
+    90
+   ],
+   "Waffenschrank": [
+    -2.6,
+    15.8,
+    -7.2,
+    90
+   ],
+   "Kapitaenskabine": [
+    12.0,
+    15.8,
+    -3.0,
+    0
+   ],
+   "Funkraum": [
+    11.0,
+    15.8,
+    6.0,
+    0
+   ],
+   "Bruecke_Steuer": [
+    27.6,
+    15.8,
+    0.0,
+    90
+   ],
+   "Kamera_Brueckendeck_1": [
+    -23.6,
+    18.79,
+    -8.5,
+    45
+   ],
+   "Kamera_Brueckendeck_2": [
+    -9.6,
+    18.79,
+    8.5,
+    -135
+   ],
+   "Kamera_Brueckendeck_3": [
+    -1.6,
+    18.79,
+    -2.5,
+    -90
+   ],
+   "Kamera_Brueckendeck_4": [
+    23.6,
+    18.79,
+    -8.0,
+    135
+   ],
+   "Kamera_Brueckendeck_5": [
+    -41.0,
+    18.74,
+    0.0,
+    90
+   ],
+   "Spa_Pool": [
+    -14.0,
+    19.4,
+    0.0,
+    0
+   ],
+   "Fitness": [
+    10.0,
+    19.4,
+    -1.0,
+    90
+   ],
+   "Kamera_Sonnendeck_1": [
+    -1.4,
+    22.24,
+    -5.0,
+    45
+   ],
+   "Kamera_Sonnendeck_2": [
+    17.6,
+    22.24,
+    0.0,
+    180
+   ],
+   "Kamera_Sonnendeck_3": [
+    -21.0,
+    22.24,
+    0.0,
+    90
+   ],
+   "Radarmast": [
+    10.5,
+    23.0,
+    0.0,
+    0
+   ],
+   "Jetski_Einstieg_Wasser": [
+    35.0,
+    0.0,
+    13.135,
+    180
+   ],
+   "Jetski_Einstieg_Plattform": [
+    35.0,
+    1.2,
+    12.299,
+    180
+   ],
+   "Jetski_Garage": [
+    35.0,
+    1.2,
+    7.0,
+    0
+   ],
+   "Jetski_Tor_Schalter": [
+    31.7,
+    1.2,
+    6.95,
+    -90
+   ],
+   "Boot_Einstieg_Heck": [
+    -78.0,
+    0.0,
+    -2.8,
+    90
+   ],
+   "Boot_Ausstieg_Badeplattform": [
+    -76.6,
+    1.0,
+    -1.5,
+    90
+   ],
+   "Tauchschleuse_Tuer": [
+    15.6,
+    -2.6,
+    7.1,
+    0
+   ],
+   "Tauchschleuse_Innen": [
+    14.0,
+    -2.6,
+    9.3,
+    0
+   ],
+   "Tauchschleuse_Ausruestung": [
+    12.6,
+    -2.6,
+    8.9,
+    180
+   ],
+   "Tauchschleuse_Fluten": [
+    11.75,
+    -2.6,
+    9.85,
+    -90
+   ],
+   "Tauchschleuse_Ausstieg": [
+    13.5,
+    -1.8,
+    12.6,
+    0
+   ],
+   "Flucht_Taucher_Richtung": [
+    13.5,
+    -2.0,
+    45.0,
+    0
+   ],
+   "Sabotage_Motor_BB": [
+    -44.0,
+    -2.6,
+    -1.3,
+    180
+   ],
+   "Motor_Rauch_BB": [
+    -44.0,
+    0.2,
+    -3.8,
+    0
+   ],
+   "Sabotage_Motor_SB": [
+    -44.0,
+    -2.6,
+    1.3,
+    0
+   ],
+   "Motor_Rauch_SB": [
+    -44.0,
+    0.2,
+    3.8,
+    0
+   ],
+   "Kapitaen": [
+    27.6,
+    15.8,
+    0.0,
+    90
+   ],
+   "Pool_Gast_1": [
+    -71.5,
+    5.42,
+    -6.1,
+    0
+   ],
+   "Pool_Gast_2": [
+    -69.1,
+    5.42,
+    -6.1,
+    0
+   ],
+   "Pool_Gast_3": [
+    -66.7,
+    5.42,
+    -6.1,
+    0
+   ],
+   "Pool_Gast_4": [
+    -71.5,
+    5.42,
+    6.1,
+    0
+   ],
+   "Pool_Gast_5": [
+    -69.1,
+    5.42,
+    6.1,
+    0
+   ],
+   "Pool_Gast_6": [
+    -66.7,
+    5.42,
+    6.1,
+    0
+   ],
+   "Pool_Gast_7": [
+    -68.0,
+    3.78,
+    1.5,
+    -90
+   ],
+   "Pool_Gast_8": [
+    -65.5,
+    3.78,
+    -2.0,
+    -90
+   ],
+   "Pool_Bedrohen": [
+    -62.0,
+    5.0,
+    0.0,
+    -90
+   ],
+   "Patrouille_Unterdeck_A_1": [
+    -70.5,
+    1.2,
+    2.5,
+    111.0
+   ],
+   "Patrouille_Unterdeck_A_2": [
+    -64.0,
+    1.2,
+    0.0,
+    56.3
+   ],
+   "Patrouille_Unterdeck_A_3": [
+    -59.8,
+    1.2,
+    2.8,
+    90.0
+   ],
+   "Patrouille_Unterdeck_A_4": [
+    -52.0,
+    1.2,
+    2.8,
+    119.2
+   ],
+   "Patrouille_Unterdeck_A_5": [
+    -47.0,
+    1.2,
+    0.0,
+    104.0
+   ],
+   "Patrouille_Unterdeck_A_6": [
+    -41.0,
+    1.2,
+    -1.5,
+    -82.3
+   ],
+   "Patrouille_Unterdeck_B_1": [
+    -38.0,
+    1.2,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Unterdeck_B_2": [
+    -11.5,
+    1.2,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Unterdeck_B_3": [
+    -2.0,
+    1.2,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Unterdeck_B_4": [
+    9.0,
+    1.2,
+    0.0,
+    85.7
+   ],
+   "Patrouille_Unterdeck_B_5": [
+    17.0,
+    1.2,
+    0.6,
+    94.9
+   ],
+   "Patrouille_Unterdeck_B_6": [
+    24.0,
+    1.2,
+    0.0,
+    63.4
+   ],
+   "Patrouille_Unterdeck_B_7": [
+    33.0,
+    1.2,
+    4.5,
+    107.7
+   ],
+   "Patrouille_Unterdeck_B_8": [
+    44.0,
+    1.2,
+    1.0,
+    -90.7
+   ],
+   "Patrouille_Hauptdeck_A_1": [
+    -62.0,
+    5.0,
+    10.5,
+    88.7
+   ],
+   "Patrouille_Hauptdeck_A_2": [
+    -40.0,
+    5.0,
+    11.0,
+    90.0
+   ],
+   "Patrouille_Hauptdeck_A_3": [
+    -10.0,
+    5.0,
+    11.0,
+    90.0
+   ],
+   "Patrouille_Hauptdeck_A_4": [
+    20.0,
+    5.0,
+    11.0,
+    97.1
+   ],
+   "Patrouille_Hauptdeck_A_5": [
+    36.0,
+    5.0,
+    9.0,
+    -89.1
+   ],
+   "Patrouille_Hauptdeck_B_1": [
+    -55.0,
+    5.0,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Hauptdeck_B_2": [
+    -47.0,
+    5.0,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Hauptdeck_B_3": [
+    -32.0,
+    5.0,
+    0.0,
+    74.4
+   ],
+   "Patrouille_Hauptdeck_B_4": [
+    -22.0,
+    5.0,
+    2.8,
+    105.6
+   ],
+   "Patrouille_Hauptdeck_B_5": [
+    -12.0,
+    5.0,
+    0.0,
+    71.8
+   ],
+   "Patrouille_Hauptdeck_B_6": [
+    2.0,
+    5.0,
+    4.6,
+    114.7
+   ],
+   "Patrouille_Hauptdeck_B_7": [
+    12.0,
+    5.0,
+    0.0,
+    90.0
+   ],
+   "Patrouille_Hauptdeck_B_8": [
+    30.0,
+    5.0,
+    0.0,
+    -90.0
+   ],
+   "Patrouille_Oberdeck_A_1": [
+    -57.0,
+    8.6,
+    -6.0,
+    117.8
+   ],
+   "Patrouille_Oberdeck_A_2": [
+    -48.0,
+    8.6,
+    -10.75,
+    90.0
+   ],
+   "Patrouille_Oberdeck_A_3": [
+    -20.0,
+    8.6,
+    -10.75,
+    90.0
+   ],
+   "Patrouille_Oberdeck_A_4": [
+    10.0,
+    8.6,
+    -10.75,
+    84.4
+   ],
+   "Patrouille_Oberdeck_A_5": [
+    38.0,
+    8.6,
+    -8.0,
+    69.4
+   ],
+   "Patrouille_Oberdeck_A_6": [
+    46.0,
+    8.6,
+    -5.0,
+    -90.6
+   ],
+   "Patrouille_Oberdeck_B_1": [
+    -44.0,
+    8.6,
+    0.0,
+    73.3
+   ],
+   "Patrouille_Oberdeck_B_2": [
+    -34.0,
+    8.6,
+    3.0,
+    141.3
+   ],
+   "Patrouille_Oberdeck_B_3": [
+    -26.0,
+    8.6,
+    -7.0,
+    90.0
+   ],
+   "Patrouille_Oberdeck_B_4": [
+    -19.0,
+    8.6,
+    -7.0,
+    66.8
+   ],
+   "Patrouille_Oberdeck_B_5": [
+    -12.0,
+    8.6,
+    -4.0,
+    -82.9
+   ],
+   "Patrouille_Eignerdeck_A_1": [
+    -48.0,
+    12.2,
+    -6.0,
+    100.6
+   ],
+   "Patrouille_Eignerdeck_A_2": [
+    -40.0,
+    12.2,
+    -7.5,
+    48.8
+   ],
+   "Patrouille_Eignerdeck_A_3": [
+    -24.0,
+    12.2,
+    6.5,
+    100.1
+   ],
+   "Patrouille_Eignerdeck_A_4": [
+    -10.0,
+    12.2,
+    4.0,
+    83.9
+   ],
+   "Patrouille_Eignerdeck_A_5": [
+    4.0,
+    12.2,
+    5.5,
+    113.6
+   ],
+   "Patrouille_Eignerdeck_A_6": [
+    12.0,
+    12.2,
+    2.0,
+    73.7
+   ],
+   "Patrouille_Eignerdeck_A_7": [
+    24.0,
+    12.2,
+    5.5,
+    -99.1
+   ],
+   "Patrouille_Brueckendeck_A_1": [
+    -41.0,
+    15.8,
+    -6.5,
+    82.6
+   ],
+   "Patrouille_Brueckendeck_A_2": [
+    -29.5,
+    15.8,
+    -5.0,
+    0.0
+   ],
+   "Patrouille_Brueckendeck_A_3": [
+    -29.5,
+    15.8,
+    5.0,
+    -82.6
+   ],
+   "Patrouille_Brueckendeck_A_4": [
+    -41.0,
+    15.8,
+    6.5,
+    180.0
+   ],
+   "Patrouille_Brueckendeck_B_1": [
+    4.0,
+    15.8,
+    -5.0,
+    58.0
+   ],
+   "Patrouille_Brueckendeck_B_2": [
+    12.0,
+    15.8,
+    0.0,
+    45.0
+   ],
+   "Patrouille_Brueckendeck_B_3": [
+    18.0,
+    15.8,
+    6.0,
+    130.9
+   ],
+   "Patrouille_Brueckendeck_B_4": [
+    24.8,
+    15.8,
+    0.1,
+    -103.8
+   ],
+   "Patrouille_Sonnendeck_A_1": [
+    -20.5,
+    19.4,
+    0.0,
+    58.4
+   ],
+   "Patrouille_Sonnendeck_A_2": [
+    -14.0,
+    19.4,
+    4.0,
+    111.8
+   ],
+   "Patrouille_Sonnendeck_A_3": [
+    -4.0,
+    19.4,
+    0.0,
+    119.1
+   ],
+   "Patrouille_Sonnendeck_A_4": [
+    5.0,
+    19.4,
+    -5.0,
+    93.8
+   ],
+   "Patrouille_Sonnendeck_A_5": [
+    20.0,
+    19.4,
+    -6.0,
+    -81.6
+   ],
+   "Patrouille_Tankdeck_A_1": [
+    -9.0,
+    -2.6,
+    -4.0,
+    -63.4
+   ],
+   "Patrouille_Tankdeck_A_2": [
+    -17.0,
+    -2.6,
+    0.0,
+    -74.1
+   ],
+   "Patrouille_Tankdeck_A_3": [
+    -24.0,
+    -2.6,
+    2.0,
+    -105.9
+   ],
+   "Patrouille_Tankdeck_A_4": [
+    -31.0,
+    -2.6,
+    0.0,
+    -90.0
+   ],
+   "Patrouille_Tankdeck_A_5": [
+    -44.0,
+    -2.6,
+    0.0,
+    -90.0
+   ],
+   "Patrouille_Tankdeck_A_6": [
+    -53.5,
+    -2.6,
+    0.0,
+    95.1
+   ],
+   "Wache_Beachclub": [
+    -68.5,
+    1.2,
+    -2.0,
+    -90
+   ],
+   "Wache_Garage": [
+    -52.5,
+    1.2,
+    2.8,
+    90
+   ],
+   "Wache_Wachraum": [
+    12.5,
+    1.2,
+    0.6,
+    0
+   ],
+   "Wache_Jetski": [
+    34.0,
+    1.2,
+    4.5,
+    180
+   ],
+   "Wache_Maschinenraum": [
+    -35.0,
+    -2.6,
+    0.0,
+    -90
+   ],
+   "Wache_Brueckendeck_Achtern": [
+    -25.5,
+    15.8,
+    0.0,
+    -90
+   ],
+   "Wache_Sicherheitszentrale": [
+    -4.0,
+    15.8,
+    -4.0,
+    -90
+   ],
+   "Wache_Sonnendeck": [
+    -4.0,
+    19.4,
+    0.0,
+    90
+   ],
+   "Versteck_Beachclub_Bar": [
+    -65.2,
+    1.2,
+    5.8,
+    0
+   ],
+   "Versteck_Garage": [
+    -56.0,
+    1.2,
+    8.6,
+    0
+   ],
+   "Versteck_Spa": [
+    4.3,
+    1.2,
+    6.5,
+    0
+   ],
+   "Versteck_Jetski": [
+    38.2,
+    1.2,
+    6.8,
+    0
+   ],
+   "Versteck_Salon_Fluegel": [
+    -35.0,
+    5.0,
+    9.2,
+    0
+   ],
+   "Versteck_Speisesaal": [
+    -16.4,
+    5.0,
+    -9.2,
+    0
+   ],
+   "Versteck_Kombuese": [
+    13.0,
+    5.0,
+    2.5,
+    0
+   ],
+   "Versteck_Kino": [
+    -22.9,
+    8.6,
+    3.0,
+    0
+   ],
+   "Versteck_Skylounge": [
+    -38.0,
+    8.6,
+    6.6,
+    0
+   ],
+   "Versteck_Suite": [
+    20.5,
+    8.6,
+    8.5,
+    0
+   ],
+   "Versteck_Galerie": [
+    -27.0,
+    12.2,
+    3.7,
+    0
+   ],
+   "Versteck_Buero": [
+    -9.0,
+    12.2,
+    2.0,
+    0
+   ],
+   "Versteck_Ankleide": [
+    14.5,
+    12.2,
+    -7.5,
+    0
+   ],
+   "Versteck_Heli": [
+    -36.5,
+    15.8,
+    1.8,
+    0
+   ],
+   "Versteck_Kapitaenskabine": [
+    15.3,
+    15.8,
+    -7.3,
+    0
+   ],
+   "Versteck_Fitness": [
+    8.5,
+    19.4,
+    5.1,
+    0
+   ],
+   "Versteck_Maschinenraum": [
+    -33.5,
+    -2.6,
+    7.5,
+    0
+   ],
+   "Versteck_Weinkeller": [
+    15.0,
+    -2.6,
+    -8.6,
+    0
+   ],
+   "Polizei_Boot_1": [
+    -95.0,
+    0.0,
+    20.0,
+    60
+   ],
+   "Polizei_Boot_2": [
+    0.0,
+    0.0,
+    45.0,
+    180
+   ],
+   "Polizei_Boot_3": [
+    95.0,
+    0.0,
+    20.0,
+    -120
+   ],
+   "Polizei_Boot_4": [
+    -95.0,
+    0.0,
+    -4.0,
+    90
+   ],
+   "Polizei_Heli": [
+    0.0,
+    45.0,
+    30.0,
+    180
+   ],
+   "Polizei_Kai_1": [
+    -40.0,
+    3.0,
+    -22.0,
+    0
+   ],
+   "Polizei_Kai_2": [
+    0.0,
+    3.0,
+    -24.0,
+    0
+   ],
+   "Polizei_Kai_3": [
+    40.0,
+    3.0,
+    -22.0,
+    0
+   ],
+   "Polizei_Zugang_Gangway": [
+    0.0,
+    3.0,
+    -18.5,
+    0
+   ],
+   "Polizei_Zugang_Heck": [
+    -78.0,
+    1.0,
+    3.0,
+    90
+   ],
+   "Liegeplatz_Kaiseite": [
+    0.0,
+    0.0,
+    -12.0,
+    0
+   ],
+   "Wache_Gangway": [
+    0.0,
+    5.0,
+    -9.0,
+    180
+   ],
+   "Wache_Achterdeck": [
+    -60.0,
+    5.0,
+    8.0,
+    90
+   ],
+   "Wache_Eignerdeck": [
+    -1.0,
+    12.2,
+    -4.0,
+    0
+   ],
+   "Wache_Bruecke": [
+    25.0,
+    15.8,
+    -3.0,
+    90
+   ],
+   "Notluke_Tankdeck": [
+    44.0,
+    -2.6,
+    4.0,
+    0
+   ]
+  },
+  "beweglich": [
+   "Brueckendeck_Beute_Bargeld_1",
+   "Brueckendeck_Beute_Laptop_1",
+   "Brueckendeck_Beute_Uhr_1",
+   "Brueckendeck_Beute_Zigarren_1",
+   "Brueckendeck_Heli",
+   "Brueckendeck_Lueftung_Einstieg",
+   "Brueckendeck_Lueftungsklappe_1",
+   "Brueckendeck_Lueftungsklappe_2",
+   "Brueckendeck_Lueftungsklappe_3",
+   "Brueckendeck_Lueftungsklappe_4",
+   "Brueckendeck_Lueftungsklappe_5",
+   "Brueckendeck_Sicherheitstuer",
+   "Brueckendeck_Tresor_Schluessel",
+   "Eignerdeck_Beute_Bargeld_1",
+   "Eignerdeck_Beute_Bild_1",
+   "Eignerdeck_Beute_Bild_10",
+   "Eignerdeck_Beute_Bild_2",
+   "Eignerdeck_Beute_Bild_3",
+   "Eignerdeck_Beute_Bild_4",
+   "Eignerdeck_Beute_Bild_5",
+   "Eignerdeck_Beute_Bild_6",
+   "Eignerdeck_Beute_Bild_7",
+   "Eignerdeck_Beute_Bild_8",
+   "Eignerdeck_Beute_Bild_9",
+   "Eignerdeck_Beute_Bild_Buero",
+   "Eignerdeck_Beute_Champagner_1",
+   "Eignerdeck_Beute_Laptop_1",
+   "Eignerdeck_Beute_Schmuck_Vitrine1",
+   "Eignerdeck_Beute_Schmuck_Vitrine2",
+   "Eignerdeck_Beute_Schmuck_Vitrine3",
+   "Eignerdeck_Beute_Schmuck_Vitrine4",
+   "Eignerdeck_Beute_Schmuck_Vitrine5",
+   "Eignerdeck_Beute_Skulptur_1",
+   "Eignerdeck_Beute_Skulptur_2",
+   "Eignerdeck_Beute_Skulptur_3",
+   "Eignerdeck_Beute_Tasche_1",
+   "Eignerdeck_Beute_Uhr_1",
+   "Eignerdeck_Lueftung_Einstieg",
+   "Eignerdeck_Lueftungsklappe_1",
+   "Eignerdeck_Lueftungsklappe_2",
+   "Eignerdeck_Lueftungsklappe_3",
+   "Eignerdeck_Lueftungsklappe_4",
+   "Eignerdeck_Lueftungsklappe_5",
+   "Eignerdeck_Regal",
+   "Eignerdeck_Vitrine_1",
+   "Eignerdeck_Vitrine_2",
+   "Eignerdeck_Vitrine_3",
+   "Eignerdeck_Vitrine_4",
+   "Eignerdeck_Vitrine_5",
+   "Hauptdeck_Beute_Bargeld_Pool1",
+   "Hauptdeck_Beute_Bild_1",
+   "Hauptdeck_Beute_Bild_2",
+   "Hauptdeck_Beute_Bild_3",
+   "Hauptdeck_Beute_Champagner_1",
+   "Hauptdeck_Beute_Champagner_Pool1",
+   "Hauptdeck_Beute_Handy_Pool1",
+   "Hauptdeck_Beute_Kerzenleuchter_1",
+   "Hauptdeck_Beute_Kerzenleuchter_2",
+   "Hauptdeck_Beute_Schmuck_1",
+   "Hauptdeck_Beute_Schmuck_Pool1",
+   "Hauptdeck_Beute_Skulptur_1",
+   "Hauptdeck_Beute_Skulptur_2",
+   "Hauptdeck_Beute_Tasche_1",
+   "Hauptdeck_Beute_Tasche_Pool1",
+   "Hauptdeck_Beute_Uhr_1",
+   "Hauptdeck_Beute_Uhr_Pool1",
+   "Hauptdeck_Beute_Zigarren_1",
+   "Hauptdeck_Lueftung_Einstieg",
+   "Hauptdeck_Lueftungsklappe_1",
+   "Hauptdeck_Lueftungsklappe_2",
+   "Hauptdeck_Lueftungsklappe_3",
+   "Hauptdeck_Lueftungsklappe_4",
+   "Hauptdeck_Lueftungsklappe_5",
+   "Hauptdeck_Passerelle",
+   "Hauptdeck_Relingstor_BB",
+   "Hauptdeck_Relingstor_SB",
+   "Hauptdeck_Rettungstender",
+   "Hauptdeck_Seitentuer_BB",
+   "Hauptdeck_Seitentuer_SB",
+   "Heist_Schlauchboot",
+   "Oberdeck_Beute_Bild_1",
+   "Oberdeck_Beute_Bild_2",
+   "Oberdeck_Beute_Bild_3",
+   "Oberdeck_Beute_Champagner_1",
+   "Oberdeck_Beute_Champagner_2",
+   "Oberdeck_Beute_Handy_1",
+   "Oberdeck_Beute_Kerzenleuchter_1",
+   "Oberdeck_Beute_Laptop_1",
+   "Oberdeck_Beute_Schmuck_1",
+   "Oberdeck_Beute_Tasche_1",
+   "Oberdeck_Beute_Uhr_1",
+   "Oberdeck_Beute_Uhr_2",
+   "Oberdeck_Beute_Zigarren_1",
+   "Oberdeck_Lueftung_Einstieg",
+   "Oberdeck_Lueftungsklappe_1",
+   "Oberdeck_Lueftungsklappe_2",
+   "Oberdeck_Lueftungsklappe_3",
+   "Oberdeck_Lueftungsklappe_4",
+   "Oberdeck_Lueftungsklappe_5",
+   "Sonnendeck_Beute_Champagner_1",
+   "Sonnendeck_Beute_Handy_1",
+   "Sonnendeck_Beute_Tasche_1",
+   "Sonnendeck_Beute_Uhr_1",
+   "Tankdeck_Beute_Bargeld_1",
+   "Tankdeck_Beute_Bargeld_2",
+   "Tankdeck_Beute_Gold_1",
+   "Tankdeck_Beute_Gold_2",
+   "Tankdeck_Beute_Gold_3",
+   "Tankdeck_Beute_Gold_4",
+   "Tankdeck_Beute_Gold_5",
+   "Tankdeck_Beute_Gold_6",
+   "Tankdeck_Beute_Handy_1",
+   "Tankdeck_Beute_Kunst_1",
+   "Tankdeck_Beute_Kunst_2",
+   "Tankdeck_Beute_Kunst_3",
+   "Tankdeck_Beute_Safira",
+   "Tankdeck_Beute_Wein_1",
+   "Tankdeck_Beute_Wein_2",
+   "Tankdeck_Gitter",
+   "Tankdeck_Laser",
+   "Tankdeck_Motor_BB_Einspritzpumpe",
+   "Tankdeck_Motor_SB_Einspritzpumpe",
+   "Tankdeck_Privataufzug",
+   "Tankdeck_Safira_Glas",
+   "Tankdeck_Tauchausruestung_1",
+   "Tankdeck_Tauchausruestung_2",
+   "Tankdeck_Tauchausruestung_3",
+   "Tankdeck_Tauchausruestung_4",
+   "Tankdeck_Tauchluke",
+   "Tankdeck_Tauchschleuse_Tuer",
+   "Tankdeck_Tauchschleuse_Wasser",
+   "Tankdeck_Tresortuer",
+   "Unterdeck_Beute_Bargeld_1",
+   "Unterdeck_Beute_Champagner_1",
+   "Unterdeck_Beute_Handy_1",
+   "Unterdeck_Beute_Handy_2",
+   "Unterdeck_Beute_Laptop_1",
+   "Unterdeck_Beute_Schmuck_1",
+   "Unterdeck_Beute_Uhr_1",
+   "Unterdeck_Beute_Uhr_2",
+   "Unterdeck_Garagentor_BB",
+   "Unterdeck_Garagentor_SB",
+   "Unterdeck_Heckklappe",
+   "Unterdeck_Jetski_1",
+   "Unterdeck_Jetski_2",
+   "Unterdeck_Jetski_3",
+   "Unterdeck_Jetski_4",
+   "Unterdeck_Jetski_Tor",
+   "Unterdeck_Tender_1",
+   "Unterdeck_Tender_2",
+   "Unterdeck_UBoot"
+  ],
+  "beute": [
+   "Brueckendeck_Beute_Bargeld_1",
+   "Brueckendeck_Beute_Laptop_1",
+   "Brueckendeck_Beute_Uhr_1",
+   "Brueckendeck_Beute_Zigarren_1",
+   "Brueckendeck_Tresor_Schluessel",
+   "Eignerdeck_Beute_Bargeld_1",
+   "Eignerdeck_Beute_Bild_1",
+   "Eignerdeck_Beute_Bild_10",
+   "Eignerdeck_Beute_Bild_2",
+   "Eignerdeck_Beute_Bild_3",
+   "Eignerdeck_Beute_Bild_4",
+   "Eignerdeck_Beute_Bild_5",
+   "Eignerdeck_Beute_Bild_6",
+   "Eignerdeck_Beute_Bild_7",
+   "Eignerdeck_Beute_Bild_8",
+   "Eignerdeck_Beute_Bild_9",
+   "Eignerdeck_Beute_Bild_Buero",
+   "Eignerdeck_Beute_Champagner_1",
+   "Eignerdeck_Beute_Laptop_1",
+   "Eignerdeck_Beute_Schmuck_Vitrine1",
+   "Eignerdeck_Beute_Schmuck_Vitrine2",
+   "Eignerdeck_Beute_Schmuck_Vitrine3",
+   "Eignerdeck_Beute_Schmuck_Vitrine4",
+   "Eignerdeck_Beute_Schmuck_Vitrine5",
+   "Eignerdeck_Beute_Skulptur_1",
+   "Eignerdeck_Beute_Skulptur_2",
+   "Eignerdeck_Beute_Skulptur_3",
+   "Eignerdeck_Beute_Tasche_1",
+   "Eignerdeck_Beute_Uhr_1",
+   "Hauptdeck_Beute_Bargeld_Pool1",
+   "Hauptdeck_Beute_Bild_1",
+   "Hauptdeck_Beute_Bild_2",
+   "Hauptdeck_Beute_Bild_3",
+   "Hauptdeck_Beute_Champagner_1",
+   "Hauptdeck_Beute_Champagner_Pool1",
+   "Hauptdeck_Beute_Handy_Pool1",
+   "Hauptdeck_Beute_Kerzenleuchter_1",
+   "Hauptdeck_Beute_Kerzenleuchter_2",
+   "Hauptdeck_Beute_Schmuck_1",
+   "Hauptdeck_Beute_Schmuck_Pool1",
+   "Hauptdeck_Beute_Skulptur_1",
+   "Hauptdeck_Beute_Skulptur_2",
+   "Hauptdeck_Beute_Tasche_1",
+   "Hauptdeck_Beute_Tasche_Pool1",
+   "Hauptdeck_Beute_Uhr_1",
+   "Hauptdeck_Beute_Uhr_Pool1",
+   "Hauptdeck_Beute_Zigarren_1",
+   "Oberdeck_Beute_Bild_1",
+   "Oberdeck_Beute_Bild_2",
+   "Oberdeck_Beute_Bild_3",
+   "Oberdeck_Beute_Champagner_1",
+   "Oberdeck_Beute_Champagner_2",
+   "Oberdeck_Beute_Handy_1",
+   "Oberdeck_Beute_Kerzenleuchter_1",
+   "Oberdeck_Beute_Laptop_1",
+   "Oberdeck_Beute_Schmuck_1",
+   "Oberdeck_Beute_Tasche_1",
+   "Oberdeck_Beute_Uhr_1",
+   "Oberdeck_Beute_Uhr_2",
+   "Oberdeck_Beute_Zigarren_1",
+   "Sonnendeck_Beute_Champagner_1",
+   "Sonnendeck_Beute_Handy_1",
+   "Sonnendeck_Beute_Tasche_1",
+   "Sonnendeck_Beute_Uhr_1",
+   "Tankdeck_Beute_Bargeld_1",
+   "Tankdeck_Beute_Bargeld_2",
+   "Tankdeck_Beute_Gold_1",
+   "Tankdeck_Beute_Gold_2",
+   "Tankdeck_Beute_Gold_3",
+   "Tankdeck_Beute_Gold_4",
+   "Tankdeck_Beute_Gold_5",
+   "Tankdeck_Beute_Gold_6",
+   "Tankdeck_Beute_Handy_1",
+   "Tankdeck_Beute_Kunst_1",
+   "Tankdeck_Beute_Kunst_2",
+   "Tankdeck_Beute_Kunst_3",
+   "Tankdeck_Beute_Safira",
+   "Tankdeck_Beute_Wein_1",
+   "Tankdeck_Beute_Wein_2",
+   "Tankdeck_Tauchausruestung_1",
+   "Tankdeck_Tauchausruestung_2",
+   "Tankdeck_Tauchausruestung_3",
+   "Tankdeck_Tauchausruestung_4",
+   "Unterdeck_Beute_Bargeld_1",
+   "Unterdeck_Beute_Champagner_1",
+   "Unterdeck_Beute_Handy_1",
+   "Unterdeck_Beute_Handy_2",
+   "Unterdeck_Beute_Laptop_1",
+   "Unterdeck_Beute_Schmuck_1",
+   "Unterdeck_Beute_Uhr_1",
+   "Unterdeck_Beute_Uhr_2"
+  ],
+  "offset": [
+   3.67,
+   2.28
+  ],
+  "groundHide": "Unterdeck"
+ },
+ {
+  "slug": "03_casa_imperio_abgeriegelt",
+  "name": "Casa Império – abgeriegelt",
+  "cls": "Heist",
+  "tris": 235344,
+  "mats": 87,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   73.1,
+   78.4,
+   114.0
+  ],
+  "lot": [
+   74.0,
+   116.0
+  ],
+  "levels": [
+   "Dach",
+   "OG3",
+   "OG2",
+   "OG1",
+   "EG",
+   "UG1",
+   "UG2",
+   "UG3"
+  ],
+  "kollision": 120888,
+  "trigger": 187,
+  "anchors": {
+   "Polizei_Linie": [
+    0.0,
+    0.0,
+    47.5,
+    180
+   ],
+   "Wachhaus_Tor_W": [
+    -9.8,
+    0.0,
+    48.3,
+    180
+   ],
+   "Wachhaus_Tor_O": [
+    9.8,
+    0.0,
+    48.3,
+    180
+   ],
+   "Haupttor": [
+    0.0,
+    0.0,
+    53.5,
+    180
+   ],
+   "Wachhaus_Hof": [
+    7.6,
+    0.0,
+    -52.7,
+    -90
+   ],
+   "Strom_Trafo": [
+    23.5,
+    0.0,
+    -46.3,
+    180
+   ],
+   "Geldtransporter_Hof": [
+    0.0,
+    0.0,
+    -47.5,
+    0
+   ],
+   "Eingang": [
+    0.0,
+    1.65,
+    26.5,
+    180
+   ],
+   "Treppenhaus_W_UG2": [
+    -28.2,
+    -10.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_UG2": [
+    28.2,
+    -10.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_UG2": [
+    -8.0,
+    -10.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_UG2": [
+    8.0,
+    -10.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_UG1": [
+    -28.2,
+    -4.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_UG1": [
+    28.2,
+    -4.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_UG1": [
+    -8.0,
+    -4.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_UG1": [
+    8.0,
+    -4.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_EG": [
+    -28.2,
+    1.65,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_EG": [
+    28.2,
+    1.65,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_EG": [
+    -8.0,
+    1.65,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_EG": [
+    8.0,
+    1.65,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG1": [
+    -28.2,
+    9.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG1": [
+    28.2,
+    9.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG1": [
+    -8.0,
+    9.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG1": [
+    8.0,
+    9.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG2": [
+    -28.2,
+    15.5,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG2": [
+    28.2,
+    15.5,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG2": [
+    -8.0,
+    15.5,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG2": [
+    8.0,
+    15.5,
+    -19.3,
+    0
+   ],
+   "Treppenhaus_W_OG3": [
+    -28.2,
+    21.0,
+    -26.1,
+    0
+   ],
+   "Treppenhaus_O_OG3": [
+    28.2,
+    21.0,
+    -26.1,
+    0
+   ],
+   "Aufzug_L_OG3": [
+    -8.0,
+    21.0,
+    -19.3,
+    0
+   ],
+   "Aufzug_R_OG3": [
+    8.0,
+    21.0,
+    -19.3,
+    0
+   ],
+   "Druckplatten": [
+    0.0,
+    1.65,
+    -7.5,
+    0
+   ],
+   "Estrela_do_Rio": [
+    0.0,
+    4.0,
+    -7.5,
+    0
+   ],
+   "Rezeption": [
+    7.0,
+    1.65,
+    3.9,
+    180
+   ],
+   "Schleuse_1": [
+    -8.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_2": [
+    -4.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_3": [
+    0.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_4": [
+    4.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Schleuse_5": [
+    8.0,
+    1.65,
+    15.1,
+    180
+   ],
+   "Wachmann_Eingang_W": [
+    -15.0,
+    1.65,
+    10.9,
+    180
+   ],
+   "Wachmann_Eingang_O": [
+    15.0,
+    1.65,
+    10.9,
+    180
+   ],
+   "EG_Vitrine_1_Punkt": [
+    -24.0,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_2_Punkt": [
+    -24.0,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_3_Punkt": [
+    -24.0,
+    1.65,
+    -4.5,
+    0
+   ],
+   "EG_Vitrine_4_Punkt": [
+    -24.0,
+    1.65,
+    1.5,
+    0
+   ],
+   "EG_Vitrine_5_Punkt": [
+    -20.6,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_6_Punkt": [
+    -20.6,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_7_Punkt": [
+    -20.6,
+    1.65,
+    -4.5,
+    0
+   ],
+   "EG_Vitrine_8_Punkt": [
+    -20.6,
+    1.65,
+    1.5,
+    0
+   ],
+   "EG_Vitrine_9_Punkt": [
+    21.5,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_10_Punkt": [
+    21.5,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_11_Punkt": [
+    24.8,
+    1.65,
+    -19.5,
+    0
+   ],
+   "EG_Vitrine_12_Punkt": [
+    24.8,
+    1.65,
+    -13.5,
+    0
+   ],
+   "EG_Vitrine_13_Punkt": [
+    21.5,
+    1.65,
+    -5.5,
+    0
+   ],
+   "EG_Vitrine_14_Punkt": [
+    21.5,
+    1.65,
+    0.5,
+    0
+   ],
+   "EG_Vitrine_15_Punkt": [
+    -27.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_16_Punkt": [
+    -21.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_17_Punkt": [
+    27.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "EG_Vitrine_18_Punkt": [
+    21.5,
+    1.65,
+    12.5,
+    0
+   ],
+   "Fahrzeugaufzug_EG": [
+    0.0,
+    1.65,
+    -30.8,
+    0
+   ],
+   "Geldtransporter_EG": [
+    0.0,
+    1.65,
+    -30.8,
+    0
+   ],
+   "Tesouraria": [
+    -11.25,
+    1.65,
+    -25.1,
+    0
+   ],
+   "Goldannahme": [
+    11.25,
+    1.65,
+    -25.1,
+    0
+   ],
+   "Wachposten_Hof": [
+    21.5,
+    1.65,
+    -28.3,
+    180
+   ],
+   "Strombox": [
+    -20.7,
+    1.65,
+    -35.3,
+    180
+   ],
+   "Sicherheitsbox": [
+    -19.35,
+    1.65,
+    -35.4,
+    90
+   ],
+   "Technikraum": [
+    -21.5,
+    1.65,
+    -29.5,
+    0
+   ],
+   "Waffenkontrolle": [
+    0.0,
+    1.65,
+    -25.3,
+    0
+   ],
+   "Lagereingang": [
+    0.0,
+    1.65,
+    -38.3,
+    0
+   ],
+   "Lkw_Lieferung": [
+    0.0,
+    0.95,
+    -44.5,
+    0
+   ],
+   "Wache_Lieferung_1": [
+    -1.8,
+    1.65,
+    -24.5,
+    180
+   ],
+   "Wache_Lieferung_2": [
+    4.9,
+    1.65,
+    -24.7,
+    -90
+   ],
+   "Wache_Tesouraria": [
+    -11.0,
+    1.65,
+    -30.75,
+    0
+   ],
+   "Wache_Goldannahme": [
+    11.0,
+    1.65,
+    -30.75,
+    0
+   ],
+   "Kamera_EG_1": [
+    -31.0,
+    8.69,
+    8.0,
+    135
+   ],
+   "Kamera_EG_2": [
+    31.0,
+    8.69,
+    8.0,
+    -135
+   ],
+   "Kamera_EG_3": [
+    -31.0,
+    8.69,
+    -23.1,
+    45
+   ],
+   "Kamera_EG_4": [
+    31.0,
+    8.69,
+    -23.1,
+    -45
+   ],
+   "Kamera_EG_5": [
+    -17.6,
+    8.69,
+    17.4,
+    135
+   ],
+   "Kamera_EG_6": [
+    17.6,
+    8.69,
+    17.4,
+    -135
+   ],
+   "Kamera_EG_7": [
+    -13.6,
+    8.69,
+    -19.1,
+    45
+   ],
+   "Kamera_EG_8": [
+    13.6,
+    8.69,
+    -19.1,
+    -45
+   ],
+   "Kamera_EG_9": [
+    0.0,
+    8.69,
+    -23.9,
+    180
+   ],
+   "Kamera_EG_10": [
+    -17.6,
+    8.69,
+    -36.5,
+    45
+   ],
+   "Kamera_EG_11": [
+    17.6,
+    8.69,
+    -36.5,
+    -45
+   ],
+   "Kamera_EG_12": [
+    0.0,
+    8.69,
+    8.1,
+    180
+   ],
+   "Kartenleser_Sala_W": [
+    -19.0,
+    9.5,
+    13.85,
+    90
+   ],
+   "Kartenleser_Sala_O": [
+    19.0,
+    9.5,
+    13.85,
+    -90
+   ],
+   "Laser_Start": [
+    0.0,
+    9.5,
+    7.7,
+    0
+   ],
+   "Laser_Ende": [
+    0.0,
+    9.5,
+    12.2,
+    0
+   ],
+   "Laser_Steuerung": [
+    1.85,
+    9.5,
+    7.5,
+    180
+   ],
+   "Coroa_Imperial": [
+    0.0,
+    10.75,
+    14.1,
+    0
+   ],
+   "OG1_Vitrine_1_Punkt": [
+    -6.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_2_Punkt": [
+    6.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_3_Punkt": [
+    -12.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_4_Punkt": [
+    12.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_5_Punkt": [
+    -9.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_6_Punkt": [
+    9.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_7_Punkt": [
+    -15.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_8_Punkt": [
+    15.0,
+    9.5,
+    11.1,
+    0
+   ],
+   "OG1_Vitrine_9_Punkt": [
+    -15.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "OG1_Vitrine_10_Punkt": [
+    15.0,
+    9.5,
+    15.9,
+    0
+   ],
+   "Thron": [
+    0.0,
+    9.9,
+    17.35,
+    180
+   ],
+   "Kamera_Sala_1": [
+    -17.4,
+    14.69,
+    9.1,
+    135
+   ],
+   "Kamera_Sala_2": [
+    17.4,
+    14.69,
+    9.1,
+    -135
+   ],
+   "Kamera_Sala_3": [
+    -17.4,
+    14.69,
+    17.6,
+    45
+   ],
+   "Kamera_Sala_4": [
+    17.4,
+    14.69,
+    17.6,
+    -45
+   ],
+   "OG1_Vitrine_11_Punkt": [
+    -24.0,
+    9.5,
+    -19.5,
+    0
+   ],
+   "OG1_Vitrine_12_Punkt": [
+    -24.0,
+    9.5,
+    -13.5,
+    0
+   ],
+   "OG1_Vitrine_13_Punkt": [
+    -24.0,
+    9.5,
+    -5.5,
+    0
+   ],
+   "OG1_Vitrine_14_Punkt": [
+    -24.0,
+    9.5,
+    0.5,
+    0
+   ],
+   "OG1_Vitrine_15_Punkt": [
+    -20.6,
+    9.5,
+    -13.5,
+    0
+   ],
+   "OG1_Vitrine_16_Punkt": [
+    -20.6,
+    9.5,
+    -5.5,
+    0
+   ],
+   "OG1_Vitrine_17_Punkt": [
+    -24.0,
+    9.5,
+    6.5,
+    0
+   ],
+   "OG1_Vitrine_18_Punkt": [
+    -24.0,
+    9.5,
+    12.5,
+    0
+   ],
+   "OG1_Vitrine_19_Punkt": [
+    -20.6,
+    9.5,
+    6.5,
+    0
+   ],
+   "OG1_Vitrine_20_Punkt": [
+    -20.6,
+    9.5,
+    12.5,
+    0
+   ],
+   "OG1_Vitrine_21_Punkt": [
+    -27.6,
+    9.5,
+    16.1,
+    0
+   ],
+   "Astronomische_Uhr": [
+    -29.9,
+    9.5,
+    12.0,
+    90
+   ],
+   "Auktionssaal": [
+    24.7,
+    9.5,
+    -17.5,
+    0
+   ],
+   "OG1_Vitrine_22_Punkt": [
+    21.5,
+    9.5,
+    9.0,
+    0
+   ],
+   "OG1_Vitrine_23_Punkt": [
+    21.5,
+    9.5,
+    14.0,
+    0
+   ],
+   "OG1_Vitrine_24_Punkt": [
+    27.5,
+    9.5,
+    9.0,
+    0
+   ],
+   "OG1_Vitrine_25_Punkt": [
+    27.5,
+    9.5,
+    14.0,
+    0
+   ],
+   "Auktionator": [
+    24.7,
+    9.9,
+    -21.3,
+    0
+   ],
+   "Archiv": [
+    0.0,
+    9.5,
+    -29.5,
+    0
+   ],
+   "Kamera_OG1_1": [
+    -31.0,
+    14.69,
+    -23.1,
+    45
+   ],
+   "Kamera_OG1_2": [
+    31.0,
+    14.69,
+    -23.1,
+    -45
+   ],
+   "Kamera_OG1_3": [
+    0.0,
+    14.69,
+    -23.9,
+    180
+   ],
+   "Kamera_OG1_4": [
+    -31.0,
+    14.69,
+    8.0,
+    135
+   ],
+   "Sitzungssaal": [
+    0.0,
+    15.5,
+    10.5,
+    0
+   ],
+   "Schleiferei": [
+    -26.0,
+    15.5,
+    -9.5,
+    90
+   ],
+   "Goldschmiede": [
+    27.0,
+    15.5,
+    -9.5,
+    -90
+   ],
+   "Kantine": [
+    -8.0,
+    15.5,
+    -30.5,
+    0
+   ],
+   "Arbeitstresor": [
+    21.0,
+    15.5,
+    -29.7,
+    180
+   ],
+   "Kamera_OG2_1": [
+    -31.0,
+    20.19,
+    -23.1,
+    45
+   ],
+   "Kamera_OG2_2": [
+    31.0,
+    20.19,
+    -23.1,
+    -45
+   ],
+   "Kamera_OG2_3": [
+    0.0,
+    20.19,
+    8.1,
+    180
+   ],
+   "Kamera_OG2_4": [
+    -17.6,
+    20.19,
+    17.4,
+    135
+   ],
+   "Sicherheitszentrale": [
+    0.0,
+    21.0,
+    11.5,
+    0
+   ],
+   "Alarm_Hauptschalter": [
+    16.2,
+    21.0,
+    16.9,
+    0
+   ],
+   "Ueberwachung_Kameras": [
+    0.0,
+    21.0,
+    13.5,
+    0
+   ],
+   "Direktor_Safe": [
+    -30.6,
+    21.0,
+    3.5,
+    90
+   ],
+   "Direktor": [
+    -25.0,
+    21.0,
+    0.1,
+    180
+   ],
+   "Lager": [
+    23.0,
+    21.0,
+    -13.5,
+    90
+   ],
+   "Lager_Depot": [
+    29.3,
+    21.0,
+    6.9,
+    90
+   ],
+   "Kamera_OG3_1": [
+    -17.6,
+    26.14,
+    8.9,
+    135
+   ],
+   "Kamera_OG3_2": [
+    17.6,
+    26.14,
+    8.9,
+    -135
+   ],
+   "Kamera_OG3_3": [
+    -31.0,
+    26.14,
+    -23.1,
+    45
+   ],
+   "Kamera_OG3_4": [
+    31.0,
+    26.14,
+    -5.9,
+    -45
+   ],
+   "Kamera_OG3_5": [
+    0.0,
+    26.14,
+    -23.9,
+    180
+   ],
+   "Geldtransporter_W15": [
+    -15.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_W11": [
+    -11.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_O11": [
+    11.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Geldtransporter_O15": [
+    15.0,
+    -4.5,
+    -31.0,
+    0
+   ],
+   "Panzergarage": [
+    0.0,
+    -4.5,
+    -22.0,
+    0
+   ],
+   "Notendruckerei": [
+    0.0,
+    -4.5,
+    -15.5,
+    0
+   ],
+   "Bargeld_Paletten": [
+    0.0,
+    -4.5,
+    12.0,
+    0
+   ],
+   "Server": [
+    -25.0,
+    -4.5,
+    6.2,
+    90
+   ],
+   "Hauptstrom": [
+    24.5,
+    -4.5,
+    1.5,
+    0
+   ],
+   "Lueftungsschacht_UG1": [
+    -23.6,
+    -4.5,
+    -34.1,
+    0
+   ],
+   "Checkpoint": [
+    23.0,
+    -4.5,
+    -14.1,
+    180
+   ],
+   "Wertsack_Lager": [
+    28.0,
+    -4.5,
+    -12.5,
+    90
+   ],
+   "Kamera_UG1_1": [
+    -17.6,
+    0.84,
+    -36.5,
+    45
+   ],
+   "Kamera_UG1_2": [
+    17.6,
+    0.84,
+    -36.5,
+    -45
+   ],
+   "Kamera_UG1_3": [
+    0.0,
+    0.84,
+    -17.9,
+    180
+   ],
+   "Kamera_UG1_4": [
+    -18.4,
+    0.84,
+    17.4,
+    135
+   ],
+   "Kamera_UG1_5": [
+    18.4,
+    0.84,
+    17.4,
+    -135
+   ],
+   "Kamera_UG1_6": [
+    17.6,
+    0.84,
+    -18.5,
+    -45
+   ],
+   "Schmelzoefen": [
+    -20.5,
+    -10.5,
+    9.5,
+    0
+   ],
+   "Gusslinie": [
+    -19.0,
+    -10.5,
+    2.0,
+    0
+   ],
+   "Praegerei": [
+    -22.0,
+    -10.5,
+    -4.5,
+    180
+   ],
+   "Raffinerie": [
+    18.0,
+    -10.5,
+    -1.5,
+    90
+   ],
+   "Wache_Tresor": [
+    7.5,
+    -10.5,
+    -21.3,
+    180
+   ],
+   "Biometrie": [
+    1.85,
+    -10.5,
+    -25.9,
+    0
+   ],
+   "Tresoraufzug_UG2": [
+    0.0,
+    -10.5,
+    -28.2,
+    0
+   ],
+   "Flutsteuerung": [
+    24.0,
+    -10.5,
+    -24.4,
+    0
+   ],
+   "Wartungstreppe_UG2": [
+    20.5,
+    -10.5,
+    -23.7,
+    0
+   ],
+   "Kamera_UG2_1": [
+    -30.8,
+    -5.31,
+    17.4,
+    135
+   ],
+   "Kamera_UG2_2": [
+    -6.6,
+    -5.31,
+    -18.9,
+    -45
+   ],
+   "Kamera_UG2_3": [
+    30.8,
+    -5.31,
+    17.4,
+    -135
+   ],
+   "Kamera_UG2_4": [
+    0.0,
+    -5.31,
+    -20.1,
+    0
+   ],
+   "Kamera_UG2_5": [
+    -11.6,
+    -5.31,
+    -27.1,
+    45
+   ],
+   "Kamera_UG2_6": [
+    11.6,
+    -5.31,
+    -36.5,
+    -45
+   ],
+   "Tunnel_Tuer": [
+    3.7,
+    -20.5,
+    -27.6,
+    -90
+   ],
+   "Zeitschloss": [
+    4.1,
+    -20.5,
+    -24.5,
+    180
+   ],
+   "Tresor_Tuer": [
+    0.0,
+    -20.5,
+    -25.5,
+    0
+   ],
+   "Tresoraufzug_UG3": [
+    0.0,
+    -20.5,
+    -28.2,
+    0
+   ],
+   "Tresor": [
+    0.0,
+    -20.5,
+    -9.5,
+    0
+   ],
+   "Goldpaletten": [
+    -8.0,
+    -20.5,
+    -7.5,
+    0
+   ],
+   "Bargeld": [
+    9.0,
+    -20.5,
+    7.5,
+    0
+   ],
+   "Coracao_do_Brasil": [
+    0.0,
+    -19.3,
+    8.5,
+    0
+   ],
+   "UG3_Flutschieber_1_Punkt": [
+    -14.0,
+    -20.5,
+    -18.45,
+    0
+   ],
+   "UG3_Flutschieber_2_Punkt": [
+    14.0,
+    -20.5,
+    -18.45,
+    0
+   ],
+   "UG3_Flutschieber_3_Punkt": [
+    -14.0,
+    -20.5,
+    9.45,
+    180
+   ],
+   "UG3_Flutschieber_4_Punkt": [
+    14.0,
+    -20.5,
+    9.45,
+    180
+   ],
+   "Flutwasser": [
+    0.0,
+    -20.5,
+    -4.5,
+    0
+   ],
+   "Sprengladung_Tresor": [
+    24.8,
+    -20.5,
+    -5.5,
+    -90
+   ],
+   "Sprengladung_Kanal": [
+    30.6,
+    -20.5,
+    -5.5,
+    90
+   ],
+   "Kanal_Anschluss": [
+    32.0,
+    -20.5,
+    -5.5,
+    90
+   ],
+   "Wache_UG3_Tunnel": [
+    4.5,
+    -20.5,
+    -30.0,
+    0
+   ],
+   "Wache_UG3_Gang_1": [
+    27.5,
+    -20.5,
+    -21.5,
+    0
+   ],
+   "Wache_UG3_Gang_2": [
+    27.5,
+    -20.5,
+    4.5,
+    180
+   ],
+   "Wache_UG3_Tresor_1": [
+    -10.0,
+    -20.5,
+    3.5,
+    180
+   ],
+   "Wache_UG3_Tresor_2": [
+    10.3,
+    -20.5,
+    -19.3,
+    0
+   ],
+   "Kamera_UG3_1": [
+    -21.4,
+    -11.61,
+    -20.9,
+    135
+   ],
+   "Kamera_UG3_2": [
+    21.4,
+    -11.61,
+    -20.9,
+    -135
+   ],
+   "Kamera_UG3_3": [
+    -21.4,
+    -11.61,
+    11.9,
+    45
+   ],
+   "Kamera_UG3_4": [
+    21.4,
+    -11.61,
+    11.9,
+    -45
+   ],
+   "Kamera_UG3_5": [
+    0.0,
+    -11.61,
+    4.1,
+    180
+   ],
+   "Kamera_UG3_6": [
+    -2.2,
+    -11.61,
+    -28.5,
+    0
+   ],
+   "Kamera_UG3_7": [
+    28.5,
+    -11.61,
+    -33.5,
+    0
+   ],
+   "Kuppel_Laterne": [
+    0.0,
+    43.7,
+    -4.9,
+    0
+   ],
+   "Wachturm_WN": [
+    -29.0,
+    27.0,
+    -34.5,
+    0
+   ],
+   "Wachturm_WS": [
+    -29.0,
+    27.0,
+    15.5,
+    0
+   ],
+   "Wachturm_OS": [
+    29.0,
+    27.0,
+    15.5,
+    0
+   ],
+   "Hubschrauber": [
+    -14.0,
+    28.27,
+    -28.5,
+    0
+   ],
+   "Dachtuer": [
+    24.2,
+    27.0,
+    -27.9,
+    -90
+   ],
+   "Dachluke": [
+    10.7,
+    27.35,
+    -30.8,
+    0
+   ],
+   "Lueftungsschacht_Dach": [
+    -23.6,
+    28.7,
+    -35.9,
+    0
+   ],
+   "Kamera_Dach_1": [
+    -31.6,
+    28.24,
+    18.1,
+    180
+   ],
+   "Kamera_Dach_2": [
+    31.6,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Kamera_Dach_3": [
+    0.0,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Kamera_Dach_4": [
+    -31.6,
+    28.24,
+    -37.1,
+    0
+   ],
+   "Wache_EG_Salon_W": [
+    -22.3,
+    1.65,
+    -9.0,
+    90
+   ],
+   "Wache_EG_Salon_O": [
+    23.2,
+    1.65,
+    -8.5,
+    -90
+   ],
+   "Wache_EG_Halle": [
+    0.0,
+    1.65,
+    -21.8,
+    0
+   ],
+   "Wache_OG1_1": [
+    -16.0,
+    9.5,
+    6.5,
+    135
+   ],
+   "Wache_OG1_2": [
+    16.0,
+    9.5,
+    6.5,
+    -135
+   ],
+   "Wache_OG1_3": [
+    0.0,
+    9.5,
+    -21.5,
+    0
+   ],
+   "Wache_OG2_1": [
+    -16.0,
+    15.5,
+    -21.5,
+    45
+   ],
+   "Wache_OG2_2": [
+    16.0,
+    15.5,
+    6.5,
+    -135
+   ],
+   "Wache_OG3_1": [
+    0.0,
+    21.0,
+    7.1,
+    180
+   ],
+   "Wache_OG3_2": [
+    -16.0,
+    21.0,
+    -21.5,
+    45
+   ],
+   "Wache_OG3_3": [
+    16.0,
+    21.0,
+    -21.5,
+    -45
+   ],
+   "Wache_UG1_1": [
+    -10.0,
+    -4.5,
+    -9.5,
+    90
+   ],
+   "Wache_UG1_2": [
+    10.0,
+    -4.5,
+    0.5,
+    -90
+   ],
+   "Wache_UG1_3": [
+    0.0,
+    -4.5,
+    -29.5,
+    0
+   ],
+   "Wache_UG2_1": [
+    -6.0,
+    -10.5,
+    -25.5,
+    0
+   ],
+   "Wache_UG2_2": [
+    6.5,
+    -10.5,
+    0.5,
+    180
+   ],
+   "Wache_Dach_1": [
+    0.0,
+    27.0,
+    -29.5,
+    -90
+   ],
+   "Wache_Dach_2": [
+    18.0,
+    27.0,
+    10.5,
+    180
+   ],
+   "Alarm_Leuchte_1": [
+    -29.0,
+    33.95,
+    -34.5,
+    0
+   ],
+   "Alarm_Leuchte_2": [
+    -29.0,
+    33.95,
+    15.5,
+    0
+   ],
+   "Alarm_Leuchte_3": [
+    29.0,
+    33.95,
+    15.5,
+    0
+   ],
+   "Alarm_Leuchte_4": [
+    -7.0,
+    8.8,
+    18.8,
+    0
+   ],
+   "Alarm_Leuchte_5": [
+    0.0,
+    8.8,
+    18.8,
+    0
+   ],
+   "Alarm_Leuchte_6": [
+    7.0,
+    8.8,
+    18.8,
+    0
+   ],
+   "Alarm_Leuchte_7": [
+    0.0,
+    7.25,
+    -37.8,
+    0
+   ]
+  },
+  "beweglich": [
+   "Abriegelung_Dach",
+   "Abriegelung_EG_Hinten",
+   "Abriegelung_EG_Hintertuer",
+   "Abriegelung_EG_Links",
+   "Abriegelung_EG_Lkw_Tor",
+   "Abriegelung_EG_Portale",
+   "Abriegelung_EG_Rechts",
+   "Abriegelung_EG_Schleusen",
+   "Abriegelung_EG_Vorne",
+   "Abriegelung_OG1_Hinten",
+   "Abriegelung_OG1_Links",
+   "Abriegelung_OG1_Rechts",
+   "Abriegelung_OG1_Vorne",
+   "Abriegelung_OG2_Hinten",
+   "Abriegelung_OG2_Links",
+   "Abriegelung_OG2_Rechts",
+   "Abriegelung_OG2_Vorne",
+   "Abriegelung_OG3_Hinten",
+   "Abriegelung_OG3_Links",
+   "Abriegelung_OG3_Rechts",
+   "Abriegelung_OG3_Vorne",
+   "Dach_Tuer",
+   "EG_Abriegelung_Klappe",
+   "EG_Beute_Edelstein_Estrela",
+   "EG_Beute_Schmuck_Vitrine1",
+   "EG_Beute_Schmuck_Vitrine10",
+   "EG_Beute_Schmuck_Vitrine11",
+   "EG_Beute_Schmuck_Vitrine12",
+   "EG_Beute_Schmuck_Vitrine13",
+   "EG_Beute_Schmuck_Vitrine14",
+   "EG_Beute_Schmuck_Vitrine17",
+   "EG_Beute_Schmuck_Vitrine18",
+   "EG_Beute_Schmuck_Vitrine2",
+   "EG_Beute_Schmuck_Vitrine3",
+   "EG_Beute_Schmuck_Vitrine4",
+   "EG_Beute_Schmuck_Vitrine5",
+   "EG_Beute_Schmuck_Vitrine6",
+   "EG_Beute_Schmuck_Vitrine7",
+   "EG_Beute_Schmuck_Vitrine8",
+   "EG_Beute_Schmuck_Vitrine9",
+   "EG_Beute_Uhr_Vitrine15",
+   "EG_Beute_Uhr_Vitrine16",
+   "EG_Diamant_Glas",
+   "EG_Fahrzeugaufzug",
+   "EG_Portal_1L",
+   "EG_Portal_1R",
+   "EG_Portal_2L",
+   "EG_Portal_2R",
+   "EG_Portal_3L",
+   "EG_Portal_3R",
+   "EG_Schleuse_1A",
+   "EG_Schleuse_1B",
+   "EG_Schleuse_2A",
+   "EG_Schleuse_2B",
+   "EG_Schleuse_3A",
+   "EG_Schleuse_3B",
+   "EG_Schleuse_4A",
+   "EG_Schleuse_4B",
+   "EG_Schleuse_5A",
+   "EG_Schleuse_5B",
+   "EG_Strom_Hebel",
+   "EG_Technik_Tuer",
+   "EG_Vitrine_1",
+   "EG_Vitrine_10",
+   "EG_Vitrine_11",
+   "EG_Vitrine_12",
+   "EG_Vitrine_13",
+   "EG_Vitrine_14",
+   "EG_Vitrine_15",
+   "EG_Vitrine_16",
+   "EG_Vitrine_17",
+   "EG_Vitrine_18",
+   "EG_Vitrine_2",
+   "EG_Vitrine_3",
+   "EG_Vitrine_4",
+   "EG_Vitrine_5",
+   "EG_Vitrine_6",
+   "EG_Vitrine_7",
+   "EG_Vitrine_8",
+   "EG_Vitrine_9",
+   "OG1_Beute_Krone",
+   "OG1_Beute_Schmuck_Vitrine22",
+   "OG1_Beute_Schmuck_Vitrine23",
+   "OG1_Beute_Schmuck_Vitrine24",
+   "OG1_Beute_Schmuck_Vitrine25",
+   "OG1_Beute_Uhr_Vitrine11",
+   "OG1_Beute_Uhr_Vitrine12",
+   "OG1_Beute_Uhr_Vitrine13",
+   "OG1_Beute_Uhr_Vitrine14",
+   "OG1_Beute_Uhr_Vitrine15",
+   "OG1_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Uhr_Vitrine17",
+   "OG1_Beute_Uhr_Vitrine18",
+   "OG1_Beute_Uhr_Vitrine19",
+   "OG1_Beute_Uhr_Vitrine20",
+   "OG1_Beute_Uhr_Vitrine21",
+   "OG1_Krone_Glas",
+   "OG1_Laser",
+   "OG1_Sala_Seitentuer_O",
+   "OG1_Sala_Seitentuer_W",
+   "OG1_Sala_Tuer",
+   "OG1_Vitrine_1",
+   "OG1_Vitrine_10",
+   "OG1_Vitrine_11",
+   "OG1_Vitrine_12",
+   "OG1_Vitrine_13",
+   "OG1_Vitrine_14",
+   "OG1_Vitrine_15",
+   "OG1_Vitrine_16",
+   "OG1_Vitrine_17",
+   "OG1_Vitrine_18",
+   "OG1_Vitrine_19",
+   "OG1_Vitrine_2",
+   "OG1_Vitrine_20",
+   "OG1_Vitrine_21",
+   "OG1_Vitrine_22",
+   "OG1_Vitrine_23",
+   "OG1_Vitrine_24",
+   "OG1_Vitrine_25",
+   "OG1_Vitrine_3",
+   "OG1_Vitrine_4",
+   "OG1_Vitrine_5",
+   "OG1_Vitrine_6",
+   "OG1_Vitrine_7",
+   "OG1_Vitrine_8",
+   "OG1_Vitrine_9",
+   "OG2_Arbeitstresor_Tuer",
+   "OG3_Gemaelde",
+   "OG3_Lager_Tuer",
+   "Tor_Haupt_L",
+   "Tor_Haupt_R",
+   "Tor_Hintertuer",
+   "Tor_Hof",
+   "Tor_Logistik",
+   "UG1_Beute_Bargeld_1",
+   "UG1_Beute_Bargeld_10",
+   "UG1_Beute_Bargeld_11",
+   "UG1_Beute_Bargeld_12",
+   "UG1_Beute_Bargeld_13",
+   "UG1_Beute_Bargeld_14",
+   "UG1_Beute_Bargeld_15",
+   "UG1_Beute_Bargeld_16",
+   "UG1_Beute_Bargeld_17",
+   "UG1_Beute_Bargeld_18",
+   "UG1_Beute_Bargeld_19",
+   "UG1_Beute_Bargeld_2",
+   "UG1_Beute_Bargeld_20",
+   "UG1_Beute_Bargeld_21",
+   "UG1_Beute_Bargeld_22",
+   "UG1_Beute_Bargeld_23",
+   "UG1_Beute_Bargeld_24",
+   "UG1_Beute_Bargeld_25",
+   "UG1_Beute_Bargeld_26",
+   "UG1_Beute_Bargeld_3",
+   "UG1_Beute_Bargeld_4",
+   "UG1_Beute_Bargeld_5",
+   "UG1_Beute_Bargeld_6",
+   "UG1_Beute_Bargeld_7",
+   "UG1_Beute_Bargeld_8",
+   "UG1_Beute_Bargeld_9",
+   "UG1_Beute_Bargeld_Wagen1",
+   "UG1_Beute_Bargeld_Wagen2",
+   "UG1_Beute_Bargeld_Wagen3",
+   "UG1_Beute_Bargeld_Wagen4",
+   "UG1_Beute_Bargeld_Wagen5",
+   "UG1_Gitter",
+   "UG2_Gitter_1",
+   "UG2_Gitter_2",
+   "UG2_Laser",
+   "UG2_Schott",
+   "UG2_Tresoraufzug",
+   "UG3_Beute_Bargeld_1",
+   "UG3_Beute_Bargeld_2",
+   "UG3_Beute_Bargeld_3",
+   "UG3_Beute_Bargeld_4",
+   "UG3_Beute_Bargeld_5",
+   "UG3_Beute_Bargeld_6",
+   "UG3_Beute_Edelstein_Coracao",
+   "UG3_Beute_Gold_1",
+   "UG3_Beute_Gold_10",
+   "UG3_Beute_Gold_100",
+   "UG3_Beute_Gold_101",
+   "UG3_Beute_Gold_102",
+   "UG3_Beute_Gold_103",
+   "UG3_Beute_Gold_104",
+   "UG3_Beute_Gold_105",
+   "UG3_Beute_Gold_106",
+   "UG3_Beute_Gold_107",
+   "UG3_Beute_Gold_108",
+   "UG3_Beute_Gold_11",
+   "UG3_Beute_Gold_12",
+   "UG3_Beute_Gold_13",
+   "UG3_Beute_Gold_14",
+   "UG3_Beute_Gold_15",
+   "UG3_Beute_Gold_16",
+   "UG3_Beute_Gold_17",
+   "UG3_Beute_Gold_18",
+   "UG3_Beute_Gold_19",
+   "UG3_Beute_Gold_2",
+   "UG3_Beute_Gold_20",
+   "UG3_Beute_Gold_21",
+   "UG3_Beute_Gold_22",
+   "UG3_Beute_Gold_23",
+   "UG3_Beute_Gold_24",
+   "UG3_Beute_Gold_25",
+   "UG3_Beute_Gold_26",
+   "UG3_Beute_Gold_27",
+   "UG3_Beute_Gold_28",
+   "UG3_Beute_Gold_29",
+   "UG3_Beute_Gold_3",
+   "UG3_Beute_Gold_30",
+   "UG3_Beute_Gold_31",
+   "UG3_Beute_Gold_32",
+   "UG3_Beute_Gold_33",
+   "UG3_Beute_Gold_34",
+   "UG3_Beute_Gold_35",
+   "UG3_Beute_Gold_36",
+   "UG3_Beute_Gold_37",
+   "UG3_Beute_Gold_38",
+   "UG3_Beute_Gold_39",
+   "UG3_Beute_Gold_4",
+   "UG3_Beute_Gold_40",
+   "UG3_Beute_Gold_41",
+   "UG3_Beute_Gold_42",
+   "UG3_Beute_Gold_43",
+   "UG3_Beute_Gold_44",
+   "UG3_Beute_Gold_45",
+   "UG3_Beute_Gold_46",
+   "UG3_Beute_Gold_47",
+   "UG3_Beute_Gold_48",
+   "UG3_Beute_Gold_49",
+   "UG3_Beute_Gold_5",
+   "UG3_Beute_Gold_50",
+   "UG3_Beute_Gold_51",
+   "UG3_Beute_Gold_52",
+   "UG3_Beute_Gold_53",
+   "UG3_Beute_Gold_54",
+   "UG3_Beute_Gold_55",
+   "UG3_Beute_Gold_56",
+   "UG3_Beute_Gold_57",
+   "UG3_Beute_Gold_58",
+   "UG3_Beute_Gold_59",
+   "UG3_Beute_Gold_6",
+   "UG3_Beute_Gold_60",
+   "UG3_Beute_Gold_61",
+   "UG3_Beute_Gold_62",
+   "UG3_Beute_Gold_63",
+   "UG3_Beute_Gold_64",
+   "UG3_Beute_Gold_65",
+   "UG3_Beute_Gold_66",
+   "UG3_Beute_Gold_67",
+   "UG3_Beute_Gold_68",
+   "UG3_Beute_Gold_69",
+   "UG3_Beute_Gold_7",
+   "UG3_Beute_Gold_70",
+   "UG3_Beute_Gold_71",
+   "UG3_Beute_Gold_72",
+   "UG3_Beute_Gold_73",
+   "UG3_Beute_Gold_74",
+   "UG3_Beute_Gold_75",
+   "UG3_Beute_Gold_76",
+   "UG3_Beute_Gold_77",
+   "UG3_Beute_Gold_78",
+   "UG3_Beute_Gold_79",
+   "UG3_Beute_Gold_8",
+   "UG3_Beute_Gold_80",
+   "UG3_Beute_Gold_81",
+   "UG3_Beute_Gold_82",
+   "UG3_Beute_Gold_83",
+   "UG3_Beute_Gold_84",
+   "UG3_Beute_Gold_85",
+   "UG3_Beute_Gold_86",
+   "UG3_Beute_Gold_87",
+   "UG3_Beute_Gold_88",
+   "UG3_Beute_Gold_89",
+   "UG3_Beute_Gold_9",
+   "UG3_Beute_Gold_90",
+   "UG3_Beute_Gold_91",
+   "UG3_Beute_Gold_92",
+   "UG3_Beute_Gold_93",
+   "UG3_Beute_Gold_94",
+   "UG3_Beute_Gold_95",
+   "UG3_Beute_Gold_96",
+   "UG3_Beute_Gold_97",
+   "UG3_Beute_Gold_98",
+   "UG3_Beute_Gold_99",
+   "UG3_Beute_Schmuck_1",
+   "UG3_Beute_Schmuck_2",
+   "UG3_Flutschieber_1",
+   "UG3_Flutschieber_2",
+   "UG3_Flutschieber_3",
+   "UG3_Flutschieber_4",
+   "UG3_Flutwasser",
+   "UG3_Glastuer",
+   "UG3_Kanalwand",
+   "UG3_Laser",
+   "UG3_Tresortuer",
+   "UG3_Tresorwand_Sprengstelle",
+   "UG3_Tunnel_Laser",
+   "UG3_Tunnel_Tuer"
+  ],
+  "beute": [
+   "EG_Beute_Edelstein_Estrela",
+   "EG_Beute_Schmuck_Vitrine1",
+   "EG_Beute_Schmuck_Vitrine10",
+   "EG_Beute_Schmuck_Vitrine11",
+   "EG_Beute_Schmuck_Vitrine12",
+   "EG_Beute_Schmuck_Vitrine13",
+   "EG_Beute_Schmuck_Vitrine14",
+   "EG_Beute_Schmuck_Vitrine17",
+   "EG_Beute_Schmuck_Vitrine18",
+   "EG_Beute_Schmuck_Vitrine2",
+   "EG_Beute_Schmuck_Vitrine3",
+   "EG_Beute_Schmuck_Vitrine4",
+   "EG_Beute_Schmuck_Vitrine5",
+   "EG_Beute_Schmuck_Vitrine6",
+   "EG_Beute_Schmuck_Vitrine7",
+   "EG_Beute_Schmuck_Vitrine8",
+   "EG_Beute_Schmuck_Vitrine9",
+   "EG_Beute_Uhr_Vitrine15",
+   "EG_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Krone",
+   "OG1_Beute_Schmuck_Vitrine22",
+   "OG1_Beute_Schmuck_Vitrine23",
+   "OG1_Beute_Schmuck_Vitrine24",
+   "OG1_Beute_Schmuck_Vitrine25",
+   "OG1_Beute_Uhr_Vitrine11",
+   "OG1_Beute_Uhr_Vitrine12",
+   "OG1_Beute_Uhr_Vitrine13",
+   "OG1_Beute_Uhr_Vitrine14",
+   "OG1_Beute_Uhr_Vitrine15",
+   "OG1_Beute_Uhr_Vitrine16",
+   "OG1_Beute_Uhr_Vitrine17",
+   "OG1_Beute_Uhr_Vitrine18",
+   "OG1_Beute_Uhr_Vitrine19",
+   "OG1_Beute_Uhr_Vitrine20",
+   "OG1_Beute_Uhr_Vitrine21",
+   "UG1_Beute_Bargeld_1",
+   "UG1_Beute_Bargeld_10",
+   "UG1_Beute_Bargeld_11",
+   "UG1_Beute_Bargeld_12",
+   "UG1_Beute_Bargeld_13",
+   "UG1_Beute_Bargeld_14",
+   "UG1_Beute_Bargeld_15",
+   "UG1_Beute_Bargeld_16",
+   "UG1_Beute_Bargeld_17",
+   "UG1_Beute_Bargeld_18",
+   "UG1_Beute_Bargeld_19",
+   "UG1_Beute_Bargeld_2",
+   "UG1_Beute_Bargeld_20",
+   "UG1_Beute_Bargeld_21",
+   "UG1_Beute_Bargeld_22",
+   "UG1_Beute_Bargeld_23",
+   "UG1_Beute_Bargeld_24",
+   "UG1_Beute_Bargeld_25",
+   "UG1_Beute_Bargeld_26",
+   "UG1_Beute_Bargeld_3",
+   "UG1_Beute_Bargeld_4",
+   "UG1_Beute_Bargeld_5",
+   "UG1_Beute_Bargeld_6",
+   "UG1_Beute_Bargeld_7",
+   "UG1_Beute_Bargeld_8",
+   "UG1_Beute_Bargeld_9",
+   "UG1_Beute_Bargeld_Wagen1",
+   "UG1_Beute_Bargeld_Wagen2",
+   "UG1_Beute_Bargeld_Wagen3",
+   "UG1_Beute_Bargeld_Wagen4",
+   "UG1_Beute_Bargeld_Wagen5",
+   "UG3_Beute_Bargeld_1",
+   "UG3_Beute_Bargeld_2",
+   "UG3_Beute_Bargeld_3",
+   "UG3_Beute_Bargeld_4",
+   "UG3_Beute_Bargeld_5",
+   "UG3_Beute_Bargeld_6",
+   "UG3_Beute_Edelstein_Coracao",
+   "UG3_Beute_Gold_1",
+   "UG3_Beute_Gold_10",
+   "UG3_Beute_Gold_100",
+   "UG3_Beute_Gold_101",
+   "UG3_Beute_Gold_102",
+   "UG3_Beute_Gold_103",
+   "UG3_Beute_Gold_104",
+   "UG3_Beute_Gold_105",
+   "UG3_Beute_Gold_106",
+   "UG3_Beute_Gold_107",
+   "UG3_Beute_Gold_108",
+   "UG3_Beute_Gold_11",
+   "UG3_Beute_Gold_12",
+   "UG3_Beute_Gold_13",
+   "UG3_Beute_Gold_14",
+   "UG3_Beute_Gold_15",
+   "UG3_Beute_Gold_16",
+   "UG3_Beute_Gold_17",
+   "UG3_Beute_Gold_18",
+   "UG3_Beute_Gold_19",
+   "UG3_Beute_Gold_2",
+   "UG3_Beute_Gold_20",
+   "UG3_Beute_Gold_21",
+   "UG3_Beute_Gold_22",
+   "UG3_Beute_Gold_23",
+   "UG3_Beute_Gold_24",
+   "UG3_Beute_Gold_25",
+   "UG3_Beute_Gold_26",
+   "UG3_Beute_Gold_27",
+   "UG3_Beute_Gold_28",
+   "UG3_Beute_Gold_29",
+   "UG3_Beute_Gold_3",
+   "UG3_Beute_Gold_30",
+   "UG3_Beute_Gold_31",
+   "UG3_Beute_Gold_32",
+   "UG3_Beute_Gold_33",
+   "UG3_Beute_Gold_34",
+   "UG3_Beute_Gold_35",
+   "UG3_Beute_Gold_36",
+   "UG3_Beute_Gold_37",
+   "UG3_Beute_Gold_38",
+   "UG3_Beute_Gold_39",
+   "UG3_Beute_Gold_4",
+   "UG3_Beute_Gold_40",
+   "UG3_Beute_Gold_41",
+   "UG3_Beute_Gold_42",
+   "UG3_Beute_Gold_43",
+   "UG3_Beute_Gold_44",
+   "UG3_Beute_Gold_45",
+   "UG3_Beute_Gold_46",
+   "UG3_Beute_Gold_47",
+   "UG3_Beute_Gold_48",
+   "UG3_Beute_Gold_49",
+   "UG3_Beute_Gold_5",
+   "UG3_Beute_Gold_50",
+   "UG3_Beute_Gold_51",
+   "UG3_Beute_Gold_52",
+   "UG3_Beute_Gold_53",
+   "UG3_Beute_Gold_54",
+   "UG3_Beute_Gold_55",
+   "UG3_Beute_Gold_56",
+   "UG3_Beute_Gold_57",
+   "UG3_Beute_Gold_58",
+   "UG3_Beute_Gold_59",
+   "UG3_Beute_Gold_6",
+   "UG3_Beute_Gold_60",
+   "UG3_Beute_Gold_61",
+   "UG3_Beute_Gold_62",
+   "UG3_Beute_Gold_63",
+   "UG3_Beute_Gold_64",
+   "UG3_Beute_Gold_65",
+   "UG3_Beute_Gold_66",
+   "UG3_Beute_Gold_67",
+   "UG3_Beute_Gold_68",
+   "UG3_Beute_Gold_69",
+   "UG3_Beute_Gold_7",
+   "UG3_Beute_Gold_70",
+   "UG3_Beute_Gold_71",
+   "UG3_Beute_Gold_72",
+   "UG3_Beute_Gold_73",
+   "UG3_Beute_Gold_74",
+   "UG3_Beute_Gold_75",
+   "UG3_Beute_Gold_76",
+   "UG3_Beute_Gold_77",
+   "UG3_Beute_Gold_78",
+   "UG3_Beute_Gold_79",
+   "UG3_Beute_Gold_8",
+   "UG3_Beute_Gold_80",
+   "UG3_Beute_Gold_81",
+   "UG3_Beute_Gold_82",
+   "UG3_Beute_Gold_83",
+   "UG3_Beute_Gold_84",
+   "UG3_Beute_Gold_85",
+   "UG3_Beute_Gold_86",
+   "UG3_Beute_Gold_87",
+   "UG3_Beute_Gold_88",
+   "UG3_Beute_Gold_89",
+   "UG3_Beute_Gold_9",
+   "UG3_Beute_Gold_90",
+   "UG3_Beute_Gold_91",
+   "UG3_Beute_Gold_92",
+   "UG3_Beute_Gold_93",
+   "UG3_Beute_Gold_94",
+   "UG3_Beute_Gold_95",
+   "UG3_Beute_Gold_96",
+   "UG3_Beute_Gold_97",
+   "UG3_Beute_Gold_98",
+   "UG3_Beute_Gold_99",
+   "UG3_Beute_Schmuck_1",
+   "UG3_Beute_Schmuck_2"
+  ]
+ },
+ {
+  "slug": "10_kanal_beispielnetz",
+  "name": "Maya-Kanal – Beispielnetz",
+  "cls": "Kanal-Beispiel",
+  "tris": 76332,
+  "mats": 48,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   91.6,
+   29.3,
+   141.5
+  ],
+  "lot": [
+   92.0,
+   142.0
+  ],
+  "levels": [
+   "Dach",
+   "Decke",
+   "Kanal",
+   "Garage",
+   "Schacht"
+  ],
+  "kollision": 26688,
+  "trigger": 47,
+  "anchors": {
+   "Fackel_1": [
+    -3.64,
+    3.12,
+    5.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -5.0,
+    0
+   ],
+   "Fackel_3": [
+    3.64,
+    3.12,
+    4.0,
+    0
+   ],
+   "Fackel_4": [
+    3.64,
+    3.12,
+    -4.0,
+    0
+   ],
+   "Fackel_5": [
+    -5.4,
+    3.12,
+    1.14,
+    0
+   ],
+   "Fackel_6": [
+    -5.4,
+    3.12,
+    -1.14,
+    0
+   ],
+   "Anschluss_Palast": [
+    -8.0,
+    0.6,
+    0.0,
+    -90
+   ],
+   "Boot_Parkplatz": [
+    -0.9,
+    0.0,
+    0.0,
+    180
+   ],
+   "Kanal_Einstieg_Boot": [
+    -3.2,
+    0.6,
+    0.0,
+    90
+   ],
+   "Fackel_7": [
+    3.64,
+    3.12,
+    -12.0,
+    0
+   ],
+   "Fackel_8": [
+    -3.64,
+    3.12,
+    -20.0,
+    0
+   ],
+   "Fackel_9": [
+    3.64,
+    3.12,
+    -28.0,
+    0
+   ],
+   "Fackel_10": [
+    -3.64,
+    3.12,
+    -36.0,
+    0
+   ],
+   "Fackel_11": [
+    -6.5,
+    3.32,
+    -66.69,
+    0
+   ],
+   "Fackel_12": [
+    -6.5,
+    3.32,
+    -45.31,
+    0
+   ],
+   "Fackel_13": [
+    6.5,
+    3.32,
+    -66.69,
+    0
+   ],
+   "Fackel_14": [
+    6.5,
+    3.32,
+    -45.31,
+    0
+   ],
+   "Fackel_15": [
+    -10.69,
+    3.32,
+    -62.5,
+    0
+   ],
+   "Fackel_16": [
+    10.69,
+    3.32,
+    -62.5,
+    0
+   ],
+   "Fackel_17": [
+    -10.69,
+    3.32,
+    -49.5,
+    0
+   ],
+   "Fackel_18": [
+    10.69,
+    3.32,
+    -49.5,
+    0
+   ],
+   "Pyramide_Altar": [
+    0.0,
+    4.2,
+    -53.4,
+    180
+   ],
+   "Fackel_19": [
+    -3.64,
+    3.12,
+    -74.0,
+    0
+   ],
+   "Bootslift_Unten": [
+    0.0,
+    -1.0,
+    -83.0,
+    0
+   ],
+   "Boot_Versteck": [
+    0.0,
+    0.0,
+    -83.0,
+    180
+   ],
+   "Geheimtor_Schalter": [
+    3.3,
+    0.6,
+    -75.2,
+    90
+   ],
+   "Geheimtor": [
+    0.0,
+    0.0,
+    -74.4,
+    180
+   ],
+   "Fackel_20": [
+    -20.0,
+    3.12,
+    -52.36,
+    90
+   ],
+   "Fackel_21": [
+    -28.0,
+    3.12,
+    -52.36,
+    90
+   ],
+   "Fackel_22": [
+    -19.0,
+    3.12,
+    -59.64,
+    90
+   ],
+   "Fackel_23": [
+    -29.0,
+    3.12,
+    -59.64,
+    90
+   ],
+   "Einstieg_Unten": [
+    -24.0,
+    0.6,
+    -61.0,
+    180
+   ],
+   "Fackel_24": [
+    -43.0,
+    3.12,
+    -59.64,
+    90
+   ],
+   "Fackel_25": [
+    -43.0,
+    3.12,
+    -52.36,
+    90
+   ],
+   "Maske": [
+    -43.0,
+    0.0,
+    -56.0,
+    270
+   ],
+   "Fackel_26": [
+    27.64,
+    3.12,
+    -49.8,
+    0
+   ],
+   "Fackel_27": [
+    20.36,
+    3.12,
+    -49.8,
+    0
+   ],
+   "Fackel_28": [
+    27.64,
+    3.12,
+    -62.2,
+    0
+   ],
+   "Fackel_29": [
+    20.36,
+    3.12,
+    -62.2,
+    0
+   ],
+   "Fackel_30": [
+    43.0,
+    3.12,
+    -52.36,
+    -90
+   ],
+   "Fackel_31": [
+    43.0,
+    3.12,
+    -59.64,
+    -90
+   ],
+   "Maske_2": [
+    43.0,
+    0.0,
+    -56.0,
+    90
+   ],
+   "Fackel_32": [
+    27.64,
+    3.12,
+    -67.0,
+    0
+   ],
+   "Fackel_33": [
+    20.36,
+    3.12,
+    -73.0,
+    0
+   ],
+   "Auslass": [
+    24.0,
+    0.0,
+    -76.6,
+    180
+   ],
+   "Meer": [
+    24.0,
+    0.0,
+    -80.0,
+    180
+   ],
+   "Fackel_34": [
+    20.36,
+    3.12,
+    -37.0,
+    180
+   ],
+   "Fackel_35": [
+    27.64,
+    3.12,
+    -37.0,
+    180
+   ],
+   "Maske_3": [
+    24.0,
+    0.0,
+    -37.0,
+    360
+   ],
+   "Fackel_36": [
+    -3.64,
+    3.12,
+    21.0,
+    0
+   ],
+   "Fackel_37": [
+    -3.64,
+    3.12,
+    11.0,
+    0
+   ],
+   "Fackel_38": [
+    3.64,
+    3.12,
+    22.2,
+    0
+   ],
+   "Fackel_39": [
+    3.64,
+    3.12,
+    9.8,
+    0
+   ],
+   "Fackel_40": [
+    11.849,
+    3.12,
+    13.07,
+    -90
+   ],
+   "Fackel_41": [
+    18.93,
+    3.12,
+    20.151,
+    -90
+   ],
+   "Fackel_42": [
+    11.083,
+    3.12,
+    20.917,
+    -90
+   ],
+   "Fackel_43": [
+    19.64,
+    3.12,
+    36.0,
+    0
+   ],
+   "Fackel_44": [
+    12.36,
+    3.12,
+    28.0,
+    0
+   ],
+   "Fackel_45": [
+    18.93,
+    3.12,
+    43.849,
+    180
+   ],
+   "Fackel_46": [
+    11.849,
+    3.12,
+    50.93,
+    180
+   ],
+   "Fackel_47": [
+    11.083,
+    3.12,
+    43.083,
+    180
+   ],
+   "Fackel_48": [
+    5.0,
+    3.12,
+    51.64,
+    90
+   ],
+   "Fackel_49": [
+    -5.0,
+    3.12,
+    51.64,
+    90
+   ],
+   "Fackel_50": [
+    6.2,
+    3.12,
+    44.36,
+    90
+   ],
+   "Fackel_51": [
+    -6.2,
+    3.12,
+    44.36,
+    90
+   ],
+   "Fackel_52": [
+    3.64,
+    3.12,
+    36.0,
+    0
+   ],
+   "Fackel_53": [
+    -3.64,
+    3.12,
+    28.0,
+    0
+   ],
+   "Fackel_54": [
+    -19.0,
+    3.12,
+    44.36,
+    90
+   ],
+   "Fackel_55": [
+    -19.0,
+    3.12,
+    51.64,
+    90
+   ],
+   "Maske_4": [
+    -19.0,
+    0.0,
+    48.0,
+    270
+   ],
+   "Bootslift_Ziel": [
+    0.0,
+    21.1,
+    -83.0,
+    0
+   ],
+   "Fluchtauto": [
+    6.6,
+    21.1,
+    -81.6,
+    0
+   ],
+   "Garage_Eingang": [
+    3.2,
+    21.1,
+    -71.1,
+    180
+   ],
+   "Garage_Tresor": [
+    9.0,
+    21.1,
+    -86.5,
+    180
+   ],
+   "Beute_Ablage": [
+    4.1,
+    21.1,
+    -86.6,
+    180
+   ],
+   "Ausruestung_Tisch": [
+    -1.9,
+    21.1,
+    -75.6,
+    -90
+   ],
+   "Einstieg_Oben": [
+    -22.8,
+    21.1,
+    -61.9,
+    270
+   ]
+  },
+  "beweglich": [
+   "Garage_Ausruestung_Bauplan",
+   "Garage_Ausruestung_Bombe_1",
+   "Garage_Ausruestung_Bombe_2",
+   "Garage_Ausruestung_Nachtsicht_1",
+   "Garage_Ausruestung_Nachtsicht_2",
+   "Garage_Bodenklappe_L",
+   "Garage_Bodenklappe_R",
+   "Garage_Seitentuer",
+   "Garage_Tor",
+   "Kanal_Auslassgitter_L",
+   "Kanal_Auslassgitter_R",
+   "Kanal_Beute_Jademaske",
+   "Kanal_Bootslift",
+   "Kanal_Geheimtor",
+   "Kanal_Geheimtor_Schalter",
+   "Schacht_Gullydeckel"
+  ],
+  "beute": [
+   "Garage_Ausruestung_Bauplan",
+   "Garage_Ausruestung_Bombe_1",
+   "Garage_Ausruestung_Bombe_2",
+   "Garage_Ausruestung_Nachtsicht_1",
+   "Garage_Ausruestung_Nachtsicht_2",
+   "Kanal_Beute_Jademaske"
+  ],
+  "offset": [
+   -0.0,
+   17.95
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "11_kanal_gerade",
+  "name": "Kanal gerade 16 m",
+  "cls": "Kanalisation",
+  "tris": 3232,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   9.6,
+   9.6,
+   16.0
+  ],
+  "lot": [
+   10.0,
+   16.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 612,
+  "trigger": 1,
+  "anchors": {
+   "Fackel_1": [
+    3.64,
+    3.12,
+    4.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -4.0,
+    0
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "12_kanal_kurve",
+  "name": "Kanal Kurve 90°",
+  "cls": "Kanalisation",
+  "tris": 4068,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   13.4,
+   9.6,
+   13.4
+  ],
+  "lot": [
+   14.0,
+   14.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 2028,
+  "trigger": 6,
+  "anchors": {
+   "Fackel_1": [
+    -2.93,
+    3.12,
+    4.151,
+    0
+   ],
+   "Fackel_2": [
+    4.151,
+    3.12,
+    -2.93,
+    0
+   ],
+   "Fackel_3": [
+    4.917,
+    3.12,
+    4.917,
+    0
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_E": [
+    8.0,
+    0.0,
+    0.0,
+    90
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -1.93,
+   -1.93
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "13_kanal_t",
+  "name": "Kanal T-Stück",
+  "cls": "Kanalisation",
+  "tris": 3816,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.8,
+   9.6,
+   16.0
+  ],
+  "lot": [
+   14.0,
+   16.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 948,
+  "trigger": 2,
+  "anchors": {
+   "Fackel_1": [
+    -3.64,
+    3.12,
+    5.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -5.0,
+    0
+   ],
+   "Fackel_3": [
+    3.64,
+    3.12,
+    6.2,
+    0
+   ],
+   "Fackel_4": [
+    3.64,
+    3.12,
+    -6.2,
+    0
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ],
+   "Anschluss_Kanal_E": [
+    8.0,
+    0.0,
+    0.0,
+    90
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -1.6,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "14_kanal_kreuzung",
+  "name": "Kanal Kreuzung",
+  "cls": "Kanalisation",
+  "tris": 4296,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   16.0,
+   9.6,
+   16.0
+  ],
+  "lot": [
+   16.0,
+   16.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 1320,
+  "trigger": 3,
+  "anchors": {
+   "Fackel_1": [
+    3.64,
+    3.12,
+    6.2,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    6.2,
+    0
+   ],
+   "Fackel_3": [
+    3.64,
+    3.12,
+    -6.2,
+    0
+   ],
+   "Fackel_4": [
+    -3.64,
+    3.12,
+    -6.2,
+    0
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_E": [
+    8.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Anschluss_Kanal_W": [
+    -8.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "15_kanal_ende",
+  "name": "Kanal Ende (Maske)",
+  "cls": "Kanalisation",
+  "tris": 3244,
+  "mats": 14,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   9.6,
+   9.6,
+   13.8
+  ],
+  "lot": [
+   10.0,
+   14.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 904,
+  "trigger": 1,
+  "anchors": {
+   "Fackel_1": [
+    3.64,
+    3.12,
+    -3.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -3.0,
+    0
+   ],
+   "Maske": [
+    0.0,
+    0.0,
+    -3.0,
+    180
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -1.1
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "16_kanal_halle",
+  "name": "Maya-Halle mit Pyramide 32 m",
+  "cls": "Kanalisation",
+  "tris": 8972,
+  "mats": 14,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   32.0,
+   9.6,
+   32.0
+  ],
+  "lot": [
+   32.0,
+   32.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 4620,
+  "trigger": 9,
+  "anchors": {
+   "Fackel_1": [
+    -6.5,
+    3.32,
+    -10.69,
+    0
+   ],
+   "Fackel_2": [
+    -6.5,
+    3.32,
+    10.69,
+    0
+   ],
+   "Fackel_3": [
+    6.5,
+    3.32,
+    -10.69,
+    0
+   ],
+   "Fackel_4": [
+    6.5,
+    3.32,
+    10.69,
+    0
+   ],
+   "Fackel_5": [
+    -10.69,
+    3.32,
+    -6.5,
+    0
+   ],
+   "Fackel_6": [
+    10.69,
+    3.32,
+    -6.5,
+    0
+   ],
+   "Fackel_7": [
+    -10.69,
+    3.32,
+    6.5,
+    0
+   ],
+   "Fackel_8": [
+    10.69,
+    3.32,
+    6.5,
+    0
+   ],
+   "Pyramide_Altar": [
+    0.0,
+    4.2,
+    2.6,
+    180
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -16.0,
+    180
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    16.0,
+    0
+   ],
+   "Anschluss_Kanal_E": [
+    16.0,
+    0.0,
+    0.0,
+    90
+   ],
+   "Anschluss_Kanal_W": [
+    -16.0,
+    0.0,
+    0.0,
+    -90
+   ]
+  },
+  "beweglich": [
+   "Kanal_Beute_Jademaske"
+  ],
+  "beute": [
+   "Kanal_Beute_Jademaske"
+  ],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "17_kanal_anschluss_palast",
+  "name": "Anschluss Palast + Boot-Parkplatz",
+  "cls": "Kanalisation",
+  "tris": 4116,
+  "mats": 14,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.8,
+   9.6,
+   16.0
+  ],
+  "lot": [
+   14.0,
+   16.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 1060,
+  "trigger": 1,
+  "anchors": {
+   "Fackel_1": [
+    -3.64,
+    3.12,
+    5.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -5.0,
+    0
+   ],
+   "Fackel_3": [
+    3.64,
+    3.12,
+    4.0,
+    0
+   ],
+   "Fackel_4": [
+    3.64,
+    3.12,
+    -4.0,
+    0
+   ],
+   "Fackel_5": [
+    -5.4,
+    3.12,
+    1.14,
+    0
+   ],
+   "Fackel_6": [
+    -5.4,
+    3.12,
+    -1.14,
+    0
+   ],
+   "Anschluss_Palast": [
+    -8.0,
+    0.6,
+    0.0,
+    -90
+   ],
+   "Boot_Parkplatz": [
+    -0.9,
+    0.0,
+    0.0,
+    180
+   ],
+   "Kanal_Einstieg_Boot": [
+    -3.2,
+    0.6,
+    0.0,
+    90
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   1.6,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "18_kanal_bootsversteck",
+  "name": "Boot-Versteck (Geheimtor + Bootslift)",
+  "cls": "Kanalisation",
+  "tris": 2728,
+  "mats": 20,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   9.6,
+   9.6,
+   16.4
+  ],
+  "lot": [
+   10.0,
+   18.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 1616,
+  "trigger": 2,
+  "anchors": {
+   "Fackel_1": [
+    -3.64,
+    3.12,
+    6.0,
+    0
+   ],
+   "Bootslift_Unten": [
+    0.0,
+    -1.0,
+    -3.0,
+    0
+   ],
+   "Boot_Versteck": [
+    0.0,
+    0.0,
+    -3.0,
+    180
+   ],
+   "Geheimtor_Schalter": [
+    3.3,
+    0.6,
+    4.8,
+    90
+   ],
+   "Geheimtor": [
+    0.0,
+    0.0,
+    5.6,
+    180
+   ],
+   "Oben": [
+    0.0,
+    7.6,
+    -3.0,
+    0
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ]
+  },
+  "beweglich": [
+   "Kanal_Bootslift",
+   "Kanal_Geheimtor",
+   "Kanal_Geheimtor_Schalter"
+  ],
+  "beute": [],
+  "offset": [
+   -0.0,
+   0.2
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "19_kanal_liftschacht_4m",
+  "name": "Liftschacht 4 m",
+  "cls": "Kanal-Schacht",
+  "tris": 584,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.4,
+   4.0,
+   10.4
+  ],
+  "lot": [
+   8.0,
+   12.0
+  ],
+  "levels": [
+   "Schacht"
+  ],
+  "kollision": 368,
+  "trigger": 0,
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    4.0,
+    0.0,
+    0
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 0.0,
+  "noOutline": true
+ },
+ {
+  "slug": "20_kanal_liftschacht_1m",
+  "name": "Liftschacht 1 m",
+  "cls": "Kanal-Schacht",
+  "tris": 140,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   6.4,
+   1.0,
+   10.4
+  ],
+  "lot": [
+   8.0,
+   12.0
+  ],
+  "levels": [
+   "Schacht"
+  ],
+  "kollision": 140,
+  "trigger": 0,
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    1.0,
+    0.0,
+    0
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 0.0,
+  "noOutline": true
+ },
+ {
+  "slug": "21_kanal_versteck_garage",
+  "name": "Versteck-Garage (Straße)",
+  "cls": "Kanal-Schacht",
+  "tris": 3352,
+  "mats": 31,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   14.2,
+   6.7,
+   16.5
+  ],
+  "lot": [
+   16.0,
+   18.0
+  ],
+  "levels": [
+   "Dach",
+   "Garage"
+  ],
+  "kollision": 972,
+  "trigger": 5,
+  "anchors": {
+   "Unten": [
+    -3.2,
+    -0.5,
+    -2.4,
+    0
+   ],
+   "Bootslift_Ziel": [
+    -3.2,
+    0.0,
+    -2.4,
+    0
+   ],
+   "Fluchtauto": [
+    3.4,
+    0.0,
+    -1.0,
+    0
+   ],
+   "Garage_Eingang": [
+    0.0,
+    0.0,
+    9.5,
+    180
+   ],
+   "Garage_Tresor": [
+    5.8,
+    0.0,
+    -5.9,
+    180
+   ],
+   "Beute_Ablage": [
+    0.9,
+    0.0,
+    -6.0,
+    180
+   ],
+   "Ausruestung_Tisch": [
+    -5.1,
+    0.0,
+    5.0,
+    -90
+   ]
+  },
+  "beweglich": [
+   "Garage_Ausruestung_Bauplan",
+   "Garage_Ausruestung_Bombe_1",
+   "Garage_Ausruestung_Bombe_2",
+   "Garage_Ausruestung_Nachtsicht_1",
+   "Garage_Ausruestung_Nachtsicht_2",
+   "Garage_Bodenklappe_L",
+   "Garage_Bodenklappe_R",
+   "Garage_Seitentuer",
+   "Garage_Tor"
+  ],
+  "beute": [
+   "Garage_Ausruestung_Bauplan",
+   "Garage_Ausruestung_Bombe_1",
+   "Garage_Ausruestung_Bombe_2",
+   "Garage_Ausruestung_Nachtsicht_1",
+   "Garage_Ausruestung_Nachtsicht_2"
+  ],
+  "offset": [
+   -0.0,
+   -0.15
+  ],
+  "lift": 0.5,
+  "noOutline": true,
+  "startLevel": "Garage"
+ },
+ {
+  "slug": "22_kanal_einstieg",
+  "name": "Kanal mit Einstiegsnische",
+  "cls": "Kanalisation",
+  "tris": 4224,
+  "mats": 13,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.2,
+   9.6,
+   16.0
+  ],
+  "lot": [
+   14.0,
+   16.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 1528,
+  "trigger": 1,
+  "anchors": {
+   "Fackel_1": [
+    -3.64,
+    3.12,
+    4.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -4.0,
+    0
+   ],
+   "Fackel_3": [
+    3.64,
+    3.12,
+    5.0,
+    0
+   ],
+   "Fackel_4": [
+    3.64,
+    3.12,
+    -5.0,
+    0
+   ],
+   "Einstieg_Unten": [
+    5.0,
+    0.6,
+    0.0,
+    90
+   ],
+   "Oben": [
+    5.9,
+    7.6,
+    0.0,
+    0
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ],
+   "Anschluss_Kanal_N": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -1.3,
+   -0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ },
+ {
+  "slug": "23_kanal_schacht_rund_4m",
+  "name": "Einstiegsschacht rund 4 m",
+  "cls": "Kanal-Schacht",
+  "tris": 276,
+  "mats": 2,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   2.4,
+   4.0,
+   2.4
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "levels": [
+   "Schacht"
+  ],
+  "kollision": 276,
+  "trigger": 0,
+  "anchors": {
+   "Unten": [
+    0.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Oben": [
+    0.0,
+    4.0,
+    0.0,
+    0
+   ]
+  },
+  "beweglich": [],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 0.0,
+  "noOutline": true
+ },
+ {
+  "slug": "24_kanal_gullydeckel",
+  "name": "Gullydeckel (Straße)",
+  "cls": "Kanal-Schacht",
+  "tris": 544,
+  "mats": 4,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   2.4,
+   1.5,
+   2.4
+  ],
+  "lot": [
+   4.0,
+   4.0
+  ],
+  "levels": [
+   "Schacht"
+  ],
+  "kollision": 236,
+  "trigger": 0,
+  "anchors": {
+   "Unten": [
+    0.0,
+    -1.5,
+    0.0,
+    0
+   ],
+   "Einstieg_Oben": [
+    0.0,
+    0.0,
+    1.2,
+    180
+   ]
+  },
+  "beweglich": [
+   "Schacht_Gullydeckel"
+  ],
+  "beute": [],
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "lift": 1.5,
+  "noOutline": true
+ },
+ {
+  "slug": "25_kanal_auslass_meer",
+  "name": "Auslass zum Meer (Gitter)",
+  "cls": "Kanalisation",
+  "tris": 3708,
+  "mats": 14,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   14.1,
+   10.2,
+   16.0
+  ],
+  "lot": [
+   16.0,
+   18.0
+  ],
+  "levels": [
+   "Decke",
+   "Kanal"
+  ],
+  "kollision": 1248,
+  "trigger": 2,
+  "anchors": {
+   "Fackel_1": [
+    3.64,
+    3.12,
+    5.0,
+    0
+   ],
+   "Fackel_2": [
+    -3.64,
+    3.12,
+    -1.0,
+    0
+   ],
+   "Auslass": [
+    0.0,
+    0.0,
+    -4.6,
+    180
+   ],
+   "Meer": [
+    0.0,
+    0.0,
+    -8.0,
+    180
+   ],
+   "Anschluss_Kanal_S": [
+    0.0,
+    0.0,
+    8.0,
+    0
+   ]
+  },
+  "beweglich": [
+   "Kanal_Auslassgitter_L",
+   "Kanal_Auslassgitter_R"
+  ],
+  "beute": [],
+  "offset": [
+   -0.0,
+   0.0
+  ],
+  "lift": 2.0,
+  "noOutline": true,
+  "startLevel": "Kanal"
+ }
+]

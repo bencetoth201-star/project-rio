@@ -44,7 +44,7 @@ namespace Rio.WorldGen
         /// </summary>
         const int Super = 12;
 
-        public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie }
+        public enum Viertel { Centro, Orla, Bairro, Nobre, Industrie, Favela }
 
         /// <summary>
         /// Periodenlaenge in X und Z je Viertel. Block = (p-1) Kacheln.
@@ -58,10 +58,11 @@ namespace Rio.WorldGen
             { 4, 3 },    // Bairro:    36 x 24 m, der Normalfall
             { 6, 4 },    // Nobre:     60 x 36 m, grosszuegig
             { 12, 6 },   // Industrie:132 x 60 m, grosse Hallen
+            { 4, 3 },    // Favela:    36 x 24 m, eng
         };
 
         /// <summary>Luecke zwischen den Haeusern je Viertel.</summary>
-        static readonly float[] Luecke = { 0.4f, 0.6f, 0.5f, 3.5f, 4f };
+        static readonly float[] Luecke = { 0.4f, 0.6f, 0.5f, 3.5f, 4f, 0.1f };
 
         // Modellindizes, der Lesbarkeit halber benannt
         const int Barraco = 0, Palafita = 1, Puxadinho = 2, FavelaReihe = 3, Cortico = 4;
@@ -81,13 +82,15 @@ namespace Rio.WorldGen
             new[] { CasaRio, Boteco, Sobrado, Mercadinho, Predio, CasaRio, Sobrado },
             new[] { VillaZonaSul, CasaBarra, CasaJoa, Cobertura, ZonaOeste },
             new[] { RioModelCatalog.Lagerhalle, Mercadinho, Cortico, Predio },
+            // Gang-Viertel: nur die armen Haeuser, dicht an dicht
+            new[] { Barraco, Puxadinho, FavelaReihe, Cortico, Barraco, Puxadinho, Boteco },
         };
 
         /// <summary>Eckgebaeude je Viertel, -1 wenn keines passt.</summary>
         static readonly int[] EckModell =
         {
             RioModelCatalog.EckPredio, RioModelCatalog.EckPredio,
-            RioModelCatalog.EckSobrado, -1, -1
+            RioModelCatalog.EckSobrado, -1, -1, -1
         };
 
         static readonly int[] FavelaPalette = { Barraco, Palafita, Puxadinho, FavelaReihe, Cortico };
@@ -132,7 +135,11 @@ namespace Rio.WorldGen
         /// </summary>
         bool ForEachCell(Vector2 center, Vector2 size, float yaw, bool markieren)
         {
-            float rad = -yaw * Mathf.Deg2Rad;
+            // Welt -> lokal mit Unitys Drehsinn (yaw im Uhrzeigersinn). Hier
+            // stand vorher -yaw: das Rechteck lag dann gespiegelt gedreht, in
+            // einem um 22 Grad gedrehten Viertel um 44 Grad daneben - Haeuser
+            // konnten an den Ecken in die Strasse ragen.
+            float rad = yaw * Mathf.Deg2Rad;
             float cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
             float hx = size.x * 0.5f, hz = size.y * 0.5f;
 
@@ -228,7 +235,7 @@ namespace Rio.WorldGen
         public readonly List<Vector4> BlockRects = new List<Vector4>();
 
         /// <summary>Wie viele Blocks je Viertelstyp entstanden sind.</summary>
-        public readonly int[] KindCount = new int[5];
+        public readonly int[] KindCount = new int[6];
 
         public RioHousePlanner(RioWorldTerrain terrain) { _t = terrain; }
 
@@ -307,12 +314,21 @@ namespace Rio.WorldGen
                 if (!_t.IsLand(p)) continue;
                 if (_t.IsInLake(p)) continue;
                 if (_t.DistanceToCoast(p) < 22f) continue;
-                if (_t.RoadWeight(p) > 0.02f) continue;     // Platz fuer die Hauptstrassen
+                // Hier wurden frueher Korridore fuer die Hauptstrassen der
+                // Skizze freigehalten (RoadWeight). Gebaut werden die aber
+                // nicht mehr (BuildRoads wird nicht aufgerufen) - die leeren
+                // Streifen schnitten die Stadt in Stuecke, ueber die keine
+                // Strasse fuehrte.
 
                 float h = _t.SampleHeight(p);
                 if (h < 2.5f || h > 70f) continue;
                 if (_t.SlopeAt(p) > 0.12f) continue;        // flach genug fuer ein Raster
                 if (NearPlace(p, 45f)) continue;
+                if (RioWahrzeichen.Belegt(p, Cell)) continue;   // Flughafen, Stadion, Hafen ...
+
+                // Stadt nur in den gruenen Umrissen der Skizze und in den
+                // Gang-Vierteln - nicht mehr verstreut ueber beide Inseln
+                if (!RioWorldLayout.InStadt(p) && !RioDistricts.InFavela(p)) continue;
 
                 _city[gz * _gw + gx] = true;
             }
@@ -483,8 +499,7 @@ namespace Rio.WorldGen
             var d = RioDistricts.All[di];
             RioDistricts.Raster(d.Type, out int px, out int pz);
 
-            int nx = Mathf.CeilToInt(d.A / Cell) + 2;
-            int nz = Mathf.CeilToInt(d.B / Cell) + 2;
+            int nx = RioDistricts.Halbraster(d), nz = nx;      // gleich wie im Strassenplan
             int w = nx * 2 + 1, h = nz * 2 + 1;
 
             // 1. Wo ist ueberhaupt Platz?
@@ -500,100 +515,170 @@ namespace Rio.WorldGen
                 valid[iz * w + ix] = true;
             }
 
-            // 2. Strassenzellen: periodisch, plus Ring am Rand
+            // 2. Strassenzellen: unregelmaessige Linien (RioDistricts.IstStrasse),
+            //    plus Ring am Rand
             var street = new bool[w * h];
             for (int ix = 0; ix < w; ix++)
             for (int iz = 0; iz < h; iz++)
             {
                 if (!valid[iz * w + ix]) continue;
 
-                bool periodic = (ix - nx) % px == 0 || (iz - nz) % pz == 0;
+                bool linie = RioDistricts.IstStrasse(di, ix - nx, iz - nz);
 
                 // Randzelle: hat einen ungueltigen Nachbarn. Daraus wird die
-                // Ringstrasse - ohne sie endet jede Querstrasse im Feld.
-                bool rand = !Get(valid, w, h, ix + 1, iz) || !Get(valid, w, h, ix - 1, iz)
-                         || !Get(valid, w, h, ix, iz + 1) || !Get(valid, w, h, ix, iz - 1);
+                // Ringstrasse - ohne sie endet jede Querstrasse im Feld. Zu
+                // einem Nachbarviertel hin nur, wenn es die Naht nicht schon
+                // selbst belegt (gleiche Regel wie im Strassenplan).
+                bool rand = RandNach(ix + 1, iz) || RandNach(ix - 1, iz)
+                         || RandNach(ix, iz + 1) || RandNach(ix, iz - 1);
 
-                street[iz * w + ix] = periodic || rand;
+                street[iz * w + ix] = linie || rand;
+
+                bool RandNach(int x, int z) =>
+                    !Get(valid, w, h, x, z) &&
+                    !RioDistricts.NachbarUebernimmt(di,
+                        RioDistricts.ToWorld(d, new Vector2((x - nx) * Cell, (z - nz) * Cell)), IstStadt);
             }
+            RioDistricts.StummelStreichen(street, w, h, RioStrassenplan.MinNetz);
 
             // Die Strassenkacheln setzt RioStrassenplan. Hier standen sie
             // frueher auch, mit einem Free()-Test davor - und jede Kachel, die
             // der Test ablehnte, riss ein Loch in eine Strasse. Der Graph
             // entscheidet das jetzt vorher, und zwar fuer das ganze Netz.
 
-            // 4. Blocks zwischen den Strassen bebauen
+            // 3. Blocks = zusammenhaengende Flaechen ohne Strasse. Weil
+            //    Strassenstuecke wegfallen, sind das keine Rechtecke mehr,
+            //    sondern auch L- und T-foermige, verwinkelte Flaechen.
             var kind = (Viertel)(int)d.Type;
-            for (int bx = -nx / px - 1; bx <= nx / px + 1; bx++)
-            for (int bz = -nz / pz - 1; bz <= nz / pz + 1; bz++)
+            var besucht = new bool[w * h];
+            var zellen = new List<int>();
+            var stapel = new Stack<int>();
+
+            for (int start = 0; start < w * h; start++)
             {
-                int ix0 = nx + bx * px + 1, iz0 = nz + bz * pz + 1;
-                int cw = px - 1, cd = pz - 1;
+                if (besucht[start] || !valid[start] || street[start]) continue;
 
-                bool ok = true;
-                for (int i = 0; i < cw && ok; i++)
-                for (int j = 0; j < cd && ok; j++)
-                    if (Get(street, w, h, ix0 + i, iz0 + j) || !Get(valid, w, h, ix0 + i, iz0 + j))
-                        ok = false;
-                if (!ok) continue;
-
-                float lx0 = (ix0 - nx - 0.5f) * Cell, lz0 = (iz0 - nz - 0.5f) * Cell;
-                float lx1 = lx0 + cw * Cell, lz1 = lz0 + cd * Cell;
+                zellen.Clear();
+                stapel.Push(start);
+                besucht[start] = true;
+                while (stapel.Count > 0)
+                {
+                    int c = stapel.Pop();
+                    zellen.Add(c);
+                    int cx = c % w, cz = c / w;
+                    foreach (var (ox, oz) in Nachbarn)
+                    {
+                        int x = cx + ox, z = cz + oz;
+                        if (x < 0 || z < 0 || x >= w || z >= h) continue;
+                        int n = z * w + x;
+                        if (besucht[n] || !valid[n] || street[n]) continue;
+                        besucht[n] = true;
+                        stapel.Push(n);
+                    }
+                }
 
                 Blocks++;
                 KindCount[(int)kind]++;
-                var brng = new System.Random(Hash(ix0 + di * 613, iz0));
-
-                var centerW = RioDistricts.ToWorld(d, new Vector2((lx0 + lx1) * 0.5f, (lz0 + lz1) * 0.5f));
-
-                if (kind != Viertel.Industrie && brng.NextDouble() < 0.09 &&
-                    (lx1 - lx0) >= 38f && (lz1 - lz0) >= 38f)
-                {
-                    int frei = brng.NextDouble() < 0.5 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
-                    if (TryPlace(frei, centerW, d.Rotation, _t.SampleHeight(centerW) - 0.1f, brng))
-                    { Freiflaechen++; continue; }
-                }
-
-                FrontageLocal(d, kind, new Vector2(lx0, lz0), new Vector2(1, 0), lx1 - lx0, new Vector2(0, -1), brng);
-                FrontageLocal(d, kind, new Vector2(lx1, lz1), new Vector2(-1, 0), lx1 - lx0, new Vector2(0, 1), brng);
-                FrontageLocal(d, kind, new Vector2(lx0, lz1), new Vector2(0, -1), lz1 - lz0, new Vector2(-1, 0), brng);
-                FrontageLocal(d, kind, new Vector2(lx1, lz0), new Vector2(0, 1), lz1 - lz0, new Vector2(1, 0), brng);
+                var brng = new System.Random(Hash(start + di * 613, zellen.Count));
+                BlockBebauen(d, kind, zellen, street, valid, w, h, nx, nz, brng);
             }
         }
+
+        static readonly (int, int)[] Nachbarn = { (1, 0), (-1, 0), (0, 1), (0, -1) };
 
         static bool Get(bool[] a, int w, int h, int x, int z) =>
             x >= 0 && z >= 0 && x < w && z < h && a[z * w + x];
 
+        // Je Viertelstyp: Schraeglage der Haeuser (Grad), groesster Abstand zur
+        // Strasse (m), Versuche je Zelle fuer Hinterhaeuser
+        static readonly float[] Schraeg = { 3f, 4f, 9f, 6f, 3f, 20f };
+        static readonly float[] Rueckversatz = { 0.6f, 1.2f, 2.8f, 4f, 2f, 1.5f };
+        static readonly float[] Hinterhaus = { 0.4f, 0.5f, 1.3f, 0.4f, 0.3f, 2.5f };
+
         /// <summary>
-        /// Wie Frontage, aber im gedrehten System des Viertels. start, along
-        /// und outward sind lokal; erst die fertige Position wird gedreht.
+        /// Bebaut einen Block organisch statt in Reihe: An jeder Strassenkante
+        /// wird ein Haus versucht - mit zufaelligem Versatz entlang der Kante,
+        /// eigenem Abstand zur Strasse und leicht schraeg. Die Kanten kommen in
+        /// zufaelliger Reihenfolge dran, deshalb entstehen ungleiche Luecken
+        /// und keine sauberen Zeilen. Danach fuellen Hinterhaeuser die Mitte.
+        /// Ueberschneidungen verhindert das Belegungsraster.
         /// </summary>
-        void FrontageLocal(in RioDistricts.District d, Viertel kind,
-                           Vector2 start, Vector2 along, float length, Vector2 outward,
-                           System.Random rng)
+        void BlockBebauen(in RioDistricts.District d, Viertel kind, List<int> zellen,
+                          bool[] street, bool[] valid, int w, int h, int nx, int nz,
+                          System.Random rng)
         {
-            float yaw = Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg + d.Rotation;
             var pal = Palette[(int)kind];
-            float gap = Luecke[(int)kind];
-            float cursor = 1.5f, usable = length - 1.5f;
+            int k = (int)kind;
 
-            while (cursor < usable - 5f)
+            // Ab und zu ein Platz oder Park statt Haeusern
+            if (kind != Viertel.Industrie && kind != Viertel.Favela && zellen.Count >= 12 && rng.NextDouble() < 0.07)
             {
-                int model = Choose(pal, usable - cursor, rng);
-                if (model < 0) break;
+                int mitte = zellen[zellen.Count / 2];
+                var mw = RioDistricts.ToWorld(d, Lokal(mitte, w, nx, nz));
+                int frei = rng.NextDouble() < 0.5 ? RioModelCatalog.Praca : RioModelCatalog.Parque;
+                if (TryPlace(frei, mw, d.Rotation + rng.Next(4) * 90f, _t.SampleHeight(mw) - 0.1f, rng))
+                { Freiflaechen++; return; }
+            }
 
+            // Strassenkanten sammeln: (Zelle, Richtung zur Strasse)
+            var kanten = new List<(int zelle, Vector2 raus)>();
+            foreach (int c in zellen)
+            {
+                int cx = c % w, cz = c / w;
+                foreach (var (ox, oz) in Nachbarn)
+                    if (Get(street, w, h, cx + ox, cz + oz)) kanten.Add((c, new Vector2(ox, oz)));
+            }
+            Mischen(kanten, rng);
+
+            for (int runde = 0; runde < 2; runde++)
+            foreach (var (c, raus) in kanten)
+            {
+                int model = Choose(pal, 40f, rng);
+                if (model < 0) continue;
                 var lot = Lot(model);
-                Vector2 frontLocal = start + along * (cursor + lot.x * 0.5f);
-                Vector2 posLocal = frontLocal - outward * (lot.y * 0.5f);
 
-                Vector2 pos = RioDistricts.ToWorld(d, posLocal);
-                Vector2 front = RioDistricts.ToWorld(d, frontLocal);
+                Vector2 entlang = new Vector2(-raus.y, raus.x);
+                Vector2 kante = Lokal(c, w, nx, nz) + raus * (Cell * 0.5f);
+                Vector2 vorne = kante + entlang * (((float)rng.NextDouble() - 0.5f) * Cell);
+                float abstand = (float)rng.NextDouble() * Rueckversatz[k];
+                Vector2 posLokal = vorne - raus * (lot.y * 0.5f + abstand + 0.3f);
 
-                bool gesetzt = _t.IsLand(pos) &&
-                               TryPlace(model, pos, yaw, _t.SampleHeight(front) - 0.1f, rng);
+                float yaw = Mathf.Atan2(raus.x, raus.y) * Mathf.Rad2Deg + d.Rotation
+                          + ((float)rng.NextDouble() * 2f - 1f) * Schraeg[k];
 
-                if (gesetzt) { Houses++; cursor += lot.x + gap * (float)rng.NextDouble(); }
-                else cursor += 4f;
+                Vector2 pos = RioDistricts.ToWorld(d, posLokal);
+                Vector2 front = RioDistricts.ToWorld(d, vorne);
+                if (_t.IsLand(pos) && TryPlace(model, pos, yaw, _t.SampleHeight(front) - 0.1f, rng))
+                    Houses++;
+            }
+
+            // Hinterhaeuser: in die Mitte des Blocks, beliebig gedreht
+            int versuche = Mathf.CeilToInt(zellen.Count * Hinterhaus[k]);
+            for (int i = 0; i < versuche; i++)
+            {
+                int c = zellen[rng.Next(zellen.Count)];
+                int model = Choose(pal, 14f, rng);
+                if (model < 0) continue;
+
+                Vector2 posLokal = Lokal(c, w, nx, nz) + new Vector2(
+                    ((float)rng.NextDouble() - 0.5f) * Cell, ((float)rng.NextDouble() - 0.5f) * Cell);
+                float yaw = d.Rotation + rng.Next(4) * 90f + ((float)rng.NextDouble() * 2f - 1f) * Schraeg[k] * 1.5f;
+
+                Vector2 pos = RioDistricts.ToWorld(d, posLokal);
+                if (_t.IsLand(pos) && TryPlace(model, pos, yaw, _t.SampleHeight(pos) - 0.1f, rng))
+                    Houses++;
+            }
+        }
+
+        static Vector2 Lokal(int zelle, int w, int nx, int nz) =>
+            new Vector2((zelle % w - nx) * Cell, (zelle / w - nz) * Cell);
+
+        static void Mischen<T>(List<T> liste, System.Random rng)
+        {
+            for (int i = liste.Count - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+                (liste[i], liste[j]) = (liste[j], liste[i]);
             }
         }
 
@@ -615,8 +700,14 @@ namespace Rio.WorldGen
         // ------------------------------------------------------------------
 
         /// <summary>
-        /// An den Haengen gibt es kein Raster. Huetten werden dicht gestreut,
-        /// mit Mindestabstand statt Gitter, und stehen schief zueinander.
+        /// Huetten gibt es nur noch in den Gang-Vierteln (Zona Oeste, Morro do
+        /// Estado), dort aber in jeder Luecke: zwischen den Haeusern der
+        /// Blocks, in den Hinterhoefen und den Hang hinauf. Vorher standen sie
+        /// an jedem Hang beider Inseln und damit verstreut ueber die ganze
+        /// Karte.
+        ///
+        /// Kein Raster: dicht gestreut, mit Mindestabstand ueber das
+        /// Belegungsraster, schief zueinander.
         /// </summary>
         public void PlaceFavelas(System.Random rng)
         {
@@ -626,14 +717,16 @@ namespace Rio.WorldGen
             for (float z = _t.MinZ; z < _t.MaxZ; z += cell)
             {
                 var center = new Vector2(x + cell * 0.5f, z + cell * 0.5f);
+                if (!RioDistricts.InFavela(center)) continue;
                 if (!_t.IsLand(center) || _t.IsInLake(center)) continue;
 
                 float slope = _t.SlopeAt(center);
-                if (slope < 0.16f || slope > 0.85f) continue;      // nur echte Haenge
+                if (slope > 0.85f) continue;                       // zu steil auch fuer Huetten
 
                 float h = _t.SampleHeight(center);
-                if (h < 8f || h > 210f) continue;
+                if (h < 2.5f || h > 210f) continue;
                 if (NearPlace(center, 70f)) continue;
+                if (RioWahrzeichen.Belegt(center, 0f)) continue;
                 if (_t.DistanceToCoast(center) < 25f) continue;
 
                 // Nicht direkt neben die Villen. In echt grenzen Favelas zwar
@@ -648,7 +741,7 @@ namespace Rio.WorldGen
                     var p2 = center + new Vector2(
                         ((float)rng.NextDouble() - 0.5f) * cell,
                         ((float)rng.NextDouble() - 0.5f) * cell);
-                    if (!_t.IsLand(p2)) continue;
+                    if (!_t.IsLand(p2) || !RioDistricts.InFavela(p2)) continue;
 
                     int model = FavelaPalette[rng.Next(FavelaPalette.Length)];
                     float yaw = (float)rng.NextDouble() * 360f;
@@ -696,6 +789,7 @@ namespace Rio.WorldGen
                 {
                     var p = new Vector2(x, z);
                     if (!_t.IsLand(p) || _t.IsInLake(p)) continue;
+                    if (!RioWorldLayout.InStadt(p)) continue;      // Villen nur in der Stadt
                     if (_t.DistanceToCoast(p) < radius + 15f) continue;
                     if (_t.SlopeAt(p) > 0.10f) continue;
                     float h = _t.SampleHeight(p);
@@ -754,6 +848,7 @@ namespace Rio.WorldGen
             {
                 if (place.Kind != RioWorldLayout.Poi.BankGross &&
                     place.Kind != RioWorldLayout.Poi.BankKlein) continue;
+                if (RioWahrzeichen.Ersetzt(place.Label)) continue;   // Banco Central = Casa Império
 
                 float bYaw = (Hash((int)place.Position.x, (int)place.Position.y) & 3) * 90f;
                 _placements.Add(new RioHouseWorld.Placement
@@ -784,6 +879,7 @@ namespace Rio.WorldGen
                     foreach (var cand in new[] { on + side, on - side })
                     {
                         if (!_t.IsLand(cand) || _t.SlopeAt(cand) > 0.12f) continue;
+                        if (!RioWorldLayout.InStadt(cand)) continue;   // keine Tankstelle allein im Feld
                         if (IsReserved(cand, 20f)) continue;
 
                         float tYaw = Mathf.Atan2(-side.x, -side.y) * Mathf.Rad2Deg;

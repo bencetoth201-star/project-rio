@@ -55,12 +55,18 @@ git clone https://github.com/DEIN-NAME/project-rio.git "C:\dev\PROJECT RIO"
 `Library`-Ordner mit über 20.000 Dateien und macht das Projekt unbenutzbar.
 `C:\dev\...` oder irgendwas anderes außerhalb von OneDrive.
 
-Danach Unity öffnen und einmal:
+Danach Unity öffnen und einmal, genau in dieser Reihenfolge:
 
-1. **Tools → Rio → Welt bauen (20 km2)**
-2. **Tools → Rio → Block-Figur bauen**
+1. **Tools → Rio → Block-Figur bauen**
+2. **Tools → Rio → Welt bauen (20 km2)**
+3. Szene speichern (Strg+S) als `Assets/Scenes/SampleScene.unity`
 
-Vorher ist die Szene leer — das ist richtig so, siehe unten.
+Erst die Figur, dann die Welt: der Weltbau setzt die Figur in die Stadt,
+aber nur, wenn es sie schon gibt. Andersherum steht sie außerhalb der Stadt
+— dann einfach die Welt noch einmal bauen.
+
+Vorher ist die Szene leer — das ist richtig so, siehe unten. Nach jedem
+`git pull`, der etwas am Weltgenerator ändert, die Welt neu bauen.
 
 ---
 

@@ -66,18 +66,28 @@ namespace Rio.WorldGen
             // Jetzt plant die Stadt zuerst, legt ihre Hoehen fest, und das
             // Gelaende wird danach gebaut - auf diese Hoehen.
 
+            // Die Wahrzeichen suchen sich ihren Platz vor der Stadt: ihre
+            // Flaechen fallen aus der Stadtmaske, sonst legt der Strassenplan
+            // ein Raster quer durch Flughafen und Stadion.
+            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen planen...", 0.2f);
+            RioWahrzeichen.Planen(terrain);
+
             EditorUtility.DisplayProgressBar("Rio", "Stadtflaechen suchen...", 0.3f);
             var planner = new RioHousePlanner(terrain);
             planner.BuildCityMask();
             planner.InitOccupancy();
+            RioWahrzeichen.Belegen(planner);
 
             EditorUtility.DisplayProgressBar("Rio", "Strassennetz planen...", 0.38f);
             var plan = new RioStrassenplan(terrain, planner);
             plan.Viertel();
+            plan.NaehteVerbinden();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
-            plan.Bruecke(planner.PlacementList);
+            // Die Bruecke nach Niteroi kommt spaeter als eigenes Modell.
+            // plan.Bruecke und plan.BrueckeAnbinden bleiben im Code, werden
+            // aber nicht mehr aufgerufen.
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
@@ -121,6 +131,12 @@ namespace Rio.WorldGen
             var houseWorld = RioHouseBaker.Bake(planner, root, MinX, MaxX, MinZ, MaxZ,
                                                 wallMats, roofMat, asphaltMat, out int lodObjects);
             SetupStreamer(root, houseWorld);
+
+            EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen setzen...", 0.98f);
+            int wahrzeichen = RioWahrzeichen.Setzen(root, terrain);
+            Debug.Log($"[Rio] Wahrzeichen: {RioWahrzeichen.Liste.Count} Orte, {wahrzeichen} Modelle gesetzt.");
+            Debug.Log($"[Rio] Teilnetze: {plan.NetzBericht}");
+
             PlacePlayer(terrain, plan);
 
             EditorUtility.ClearProgressBar();
@@ -134,7 +150,7 @@ namespace Rio.WorldGen
                       $"{planner.Shacks:N0} Favela-Huetten. " +
                       $"Viertel: Centro {planner.KindCount[0]}, Orla {planner.KindCount[1]}, " +
                       $"Bairro {planner.KindCount[2]}, Nobre {planner.KindCount[3]}, " +
-                      $"Industrie {planner.KindCount[4]} Blocks. " +
+                      $"Industrie {planner.KindCount[4]}, Favela {planner.KindCount[5]} Blocks. " +
                       $"Gesamt {planner.Count:N0} Objekte in {lodObjects} Chunks. " +
                       $"Landflaeche rund {landKm2:F1} km2.");
         }
@@ -152,6 +168,10 @@ namespace Rio.WorldGen
                 Vector3 v10 = t.VertexAt(ix + 1, iz);
                 Vector3 v11 = t.VertexAt(ix + 1, iz + 1);
                 Vector3 v01 = t.VertexAt(ix, iz + 1);
+
+                // Unter Gebaeuden mit Untergeschoss bleibt das Gelaende offen
+                if (RioWahrzeichen.ImLoch(new Vector2((v00.x + v11.x) * 0.5f, (v00.z + v11.z) * 0.5f)))
+                    continue;
 
                 float avg = (v00.y + v10.y + v11.y + v01.y) * 0.25f;
                 float span = Mathf.Max(Mathf.Max(v00.y, v10.y), Mathf.Max(v11.y, v01.y)) -
@@ -297,6 +317,17 @@ namespace Rio.WorldGen
         {
             foreach (var place in RioWorldLayout.Places)
             {
+                // Echtes Modell statt Klotz
+                if (RioWahrzeichen.Ersetzt(place.Label)) continue;
+
+                // Banken stellt der Hausplaner als echtes Modell hin
+                // (PlaceSpecials) - der Klotz stand bisher zusaetzlich darin.
+                if (place.Kind == RioWorldLayout.Poi.BankGross ||
+                    place.Kind == RioWorldLayout.Poi.BankKlein) continue;
+
+                // Die kleinen Flugplaetze bekommen spaeter ein eigenes Modell
+                if (place.Kind == RioWorldLayout.Poi.FlughafenKlein) continue;
+
                 Vector2 p = place.Position;
                 float g = t.SampleHeight(p);
 

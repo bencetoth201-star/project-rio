@@ -37,20 +37,23 @@ namespace Rio.WorldGen
             terrain.FlattenRoads();
 
             EditorUtility.DisplayProgressBar("Rio", "Stadt planen...", 0.5f);
+            RioWahrzeichen.Planen(terrain);
             var planner = new RioHousePlanner(terrain);
             var rng = new System.Random(20261122);
             planner.BuildCityMask();
             planner.InitOccupancy();
+            RioWahrzeichen.Belegen(planner);
 
             // Erst das Netz als Graph, dann Kacheln daraus. Die Reihenfolge ist
             // entscheidend: die Strassen belegen ihren Platz, bevor ein Haus
             // gesetzt wird, und kein Haus kann eine Strasse verhindern.
             var plan = new RioStrassenplan(terrain, planner);
             plan.Viertel();
+            plan.NaehteVerbinden();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
-            plan.Bruecke(planner.PlacementList);
+            // Die Bruecke kommt spaeter als eigenes Modell (siehe RioWorldBuilder)
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht

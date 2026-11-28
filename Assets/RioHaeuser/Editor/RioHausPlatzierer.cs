@@ -43,7 +43,7 @@ public class RioHausPlatzierer : EditorWindow
 
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Häuser", EditorStyles.boldLabel);
-        collider = EditorGUILayout.Toggle("Mesh-Collider hinzufügen", collider);
+        collider = EditorGUILayout.Toggle("Hitboxen einrichten", collider);
         statisch = EditorGUILayout.Toggle("Als statisch markieren", statisch);
         farben = EditorGUILayout.Toggle("Zufallsfarben", farben);
         seed = EditorGUILayout.IntField("Seed", seed);
@@ -52,9 +52,11 @@ public class RioHausPlatzierer : EditorWindow
             "Kategorie über den Namen des Platzhalters festlegen (optional):\n" +
             "…_sehrarm, …_arm, …_einfach, …_mittel, …_gehoben, …_reich, …_luxus\n" +
             "oder ein bestimmtes Haus: …_boteco, …_villa_zona_sul usw.\n" +
-            "Nur per Name: …_tankstelle, …_bank, …_kirche, …_lagerhalle, …_praca, …_park,\n" +
+            "Nur per Name: …_tankstelle, …_bank, …_kirche, …_lagerhalle, …_praca, …_park, …_club, …_tuning, …_kleider, …_stadion, …_juwelier,\n" +
             "…_centro/…_hochhaus (Türme), …_ecke (Eckgebäude: zweite Straße an +X)\n" +
-            "Ohne Angabe wird das größte passende Haus gewählt.",
+            "Ohne Angabe wird das größte passende Haus gewählt.\n" +
+            "Heist-Platzhalter (…_palast, …_imperio, …_megabank, …_heist, …_yacht) werden hier übersprungen –\n" +
+            "die setzt Tools ▸ Rio Heists ▸ Platzhalter ersetzen (Paket RioHeists).",
             MessageType.Info);
 
         if (GUILayout.Button("Platzhalter ersetzen", GUILayout.Height(32))) Ersetzen();
@@ -99,8 +101,16 @@ public class RioHausPlatzierer : EditorWindow
             }
             quelle = alle;
         }
-        return quelle.Where(t => t != null && t.gameObject.activeInHierarchy &&
+        return quelle.Where(t => t != null && t.gameObject.activeInHierarchy && !IstHeistPlatzhalter(t.name) &&
                                  t.name.StartsWith(praefix, System.StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    /// <summary>Casa Império und die Yacht liegen im Heist-Paket (Tools ▸ Rio Heists ▸ Platzhalter ersetzen).</summary>
+    public static bool IstHeistPlatzhalter(string name)
+    {
+        string n = name.ToLowerInvariant();
+        return n.Contains("palast") || n.Contains("imperio") || n.Contains("megabank") || n.Contains("heist") ||
+               n.Contains("yacht") || n.Contains("soberana");
     }
 
     static void Fussabdruck(Transform t, out Vector3 mitteUnten, out float breite, out float tiefe)
@@ -137,8 +147,14 @@ public class RioHausPlatzierer : EditorWindow
             string ohneNummer = k.haus.slug.Substring(k.haus.slug.IndexOf('_') + 1);
             string erstesWort = ohneNummer.Split('_')[0];
             bool alias = NurPerName.Contains(k.haus.klasse) && k.haus.klasse != "Ecke" && k.haus.klasse != "Centro" &&
-                         (n.Contains(erstesWort) || (erstesWort == "banco" && n.Contains("bank")) ||
-                          (erstesWort == "igreja" && n.Contains("kirche")) || (erstesWort == "parque" && n.Contains("park")));
+                         ((erstesWort != "casa" && n.Contains(erstesWort)) || (erstesWort == "banco" && n.Contains("bank")) ||
+                          (erstesWort == "igreja" && n.Contains("kirche")) || (erstesWort == "parque" && n.Contains("park")) ||
+                          (erstesWort == "clube" && (n.Contains("club") || n.Contains("disco"))) ||
+                          (erstesWort == "garagem" && (n.Contains("tuning") || n.Contains("werkstatt"))) ||
+                          (erstesWort == "mega" && (n.Contains("kleider") || n.Contains("clothing") || n.Contains("loja") || n.Contains("moda"))) ||
+                          (erstesWort == "estadio" && (n.Contains("stadion") || n.Contains("stadium") || n.Contains("maracana"))) ||
+                          (erstesWort == "esmeralda" && !n.Contains("palast") && !n.Contains("imperio") && (n.Contains("juwel") || n.Contains("jewel") || n.Contains("joia"))) ||
+                          (erstesWort == "casa" && (n.Contains("imperio") || n.Contains("palast") || n.Contains("heist"))));
             if (n.Contains(ohneNummer) || alias)
                 return new List<Kandidat> { k };
         }
@@ -213,14 +229,10 @@ public class RioHausPlatzierer : EditorWindow
             haus.name = wahl.prefab.name;
 
             if (collider)
-                foreach (var mf in haus.GetComponentsInChildren<MeshFilter>())
-                    if (mf.sharedMesh != null && mf.GetComponent<Collider>() == null)
-                        Undo.AddComponent<MeshCollider>(mf.gameObject).sharedMesh = mf.sharedMesh;
+                RioKollision.Einrichten(haus);                      // mitgelieferte Hitboxen (…__kollision / …__trigger_n)
 
             if (statisch)
-                foreach (var tr in haus.GetComponentsInChildren<Transform>())
-                    GameObjectUtility.SetStaticEditorFlags(tr.gameObject,
-                        StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic);
+                RioKollisionEditor.StatischMarkieren(haus.transform, false);   // bewegliche Teile bleiben beweglich
 
             if (farben)
             {

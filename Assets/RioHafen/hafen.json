@@ -1,0 +1,673 @@
+[
+ {
+  "slug": "01_containerschiff",
+  "name": "Containerschiff RIOMAR ATLÂNTICO (300 m)",
+  "cls": "Schiffe",
+  "tris": 35269,
+  "mats": 32,
+  "slots": [
+   "slot_hull_1"
+  ],
+  "combos": 6,
+  "size": [
+   303.1,
+   58.0,
+   41.7
+  ],
+  "lot": [
+   304.0,
+   42.0
+  ],
+  "anchors": {
+   "Bruecke": [
+    -114.6,
+    31.2,
+    0.0,
+    90
+   ],
+   "Gangway_Unten": [
+    -86.0,
+    3.0,
+    -21.1,
+    90
+   ],
+   "Gangway_Oben": [
+    -100.0,
+    10.0,
+    -19.5,
+    90
+   ],
+   "Deck_Achtern": [
+    -108.0,
+    10.0,
+    -18.5,
+    0
+   ],
+   "Back_Bug": [
+    138.0,
+    12.5,
+    0.0,
+    90
+   ],
+   "Festmachen_Bug": [
+    136.0,
+    12.5,
+    -5.0,
+    0
+   ],
+   "Festmachen_Heck": [
+    -146.0,
+    10.0,
+    -10.0,
+    0
+   ]
+  },
+  "offset": [
+   -1.43,
+   0.78
+  ]
+ },
+ {
+  "slug": "02_schlepper",
+  "name": "Schlepper",
+  "cls": "Schiffe",
+  "tris": 1475,
+  "mats": 12,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   32.8,
+   15.8,
+   11.5
+  ],
+  "lot": [
+   34.0,
+   12.0
+  ],
+  "anchors": {
+   "Steuer": [
+    2.0,
+    5.0,
+    0.0,
+    90
+   ],
+   "Schlepphaken": [
+    -12.0,
+    4.4,
+    0.0,
+    -90
+   ]
+  },
+  "offset": [
+   -0.4,
+   -0.0
+  ]
+ },
+ {
+  "slug": "03_kaikante_24",
+  "name": "Kaikante 24 m",
+  "cls": "Kai",
+  "tris": 880,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.0,
+   10.0,
+   36.8
+  ],
+  "lot": [
+   24.0,
+   38.0
+  ],
+  "anchors": {
+   "Kran_Mitte": [
+    0.0,
+    3.0,
+    -11.75,
+    0
+   ],
+   "Liegeplatz": [
+    0.0,
+    0.0,
+    28.0,
+    0
+   ],
+   "Anschluss_Kai_W": [
+    -12.0,
+    3.0,
+    0.0,
+    -90
+   ],
+   "Anschluss_Kai_O": [
+    12.0,
+    3.0,
+    0.0,
+    90
+   ]
+  },
+  "offset": [
+   -0.0,
+   11.62
+  ]
+ },
+ {
+  "slug": "04_kaikante_12",
+  "name": "Kaikante 12 m",
+  "cls": "Kai",
+  "tris": 620,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.0,
+   10.0,
+   36.8
+  ],
+  "lot": [
+   12.0,
+   38.0
+  ],
+  "anchors": {
+   "Kran_Mitte": [
+    0.0,
+    3.0,
+    -11.75,
+    0
+   ],
+   "Liegeplatz": [
+    0.0,
+    0.0,
+    28.0,
+    0
+   ],
+   "Anschluss_Kai_W": [
+    -6.0,
+    3.0,
+    0.0,
+    -90
+   ],
+   "Anschluss_Kai_O": [
+    6.0,
+    3.0,
+    0.0,
+    90
+   ]
+  },
+  "offset": [
+   -0.0,
+   11.62
+  ]
+ },
+ {
+  "slug": "05_kaikante_ecke",
+  "name": "Kaikante Ecke (außen)",
+  "cls": "Kai",
+  "tris": 1428,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   36.8,
+   10.0,
+   36.8
+  ],
+  "lot": [
+   38.0,
+   38.0
+  ],
+  "anchors": {
+   "Kran_Mitte": [
+    0.0,
+    3.0,
+    -11.75,
+    0
+   ],
+   "Liegeplatz": [
+    0.0,
+    0.0,
+    28.0,
+    0
+   ],
+   "Anschluss_Kai_W": [
+    -18.0,
+    3.0,
+    0.0,
+    -90
+   ],
+   "Anschluss_Kai_O": [
+    18.0,
+    3.0,
+    0.0,
+    90
+   ]
+  },
+  "offset": [
+   -0.38,
+   11.62
+  ]
+ },
+ {
+  "slug": "06_molenkopf",
+  "name": "Molenkopf mit Leuchtturm",
+  "cls": "Kai",
+  "tris": 2654,
+  "mats": 9,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   17.3,
+   26.6,
+   32.9
+  ],
+  "lot": [
+   18.0,
+   34.0
+  ],
+  "anchors": {
+   "Anschluss_Mole": [
+    0.0,
+    3.0,
+    -24.0,
+    180
+   ],
+   "Leuchtturm": [
+    0.0,
+    3.0,
+    0.0,
+    0
+   ]
+  },
+  "offset": [
+   -0.09,
+   7.82
+  ]
+ },
+ {
+  "slug": "07_hafenflaeche",
+  "name": "Hafenfläche / Stellplätze",
+  "cls": "Kai",
+  "tris": 792,
+  "mats": 3,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.0,
+   0.3,
+   24.0
+  ],
+  "lot": [
+   24.0,
+   24.0
+  ],
+  "anchors": {
+   "Stapelplatz_1": [
+    -5.3,
+    3.0,
+    -5.3,
+    0
+   ],
+   "Stapelplatz_2": [
+    5.6,
+    3.0,
+    6.4,
+    0
+   ]
+  },
+  "offset": [
+   -0.0,
+   -0.0
+  ]
+ },
+ {
+  "slug": "08_containerkran",
+  "name": "Containerbrücke (STS-Kran)",
+  "cls": "Kräne",
+  "tris": 2712,
+  "mats": 8,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   22.4,
+   76.5,
+   110.2
+  ],
+  "lot": [
+   24.0,
+   112.0
+  ],
+  "anchors": {
+   "Kabine": [
+    0.0,
+    41.0,
+    39.2,
+    0
+   ],
+   "Rad_Wasserseite": [
+    0.0,
+    0.0,
+    15.25,
+    0
+   ],
+   "Rad_Landseite": [
+    0.0,
+    0.0,
+    -15.25,
+    0
+   ]
+  },
+  "offset": [
+   0.01,
+   -15.1
+  ]
+ },
+ {
+  "slug": "09_portalkran",
+  "name": "Portalkran (RTG)",
+  "cls": "Kräne",
+  "tris": 672,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   15.6,
+   23.0,
+   25.5
+  ],
+  "lot": [
+   16.0,
+   26.0
+  ],
+  "anchors": {
+   "Fahrspur": [
+    0.0,
+    0.0,
+    8.75,
+    0
+   ]
+  },
+  "offset": [
+   -0.0,
+   -0.0
+  ]
+ },
+ {
+  "slug": "10_containerstapler",
+  "name": "Containerstapler",
+  "cls": "Kräne",
+  "tris": 476,
+  "mats": 7,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   13.8,
+   9.7,
+   12.6
+  ],
+  "lot": [
+   14.0,
+   14.0
+  ],
+  "anchors": {
+   "Fahrer": [
+    -0.7,
+    2.6,
+    1.0,
+    90
+   ]
+  },
+  "offset": [
+   -1.27,
+   -0.0
+  ]
+ },
+ {
+  "slug": "11_container_20",
+  "name": "Container 20 Fuß",
+  "cls": "Container",
+  "tris": 468,
+  "mats": 4,
+  "slots": [
+   "slot_container_1"
+  ],
+  "combos": 10,
+  "size": [
+   6.2,
+   2.6,
+   2.5
+  ],
+  "lot": [
+   8.0,
+   4.0
+  ],
+  "anchors": {
+   "Tuer": [
+    3.54,
+    0.0,
+    0.0,
+    90
+   ],
+   "Oben": [
+    0.0,
+    2.59,
+    0.0,
+    0
+   ]
+  },
+  "offset": [
+   -0.05,
+   -0.0
+  ]
+ },
+ {
+  "slug": "12_container_40",
+  "name": "Container 40 Fuß",
+  "cls": "Container",
+  "tris": 732,
+  "mats": 4,
+  "slots": [
+   "slot_container_1"
+  ],
+  "combos": 10,
+  "size": [
+   12.3,
+   2.6,
+   2.5
+  ],
+  "lot": [
+   14.0,
+   4.0
+  ],
+  "anchors": {
+   "Tuer": [
+    6.605,
+    0.0,
+    0.0,
+    90
+   ],
+   "Oben": [
+    0.0,
+    2.59,
+    0.0,
+    0
+   ]
+  },
+  "offset": [
+   -0.05,
+   -0.0
+  ]
+ },
+ {
+  "slug": "13_containerstapel",
+  "name": "Containerstapel",
+  "cls": "Container",
+  "tris": 228,
+  "mats": 10,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   12.2,
+   10.4,
+   12.2
+  ],
+  "lot": [
+   14.0,
+   14.0
+  ],
+  "anchors": {
+   "Oben_Mitte": [
+    0.0,
+    10.4,
+    0.0,
+    0
+   ]
+  },
+  "offset": [
+   -0.0,
+   -0.0
+  ]
+ },
+ {
+  "slug": "14_hafenbuero",
+  "name": "Hafenbüro",
+  "cls": "Gebäude",
+  "tris": 1152,
+  "mats": 11,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   17.7,
+   14.0,
+   11.0
+  ],
+  "lot": [
+   18.0,
+   12.0
+  ],
+  "anchors": {
+   "Eingang": [
+    0.0,
+    0.2,
+    6.0,
+    0
+   ]
+  },
+  "offset": [
+   -0.35,
+   -0.0
+  ]
+ },
+ {
+  "slug": "15_hafentor",
+  "name": "Hafentor mit Wachhaus",
+  "cls": "Gebäude",
+  "tris": 1816,
+  "mats": 12,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   25.0,
+   8.0,
+   8.0
+  ],
+  "lot": [
+   26.0,
+   8.0
+  ],
+  "anchors": {
+   "Wachmann": [
+    0.0,
+    0.25,
+    0.0,
+    0
+   ],
+   "Spur_Rein": [
+    -6.0,
+    0.0,
+    0.0,
+    0
+   ],
+   "Spur_Raus": [
+    6.0,
+    0.0,
+    0.0,
+    180
+   ],
+   "Zaun_W": [
+    -12.3,
+    0.0,
+    0.0,
+    -90
+   ],
+   "Zaun_O": [
+    12.3,
+    0.0,
+    0.0,
+    90
+   ]
+  },
+  "offset": [
+   -0.0,
+   -0.0
+  ]
+ },
+ {
+  "slug": "16_zaun",
+  "name": "Hafenzaun 24 m",
+  "cls": "Gebäude",
+  "tris": 1168,
+  "mats": 6,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   24.1,
+   3.5,
+   0.5
+  ],
+  "lot": [
+   26.0,
+   2.0
+  ],
+  "anchors": {
+   "Anschluss_W": [
+    -12.0,
+    0.0,
+    0.0,
+    -90
+   ],
+   "Anschluss_O": [
+    12.0,
+    0.0,
+    0.0,
+    90
+   ]
+  },
+  "offset": [
+   -0.0,
+   0.11
+  ]
+ },
+ {
+  "slug": "17_flutlichtmast",
+  "name": "Flutlichtmast 35 m",
+  "cls": "Gebäude",
+  "tris": 1848,
+  "mats": 5,
+  "slots": [],
+  "combos": 1,
+  "size": [
+   4.4,
+   37.1,
+   4.4
+  ],
+  "lot": [
+   6.0,
+   6.0
+  ],
+  "anchors": {},
+  "offset": [
+   -0.0,
+   -0.0
+  ]
+ }
+]

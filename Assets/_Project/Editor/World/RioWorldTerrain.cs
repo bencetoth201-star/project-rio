@@ -252,7 +252,8 @@ namespace Rio.WorldGen
         {
             if (_soll == null) return;
 
-            float rad = -yaw * Mathf.Deg2Rad;
+            // Unitys Drehsinn, wie im Belegungsraster (vorher -yaw, gespiegelt)
+            float rad = yaw * Mathf.Deg2Rad;
             float cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
             float hx = groesse.x * 0.5f, hz = groesse.y * 0.5f;
 
