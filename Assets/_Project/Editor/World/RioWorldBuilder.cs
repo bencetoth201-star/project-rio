@@ -81,10 +81,12 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Strassennetz planen...", 0.38f);
             var plan = new RioStrassenplan(terrain, planner);
             plan.Viertel();
+            plan.NaehteVerbinden();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
             plan.Bruecke(planner.PlacementList);
+            plan.BrueckeAnbinden(planner.PlacementList);
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
@@ -132,6 +134,7 @@ namespace Rio.WorldGen
             EditorUtility.DisplayProgressBar("Rio", "Wahrzeichen setzen...", 0.98f);
             int wahrzeichen = RioWahrzeichen.Setzen(root, terrain);
             Debug.Log($"[Rio] Wahrzeichen: {RioWahrzeichen.Liste.Count} Orte, {wahrzeichen} Modelle gesetzt.");
+            Debug.Log($"[Rio] Teilnetze: {plan.NetzBericht}");
 
             PlacePlayer(terrain, plan);
 

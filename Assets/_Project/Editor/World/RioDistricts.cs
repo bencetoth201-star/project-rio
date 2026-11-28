@@ -26,21 +26,70 @@ namespace Rio.WorldGen
         {
             public string Name;
             public Kind Type;
-            public Vector2 Center;      // Weltkoordinaten
+            public Vector2 Center;      // Weltkoordinaten, auf dem Inselraster
             public float A, B;          // Halbachsen in Metern
-            public float Rotation;      // Grad, Richtung der Hauptstrassen
+            /// <summary>Drehung des Strassenrasters - fuer alle Viertel einer Insel gleich.</summary>
+            public float Rotation;
+            /// <summary>Drehung der Ellipse, also nur der Form des Viertels.</summary>
+            public float FormDrehung;
+            /// <summary>Lage der Mitte im gemeinsamen 12-m-Raster der Insel.</summary>
+            public Vector2Int Gitter;
+            public int Insel;           // 0 = Rio, 1 = Niteroi
         }
 
-        static District D(string name, Kind k, float px, float py, float a, float b, float rot)
+        // ------------------------------------------------------------------
+        // Ein Raster je Insel
+        //
+        // Vorher hatte jedes Viertel sein eigenes, verschieden gedrehtes
+        // Strassenraster. Solange die Viertel weit auseinanderlagen, liefen
+        // Avenidas mit Boegen dazwischen. Seit sie dicht aneinanderstossen,
+        // bleiben 0 bis 24 m Platz - zu wenig fuer einen Bogen mit 40 m
+        // Radius, und von 24 Verbindungen kamen nur 6 zustande.
+        //
+        // Jetzt liegen alle Viertel einer Insel auf demselben 12-m-Raster mit
+        // derselben Drehung. An der Naht zwischen zwei Vierteln treffen die
+        // Strassenzellen dann genau aufeinander und werden direkt verbunden
+        // (RioStrassenplan.NaehteVerbinden). Organisch wird es trotzdem: durch
+        // die unregelmaessigen Linien je Viertel und die schiefen Haeuser.
+        // ------------------------------------------------------------------
+
+        static readonly float[] InselDrehung = { 8f, -8f };
+
+        /// <summary>Alles westlich davon ist Rio, oestlich Niteroi (Weltmeter).</summary>
+        const float InselGrenzeX = 300f;
+
+        static District D(string name, Kind k, float px, float py, float a, float b, float form)
         {
             var c = RioWorldLayout.ToWorld(px, py);
+            int insel = c.x < InselGrenzeX ? 0 : 1;
+            float rot = InselDrehung[insel];
+
+            // Mitte auf das gemeinsame Raster der Insel legen (Ursprung im Weltnullpunkt)
+            float rad = rot * Mathf.Deg2Rad, cs = Mathf.Cos(rad), sn = Mathf.Sin(rad);
+            var lokal = new Vector2(c.x * cs - c.y * sn, c.x * sn + c.y * cs);
+            var g = new Vector2Int(Mathf.RoundToInt(lokal.x / 12f), Mathf.RoundToInt(lokal.y / 12f));
+            var gl = new Vector2(g.x * 12f, g.y * 12f);
+            c = new Vector2(gl.x * cs + gl.y * sn, -gl.x * sn + gl.y * cs);
+
             return new District
             {
                 Name = name, Type = k, Center = c,
                 A = a * RioWorldLayout.MetersPerPixel,
                 B = b * RioWorldLayout.MetersPerPixel,
-                Rotation = rot
+                Rotation = rot, FormDrehung = form, Gitter = g, Insel = insel
             };
+        }
+
+        /// <summary>
+        /// Uebernimmt das Nachbarviertel an dieser Stelle die Naht? Dann legt
+        /// dieses Viertel dort keine Ringstrasse an - sonst liefen an jeder
+        /// Naht zwei Strassen nebeneinander. Die Ringstrasse gehoert immer
+        /// dem Viertel mit dem kleineren Index.
+        /// </summary>
+        public static bool NachbarUebernimmt(int di, Vector2 nachbar, System.Func<Vector2, bool> istStadt)
+        {
+            int dj = IndexAt(nachbar);
+            return dj >= 0 && dj < di && All[dj].Insel == All[di].Insel && istStadt(nachbar);
         }
 
         /// <summary>
@@ -116,7 +165,7 @@ namespace Rio.WorldGen
             var d = All[di];
             Abstaende(d.Type, out int min, out int max, out float quote);
             var rng = new System.Random(7919 * (di + 1) + 17);
-            int nx = Mathf.CeilToInt(d.A / 12f) + 6, nz = Mathf.CeilToInt(d.B / 12f) + 6;
+            int nx = Halbraster(d) + 6, nz = nx;
 
             var l = new Linien { X = Folge(rng, nx, min, max), Z = Folge(rng, nz, min, max), Weg = new HashSet<long>() };
             for (int i = 0; i < l.X.Length; i++)
@@ -205,6 +254,17 @@ namespace Rio.WorldGen
             }
         }
 
+        /// <summary>
+        /// Halbe Kantenlaenge des Rechenrasters eines Viertels, in Zellen. Muss
+        /// die ganze Ellipse fassen: der Rand ist verrauscht (bis zum 1,22-
+        /// fachen der Halbachse), und die Form ist gegen das Raster gedreht.
+        /// Vorher reichte das Raster nur bis A/12 + 2 Zellen - am Rand fielen
+        /// Zellen weg, die laut IndexAt zum Viertel gehoerten, und dort legte
+        /// keine Seite eine Strasse an.
+        /// </summary>
+        public static int Halbraster(in District d) =>
+            Mathf.CeilToInt(Mathf.Max(d.A, d.B) * 1.25f / 12f) + 2;
+
         /// <summary>Liegt der Punkt in einem Gang-Viertel?</summary>
         public static bool InFavela(Vector2 p)
         {
@@ -246,7 +306,11 @@ namespace Rio.WorldGen
         /// </summary>
         public static float Norm(in District d, Vector2 p)
         {
-            Vector2 local = ToLocal(d, p);
+            // Die Form hat ihre eigene Drehung, unabhaengig vom Strassenraster
+            Vector2 o = p - d.Center;
+            float frad = d.FormDrehung * Mathf.Deg2Rad;
+            float fc = Mathf.Cos(frad), fs = Mathf.Sin(frad);
+            Vector2 local = new Vector2(o.x * fc - o.y * fs, o.x * fs + o.y * fc);
             float u = local.x / d.A, v = local.y / d.B;
             float r = Mathf.Sqrt(u * u + v * v);
             if (r < 0.55f) return r;          // innen braucht es kein Rauschen

@@ -314,7 +314,11 @@ namespace Rio.WorldGen
                 if (!_t.IsLand(p)) continue;
                 if (_t.IsInLake(p)) continue;
                 if (_t.DistanceToCoast(p) < 22f) continue;
-                if (_t.RoadWeight(p) > 0.02f) continue;     // Platz fuer die Hauptstrassen
+                // Hier wurden frueher Korridore fuer die Hauptstrassen der
+                // Skizze freigehalten (RoadWeight). Gebaut werden die aber
+                // nicht mehr (BuildRoads wird nicht aufgerufen) - die leeren
+                // Streifen schnitten die Stadt in Stuecke, ueber die keine
+                // Strasse fuehrte.
 
                 float h = _t.SampleHeight(p);
                 if (h < 2.5f || h > 70f) continue;
@@ -495,8 +499,7 @@ namespace Rio.WorldGen
             var d = RioDistricts.All[di];
             RioDistricts.Raster(d.Type, out int px, out int pz);
 
-            int nx = Mathf.CeilToInt(d.A / Cell) + 2;
-            int nz = Mathf.CeilToInt(d.B / Cell) + 2;
+            int nx = RioDistricts.Halbraster(d), nz = nx;      // gleich wie im Strassenplan
             int w = nx * 2 + 1, h = nz * 2 + 1;
 
             // 1. Wo ist ueberhaupt Platz?
@@ -523,11 +526,18 @@ namespace Rio.WorldGen
                 bool linie = RioDistricts.IstStrasse(di, ix - nx, iz - nz);
 
                 // Randzelle: hat einen ungueltigen Nachbarn. Daraus wird die
-                // Ringstrasse - ohne sie endet jede Querstrasse im Feld.
-                bool rand = !Get(valid, w, h, ix + 1, iz) || !Get(valid, w, h, ix - 1, iz)
-                         || !Get(valid, w, h, ix, iz + 1) || !Get(valid, w, h, ix, iz - 1);
+                // Ringstrasse - ohne sie endet jede Querstrasse im Feld. Zu
+                // einem Nachbarviertel hin nur, wenn es die Naht nicht schon
+                // selbst belegt (gleiche Regel wie im Strassenplan).
+                bool rand = RandNach(ix + 1, iz) || RandNach(ix - 1, iz)
+                         || RandNach(ix, iz + 1) || RandNach(ix, iz - 1);
 
                 street[iz * w + ix] = linie || rand;
+
+                bool RandNach(int x, int z) =>
+                    !Get(valid, w, h, x, z) &&
+                    !RioDistricts.NachbarUebernimmt(di,
+                        RioDistricts.ToWorld(d, new Vector2((x - nx) * Cell, (z - nz) * Cell)), IstStadt);
             }
             RioDistricts.StummelStreichen(street, w, h, RioStrassenplan.MinNetz);
 

@@ -132,8 +132,7 @@ namespace Rio.WorldGen
             var d = RioDistricts.All[di];
             RioDistricts.Raster(d.Type, out int px, out int pz);
 
-            int nx = Mathf.CeilToInt(d.A / Cell) + 2;
-            int nz = Mathf.CeilToInt(d.B / Cell) + 2;
+            int nx = RioDistricts.Halbraster(d), nz = nx;
             int w = nx * 2 + 1, h = nz * 2 + 1;
 
             var gueltig = new bool[w * h];
@@ -153,9 +152,15 @@ namespace Rio.WorldGen
             {
                 if (!gueltig[iz * w + ix]) continue;
                 bool linie = RioDistricts.IstStrasse(di, ix - nx, iz - nz);
-                bool rand = !Hole(gueltig, w, h, ix + 1, iz) || !Hole(gueltig, w, h, ix - 1, iz)
-                         || !Hole(gueltig, w, h, ix, iz + 1) || !Hole(gueltig, w, h, ix, iz - 1);
+                bool rand = RandNach(ix + 1, iz) || RandNach(ix - 1, iz)
+                         || RandNach(ix, iz + 1) || RandNach(ix, iz - 1);
                 strasse[iz * w + ix] = linie || rand;
+
+                // Ringstrasse nur zum Feld hin, nicht zu einem Nachbarviertel,
+                // das die Naht schon selbst belegt
+                bool RandNach(int x, int z) =>
+                    !Hole(gueltig, w, h, x, z) &&
+                    !RioDistricts.NachbarUebernimmt(di, Welt(d, x - nx, z - nz), _planner.IstStadt);
             }
             RioDistricts.StummelStreichen(strasse, w, h, MinNetz);
 
@@ -186,6 +191,97 @@ namespace Rio.WorldGen
         static Vector2 Welt(in RioDistricts.District d, int lx, int lz) =>
             RioDistricts.ToWorld(d, new Vector2(lx * Cell, lz * Cell));
 
+        /// <summary>Strassenzellen, die an einer Naht zwischen zwei Vierteln verbunden wurden.</summary>
+        public int Naehte { get; private set; }
+
+        /// <summary>
+        /// Verbindet die Viertel einer Insel an ihren Naehten. Alle liegen auf
+        /// demselben Inselraster (RioDistricts.D), deshalb ist die Nachbarzelle
+        /// jenseits der Naht genau eine Rasterzelle weiter - und wenn dort eine
+        /// Strasse liegt, bekommen beide eine gewoehnliche Kante.
+        ///
+        /// Gesucht wird nur nach +Z und +X; die Gegenrichtung erledigt der
+        /// Knoten auf der anderen Seite.
+        /// </summary>
+        public void NaehteVerbinden()
+        {
+            for (int di = 0; di < RioDistricts.All.Length; di++)
+            {
+                if (!_gitter.TryGetValue(di, out var g)) continue;
+                var (w, h, nx, nz) = _gitterMass[di];
+                var d = RioDistricts.All[di];
+
+                for (int ix = 0; ix < w; ix++)
+                for (int iz = 0; iz < h; iz++)
+                {
+                    int a = g[iz * w + ix];
+                    if (a < 0) continue;
+
+                    for (int r = 0; r < 2; r++)            // 0 = +Z, 1 = +X
+                    {
+                        int x = ix + (r == 1 ? 1 : 0), z = iz + (r == 0 ? 1 : 0);
+                        if (x < w && z < h && g[z * w + x] >= 0) continue;   // im eigenen Raster schon verbunden
+
+                        var welt = Welt(d, x - nx, z - nz);
+                        int dj = RioDistricts.IndexAt(welt);
+                        if (dj < 0 || dj == di || RioDistricts.All[dj].Insel != d.Insel) continue;
+                        if (!_gitter.TryGetValue(dj, out var g2)) continue;
+
+                        var (w2, h2, nx2, nz2) = _gitterMass[dj];
+                        var global = d.Gitter + new Vector2Int(x - nx, z - nz);
+                        var l2 = global - RioDistricts.All[dj].Gitter;
+                        int x2 = l2.x + nx2, z2 = l2.y + nz2;
+                        if (x2 < 0 || z2 < 0 || x2 >= w2 || z2 >= h2) continue;
+
+                        int b = g2[z2 * w2 + x2];
+                        if (b < 0) continue;
+                        if (_kante[a * 4 + r] >= 0 || _kante[b * 4 + ((r + 2) & 3)] >= 0) continue;
+
+                        Verbinde(a, r, b);
+                        Naehte++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Zusammenhangskomponente je Knoten, ueber die bisherigen Kanten.</summary>
+        int[] Komponenten()
+        {
+            var komp = new int[_k.Count];
+            for (int i = 0; i < komp.Length; i++) komp[i] = -1;
+            var stapel = new Stack<int>();
+            int id = 0;
+            for (int s = 0; s < _k.Count; s++)
+            {
+                if (komp[s] >= 0) continue;
+                komp[s] = id;
+                stapel.Push(s);
+                while (stapel.Count > 0)
+                {
+                    int c = stapel.Pop();
+                    for (int r = 0; r < 4; r++)
+                    {
+                        int nb = _kante[c * 4 + r];
+                        if (nb < 0 || komp[nb] >= 0) continue;
+                        komp[nb] = id;
+                        stapel.Push(nb);
+                    }
+                }
+                id++;
+            }
+            return komp;
+        }
+
+        /// <summary>Haengen die Strassennetze zweier Viertel schon irgendwo zusammen?</summary>
+        bool SchonVerbunden(int ia, int ib, int[] komp)
+        {
+            if (!_gitter.TryGetValue(ia, out var ga) || !_gitter.TryGetValue(ib, out var gb)) return false;
+            var inA = new HashSet<int>();
+            foreach (int k in ga) if (k >= 0) inA.Add(komp[k]);
+            foreach (int k in gb) if (k >= 0 && inA.Contains(komp[k])) return true;
+            return false;
+        }
+
         static bool Hole(bool[] f, int w, int h, int x, int z) =>
             x >= 0 && z >= 0 && x < w && z < h && f[z * w + x];
 
@@ -208,10 +304,14 @@ namespace Rio.WorldGen
             var belegt = new HashSet<long>();      // Knoten/Richtung schon benutzt
             int n = RioDistricts.Verbindungen.GetLength(0);
 
+            // Was an einer Naht schon zusammenhaengt, braucht keine Avenida
+            var komp = Komponenten();
+
             for (int e = 0; e < n; e++)
             {
                 int ia = RioDistricts.Verbindungen[e, 0];
                 int ib = RioDistricts.Verbindungen[e, 1];
+                if (SchonVerbunden(ia, ib, komp)) { UeberNaht++; continue; }
                 StreckeBauen(ia, ib, belegt, ziel);
             }
         }
@@ -576,7 +676,10 @@ namespace Rio.WorldGen
                 var z = besteAlle[besteKette[i]];
                 float dock = yy + besteGelenk[i];
                 if (Lege(teile[z.teil].model, teile[z.teil].anker, pp, dock, ziel, ref pp, ref yy))
+                {
                     AvenidaKacheln++;
+                    Merken(ziel);
+                }
             }
             GroessterKnick = Mathf.Max(GroessterKnick, MaxBetrag(besteGelenk));
 
@@ -589,6 +692,8 @@ namespace Rio.WorldGen
 
         public int RuaStrecken { get; private set; }
         public int AvenidaStrecken { get; private set; }
+        /// <summary>Viertelpaare, die schon ueber eine Naht verbunden sind.</summary>
+        public int UeberNaht { get; private set; }
 
         /// <summary>Wie grob die Suche ankommen darf; den Rest machen die Gelenke.</summary>
         public const float Fangweite = 10f;
@@ -866,14 +971,22 @@ namespace Rio.WorldGen
             return RioStrassennetz.AnderesEnde(model, anker, pivot, yaw, out neuPos, out neuYaw);
         }
 
+        /// <param name="aufsGelaende">
+        /// true: die Kachel kommt auf die Gelaendehoehe (Strassen an Land).
+        /// false: sie behaelt die Hoehe aus der Ankerkette - fuer die Bruecke.
+        /// Vorher galt immer true, und das Deck der Bruecke lag dadurch auf dem
+        /// Meeresgrund, bis 46 m unter Wasser; nur die Pfeiler standen richtig.
+        /// </param>
         bool Lege(int model, string anker, Vector3 endePos, float endeYaw,
-                  List<RioHouseWorld.Placement> ziel, ref Vector3 neuPos, ref float neuYaw)
+                  List<RioHouseWorld.Placement> ziel, ref Vector3 neuPos, ref float neuYaw,
+                  bool aufsGelaende = true)
         {
             if (!Probe(model, anker, endePos, endeYaw, out Vector3 pivot, out float yaw,
                        out neuPos, out neuYaw))
                 return false;
 
-            pivot.y = _t.SampleHeight(new Vector2(pivot.x, pivot.z)) + 0.05f;
+            if (aufsGelaende)
+                pivot.y = _t.SampleHeight(new Vector2(pivot.x, pivot.z)) + 0.05f;
             ziel.Add(new RioHouseWorld.Placement
             {
                 position = pivot,
@@ -965,7 +1078,31 @@ namespace Rio.WorldGen
             GroesstesNetz = groesse[beste];
             NetzeBehalten = 0;
             foreach (int g in groesse) if (g >= MinNetz) NetzeBehalten++;
+
+            // Bericht: welche Viertel in welchem Teilnetz liegen
+            var anteile = new Dictionary<int, Dictionary<int, int>>();
+            for (int i = 0; i < _k.Count; i++)
+            {
+                if (groesse[komp[i]] < MinNetz) continue;
+                if (!anteile.TryGetValue(komp[i], out var m)) anteile[komp[i]] = m = new Dictionary<int, int>();
+                int v = _k[i].viertel;
+                m[v] = m.TryGetValue(v, out int n) ? n + 1 : 1;
+            }
+            var ids = new List<int>(anteile.Keys);
+            ids.Sort((a, b) => groesse[b].CompareTo(groesse[a]));
+            var sb = new System.Text.StringBuilder();
+            foreach (int id in ids)
+            {
+                sb.Append($"[{groesse[id]}:");
+                foreach (var kv in anteile[id])
+                    sb.Append(' ').Append(kv.Key >= 0 ? RioDistricts.All[kv.Key].Name : "Strecke").Append('=').Append(kv.Value);
+                sb.Append("] ");
+            }
+            NetzBericht = sb.ToString();
         }
+
+        /// <summary>Je Teilnetz: Groesse und Knoten je Viertel.</summary>
+        public string NetzBericht { get; private set; } = "";
 
         public int Teilnetze { get; private set; }
         /// <summary>Teilnetze, die nach dem Streichen der Splitter uebrig bleiben.</summary>
@@ -1390,8 +1527,12 @@ namespace Rio.WorldGen
             var ende = new Vector3(von.x, Mathf.Max(uferH, 0.5f), von.y);
             float endeYaw = yaw;
 
+            // Offenes Ende auf der Rio-Seite: an der Startfuge, Blick ins Land
+            _brueckeEnden.Clear();
+            _brueckeEnden.Add((ende, Mathf.Repeat(yaw + 180f, 360f)));
+
             if (!Lege(RioModelCatalog.Brueckenkopf, "Anschluss_Bruecke_S",
-                      ende, endeYaw, ziel, ref ende, ref endeYaw)) return;
+                      ende, endeYaw, ziel, ref ende, ref endeYaw, false)) return;
             BrueckenKacheln++;
 
             var fugen = new List<Vector3>();
@@ -1399,7 +1540,7 @@ namespace Rio.WorldGen
             for (int i = 0; i < Rampe; i++)
             {
                 if (!Lege(RioModelCatalog.BrueckeSteigung, "Anschluss_Bruecke_S",
-                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                          ende, endeYaw, ziel, ref ende, ref endeYaw, false)) break;
                 BrueckenKacheln++;
                 fugen.Add(ende);
             }
@@ -1407,7 +1548,7 @@ namespace Rio.WorldGen
             for (int i = 0; i < geraden; i++)
             {
                 if (!Lege(RioModelCatalog.BrueckeSegment, "Anschluss_Bruecke_S",
-                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                          ende, endeYaw, ziel, ref ende, ref endeYaw, false)) break;
                 BrueckenKacheln++;
                 fugen.Add(ende);
             }
@@ -1417,21 +1558,126 @@ namespace Rio.WorldGen
             for (int i = 0; i < Rampe; i++)
             {
                 if (!Lege(RioModelCatalog.BrueckeSteigung, "Anschluss_Bruecke_N",
-                          ende, endeYaw, ziel, ref ende, ref endeYaw)) break;
+                          ende, endeYaw, ziel, ref ende, ref endeYaw, false)) break;
                 BrueckenKacheln++;
                 fugen.Add(ende);
             }
 
             if (Lege(RioModelCatalog.Brueckenkopf, "Anschluss_Bruecke_N",
-                     ende, endeYaw, ziel, ref ende, ref endeYaw))
+                     ende, endeYaw, ziel, ref ende, ref endeYaw, false))
             {
                 BrueckenKacheln++;
                 BrueckeSteht = true;
+                _brueckeEnden.Add((ende, endeYaw));       // Niteroi-Seite
             }
 
             // Pfeiler unter jede zweite Fuge
             for (int i = 1; i < fugen.Count; i += 2)
                 PfeilerStapeln(fugen[i], yaw, ziel);
+        }
+
+        readonly List<(Vector3 pos, float yaw)> _brueckeEnden = new List<(Vector3, float)>();
+
+        /// <summary>Wie viele Brueckenenden an ein Stadtnetz angeschlossen sind (0 bis 2).</summary>
+        public int BrueckeAngebunden { get; private set; }
+
+        /// <summary>
+        /// Schliesst beide Enden der Bruecke an das naechste Viertel ihrer
+        /// Insel an. Vorher endete die Bruecke am Ufer im Feld - auf der
+        /// Rio-Seite rund 900 m vor der Stadt.
+        ///
+        /// Die Bruecke ist 12 m breit, eine Rua auch; deshalb wird mit
+        /// Rua-Teilen gesucht, genauso wie zwischen zwei Vierteln: Strahlsuche
+        /// auf alle Andockstellen des Viertels, Restfehler in die Gelenke.
+        /// Klappt es beim naechsten Viertel nicht, wird das zweitnaechste
+        /// versucht.
+        /// </summary>
+        public void BrueckeAnbinden(List<RioHouseWorld.Placement> ziel)
+        {
+            if (!BrueckeSteht) return;
+            var belegt = new HashSet<long>();
+
+            foreach (var (pos, yaw) in _brueckeEnden)
+            {
+                var p2 = new Vector2(pos.x, pos.z);
+                int insel = -1;
+                float naechste = float.MaxValue;
+                for (int i = 0; i < RioDistricts.All.Length; i++)
+                {
+                    float dd = Vector2.Distance(p2, RioDistricts.All[i].Center);
+                    if (dd < naechste) { naechste = dd; insel = RioDistricts.All[i].Insel; }
+                }
+
+                var reihenfolge = new List<int>();
+                for (int i = 0; i < RioDistricts.All.Length; i++)
+                    if (RioDistricts.All[i].Insel == insel) reihenfolge.Add(i);
+                reihenfolge.Sort((a, b) =>
+                    Vector2.Distance(p2, RioDistricts.All[a].Center).CompareTo(
+                    Vector2.Distance(p2, RioDistricts.All[b].Center)));
+
+                for (int v = 0; v < reihenfolge.Count && v < 4; v++)
+                    if (AnPoseAnbinden(pos, yaw, reihenfolge[v], belegt, ziel)) { BrueckeAngebunden++; break; }
+            }
+        }
+
+        bool AnPoseAnbinden(Vector3 pos, float yaw, int ib, HashSet<long> belegt,
+                            List<RioHouseWorld.Placement> ziel)
+        {
+            var teile = RuaTeile;
+            var start = new Andockstelle { knoten = -1, richtung = -1, pivot = pos, yaw = yaw, pose = pos, poseYaw = yaw };
+            var ziele = Andockstellen(ib, new Vector2(pos.x, pos.z), belegt, true);
+            if (ziele.Count == 0) return false;
+
+            var raster = new Dictionary<long, List<int>>(ziele.Count * 2);
+            for (int i = 0; i < ziele.Count; i++)
+            {
+                long key = Raster2(ziele[i].pose);
+                if (!raster.TryGetValue(key, out var l)) raster[key] = l = new List<int>(2);
+                l.Add(i);
+            }
+
+            // Kuestenabstand nur 4 m: die Bruecke beginnt direkt am Ufer
+            if (!Suche(start, ziele, raster, teile, Fangweite, FangWinkel, 220, 4f, Strahl,
+                       out List<int> kette, out List<Zustand> alle, out int treffer))
+                return false;
+
+            var ende = ziele[treffer];
+            var gelenk = new float[kette.Count];
+            float genau = Nachjustieren(alle, kette, start.pose, start.poseYaw, gelenk,
+                                        ende.pose, Mathf.Repeat(ende.poseYaw + 180f, 360f), teile);
+            if (genau + MaxBetrag(gelenk) * 0.5f > 0.25f + MaxKnick * 0.5f) return false;
+
+            Stummel(ende.knoten, ende.richtung);
+            Vector3 pp = start.pose;
+            float yy = start.poseYaw;
+            for (int i = 0; i < kette.Count; i++)
+            {
+                var z = alle[kette[i]];
+                if (Lege(teile[z.teil].model, teile[z.teil].anker, pp, yy + gelenk[i], ziel, ref pp, ref yy))
+                {
+                    BrueckenZufahrt++;
+                    Merken(ziel);
+                }
+            }
+            GroessterKnick = Mathf.Max(GroessterKnick, MaxBetrag(gelenk));
+            belegt.Add(((long)ende.knoten << 3) | (uint)ende.richtung);
+            return true;
+        }
+
+        /// <summary>Kacheln der Zufahrten zur Bruecke.</summary>
+        public int BrueckenZufahrt { get; private set; }
+
+        /// <summary>
+        /// Freie Strecken (Verbindungen, Brueckenzufahrten) sind keine Knoten
+        /// im Graphen und meldeten deshalb ihre Flaeche nie beim Gelaende an.
+        /// Auf ansteigendem Boden ragte das Gelaende dann durch den Asphalt.
+        /// Hier merken sie sich ihre Kachel, GelaendeMelden ebnet darunter ein.
+        /// </summary>
+        readonly List<RioHouseWorld.Placement> _freieKacheln = new List<RioHouseWorld.Placement>();
+
+        void Merken(List<RioHouseWorld.Placement> ziel)
+        {
+            if (ziel.Count > 0) _freieKacheln.Add(ziel[ziel.Count - 1]);
         }
 
         /// <summary>
@@ -1703,6 +1949,17 @@ namespace Rio.WorldGen
                 _t.Stempeln(kn.p, new Vector2(Cell, Cell), kn.yaw, kn.h - 0.05f, Cell);
             }
 
+            // Freie Strecken knapp unter ihre Kachel. 25 cm statt 5: die Kachel
+            // liegt hier auf dem ungeebneten Gelaende, und bei gleicher Hoehe
+            // flimmern Gelaende und Fernplatte gegeneinander - die Strasse sah
+            // aus der Ferne gestrichelt aus.
+            foreach (var pl in _freieKacheln)
+            {
+                var mitte = RioModelCatalog.Mitte(pl.model, pl.position, pl.yaw);
+                _t.Stempeln(new Vector2(mitte.x, mitte.z), RioHousePlanner.Lot(pl.model) + new Vector2(2f, 2f),
+                            pl.yaw, pl.position.y - 0.25f, Cell);
+            }
+
             // Grundflaechen der Wahrzeichen auf ihre eigene Hoehe
             RioWahrzeichen.Stempeln(_t);
 
@@ -1726,14 +1983,16 @@ namespace Rio.WorldGen
             $"{Teilnetze:N0} Teilnetze ({NetzeBehalten:N0} ab {MinNetz} Knoten), groesstes {GroesstesNetz:N0}, " +
             $"{Wendehammer:N0} Wendehammer, {AvenidaKacheln:N0} Avenida-Kacheln, "
           + $"Bruecke {BrueckenKacheln:N0} Teile auf {Pfeiler:N0} Pfeilerstuecken"
-          + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend") + ", "
+          + (BrueckeSteht ? ", durchgehend" : ", NICHT durchgehend")
+          + $", {BrueckeAngebunden} von 2 Enden an die Stadt angebunden ({BrueckenZufahrt} Kacheln), "
           + (SchnellVerworfen ? "Schnellstrassenring kam nicht zustande, nichts gebaut, " : "")
           + $"{SchnellKacheln:N0} Schnellstrassenkacheln in {SchnellAbschnitte:N0} Abschnitten "
           + $"({SchnellOffen:N0} offen), "
           + $"{Terrassen:N0} Hoehenstufen, {SteigungKacheln:N0} Steigungskacheln, "
           + $"{OffeneStufen:N0} Stufen ohne Kachel "
           + $"(max {GroessteStufe:F1} m), " +
-            $"Strecken {AvenidaStrecken:N0} Avenida + {RuaStrecken:N0} Rua geschlossen / "
+            $"{Naehte:N0} Nahtkanten, Viertelpaare {UeberNaht:N0} ueber Naht verbunden, "
+          + $"Strecken {AvenidaStrecken:N0} Avenida + {RuaStrecken:N0} Rua geschlossen / "
           + $"{OffeneStrecken:N0} offen, "
           + $"groesster Knick {GroessterKnick:F2} Grad";
     }

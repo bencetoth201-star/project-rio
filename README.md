@@ -73,6 +73,15 @@ mit zufälligem Versatz, eigenem Abstand zur Straße und leicht schräg
 versucht, danach füllen Hinterhäuser die Blockmitte
 (`RioHousePlanner.BlockBebauen`).
 
+**Ein Straßennetz je Insel:** Alle Viertel einer Insel liegen auf demselben
+12-m-Raster mit derselben Drehung (`RioDistricts.D`, Rio 8°, Niterói −8°).
+An der Naht zwischen zwei Vierteln treffen die Straßen deshalb genau
+aufeinander und werden direkt verbunden (`RioStrassenplan.NaehteVerbinden`);
+die Ringstraße an einer Naht gehört dem Viertel mit dem kleineren Index.
+Rio und Niterói sind jeweils ein zusammenhängendes Netz, die Brücke ist an
+beiden Enden über eine Zufahrt angebunden (`BrueckeAnbinden`). Das Log
+zeigt beim Weltbau, welche Viertel in welchem Teilnetz liegen.
+
 Die beiden Gang-Viertel (`Kind.Favela`): **Jacarezinho** in Rio zwischen
 Zona Oeste und Stadion (mit dem Drughouse) und **Morro do Estado** im Osten
 von Niterói. Dort stehen nur arme Häuser, die Gassen sind enger und

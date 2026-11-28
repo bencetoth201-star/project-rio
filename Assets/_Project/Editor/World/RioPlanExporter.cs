@@ -49,10 +49,12 @@ namespace Rio.WorldGen
             // gesetzt wird, und kein Haus kann eine Strasse verhindern.
             var plan = new RioStrassenplan(terrain, planner);
             plan.Viertel();
+            plan.NaehteVerbinden();
             plan.HoehenAusGelaende();
             plan.AvenidasVerbinden(planner.PlacementList);
             plan.Schnellstrassen(planner.PlacementList);
             plan.Bruecke(planner.PlacementList);
+            plan.BrueckeAnbinden(planner.PlacementList);
             plan.AufEinNetzReduzieren();
 
             // Erst jetzt die Hoehen festlegen - vorher ist das Netz nicht
