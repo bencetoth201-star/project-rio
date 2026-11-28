@@ -17,8 +17,15 @@ wären Unsinn, wenn zwei Sekunden Rechenzeit dasselbe liefern.
 
 Deshalb nach dem Clone einmal, in dieser Reihenfolge:
 
-1. **Tools → Rio → Welt bauen (20 km2)**
-2. **Tools → Rio → Block-Figur bauen**
+1. **Tools → Rio → Block-Figur bauen**
+2. **Tools → Rio → Welt bauen (20 km2)**
+3. Szene speichern (Strg+S) als `Assets/Scenes/SampleScene.unity`
+
+Die Reihenfolge ist wichtig: der Weltbau setzt die Figur mitten in die
+Stadt, aber nur, wenn es sie schon gibt. Andersherum steht sie auf ihrem
+festen Startpunkt (0, 4, −6,5) außerhalb der Stadt, und im Umkreis des
+Streamers liegen kaum Häuser. Wer es verkehrt gemacht hat: einfach die
+Welt noch einmal bauen.
 
 Die Szene selbst liegt ebenfalls nicht im Repo - sie ist das Ergebnis der
 Generatoren, nicht ihre Quelle. Vor dem ersten Bau ist sie leer oder gar
